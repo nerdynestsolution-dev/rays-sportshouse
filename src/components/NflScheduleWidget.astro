@@ -1,0 +1,585 @@
+---
+// Self-contained, zero-dependency Live NFL Schedule & Scoreboard Widget
+// Powered by the public ESPN NFL Scoreboard API
+---
+
+<div
+  id="rays-nfl-schedule-widget"
+  class="rounded-3xl bg-gradient-to-b from-mizzou-slate900 via-mizzou-black to-mizzou-slate900 border-2 border-mizzou-gold/50 p-5 sm:p-8 shadow-gold-glow text-white"
+>
+  <!-- Widget Header & Week Navigation Controls -->
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-6 border-b border-white/15">
+    <div class="space-y-1.5">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
+          🏈 NFL Sunday Ticket &amp; RedZone Live Feed
+        </span>
+        <span
+          id="nfl-season-badge"
+          class="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
+        >
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Live Scoreboard</span>
+        </span>
+      </div>
+      <h2 class="font-display text-2xl sm:text-4xl font-bold uppercase tracking-wide text-white">
+        NFL Weekly <span class="text-mizzou-gold">Schedule &amp; Live Scores</span>
+      </h2>
+      <p class="text-xs sm:text-sm text-gray-300">
+        Every game below is shown live across our <strong class="text-white">54+ HD screens</strong>. Enjoy <strong class="text-mizzou-gold">$9.99 1/4 LB Smash Burger &amp; Fries</strong> and <strong class="text-mizzou-gold">Draft Specials starting at $3.99</strong> during every NFL game!
+      </p>
+    </div>
+
+    <!-- Week Toggle Dropdown + Prev/Next Arrows -->
+    <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0">
+      <!-- Previous Week Button -->
+      <button
+        id="nfl-prev-week"
+        type="button"
+        class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-mizzou-slate800 hover:bg-mizzou-gold hover:text-mizzou-black text-white border border-white/15 hover:border-mizzou-gold font-bold transition-all disabled:opacity-40 disabled:pointer-events-none"
+        aria-label="Previous NFL Week"
+        title="Previous Week"
+      >
+        &#8592;
+      </button>
+
+      <!-- Season Type Selector (Regular Season vs Postseason) -->
+      <select
+        id="nfl-seasontype-select"
+        aria-label="Select NFL Season Stage"
+        class="bg-mizzou-black text-white border border-mizzou-gold/50 focus:border-mizzou-gold focus:outline-none rounded-xl px-3 py-2 text-xs sm:text-sm font-display font-bold uppercase tracking-wider cursor-pointer"
+      >
+        <option value="2">Regular Season</option>
+        <option value="3">Postseason</option>
+        <option value="1">Preseason</option>
+      </select>
+
+      <!-- Week Dropdown Selector -->
+      <select
+        id="nfl-week-select"
+        aria-label="Select NFL Week"
+        class="bg-mizzou-black text-mizzou-gold border-2 border-mizzou-gold/60 focus:border-mizzou-gold focus:outline-none rounded-xl px-3.5 py-2 text-xs sm:text-sm font-display font-bold uppercase tracking-wider cursor-pointer"
+      >
+        <option value="1">Week 1</option>
+        <option value="2">Week 2</option>
+        <option value="3">Week 3</option>
+        <option value="4">Week 4</option>
+        <option value="5">Week 5</option>
+        <option value="6">Week 6</option>
+        <option value="7">Week 7</option>
+        <option value="8">Week 8</option>
+        <option value="9">Week 9</option>
+        <option value="10">Week 10</option>
+        <option value="11">Week 11</option>
+        <option value="12">Week 12</option>
+        <option value="13">Week 13</option>
+        <option value="14">Week 14</option>
+        <option value="15">Week 15</option>
+        <option value="16">Week 16</option>
+        <option value="17">Week 17</option>
+        <option value="18">Week 18</option>
+      </select>
+
+      <!-- Next Week Button -->
+      <button
+        id="nfl-next-week"
+        type="button"
+        class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-mizzou-slate800 hover:bg-mizzou-gold hover:text-mizzou-black text-white border border-white/15 hover:border-mizzou-gold font-bold transition-all disabled:opacity-40 disabled:pointer-events-none"
+        aria-label="Next NFL Week"
+        title="Next Week"
+      >
+        &#8594;
+      </button>
+
+      <!-- Jump to Current Week Button -->
+      <button
+        id="nfl-current-week-btn"
+        type="button"
+        class="hidden sm:inline-flex items-center gap-1.5 bg-mizzou-gold/15 hover:bg-mizzou-gold hover:text-mizzou-black text-mizzou-gold border border-mizzou-gold/40 px-3 py-2 rounded-xl font-display font-bold uppercase tracking-wider text-xs transition-all"
+      >
+        Current Week
+      </button>
+    </div>
+  </div>
+
+  <!-- Sub-bar: Date Range & Refresh Status -->
+  <div class="flex flex-wrap items-center justify-between gap-2 py-3 text-xs text-gray-400">
+    <p id="nfl-week-summary" class="font-semibold text-gray-200">
+      Loading current NFL week schedule...
+    </p>
+    <div class="flex items-center gap-3">
+      <span id="nfl-last-updated" class="text-[11px] text-gray-400"></span>
+      <button
+        id="nfl-refresh-btn"
+        type="button"
+        class="text-mizzou-gold hover:underline font-bold uppercase tracking-wider text-[11px]"
+      >
+        ↻ Refresh Scores
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton Grid -->
+  <div id="nfl-loading-state" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+    {Array.from({ length: 6 }).map(() => (
+      <div class="rounded-2xl bg-mizzou-slate800/50 border border-white/10 p-4 animate-pulse space-y-3">
+        <div class="flex justify-between">
+          <div class="h-4 w-28 bg-white/10 rounded"></div>
+          <div class="h-4 w-16 bg-white/10 rounded"></div>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-white/10"></div>
+            <div class="h-4 w-32 bg-white/10 rounded"></div>
+          </div>
+          <div class="h-6 w-8 bg-white/10 rounded"></div>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-white/10"></div>
+            <div class="h-4 w-32 bg-white/10 rounded"></div>
+          </div>
+          <div class="h-6 w-8 bg-white/10 rounded"></div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Error / Fallback State -->
+  <div
+    id="nfl-error-state"
+    class="hidden rounded-2xl bg-mizzou-slate800/80 border border-red-500/40 p-6 text-center space-y-3 my-4"
+  >
+    <p class="font-display text-xl uppercase text-white">
+      Unable to load live NFL schedule right now
+    </p>
+    <p class="text-xs sm:text-sm text-gray-300">
+      Please check your connection or click retry. Remember: we show every single NFL Sunday Ticket &amp; RedZone matchup live on 54+ HD screens!
+    </p>
+    <button
+      id="nfl-retry-btn"
+      type="button"
+      class="inline-flex items-center gap-2 bg-mizzou-gold text-mizzou-black font-display font-bold uppercase tracking-wider text-xs px-4 py-2 rounded-lg"
+    >
+      Retry Loading Schedule
+    </button>
+  </div>
+
+  <!-- Games Card Grid -->
+  <div id="nfl-games-grid" class="hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2"></div>
+</div>
+
+<script is:inline>
+  (function () {
+    const API_BASE = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+
+    const weekSelect = document.getElementById('nfl-week-select');
+    const seasonTypeSelect = document.getElementById('nfl-seasontype-select');
+    const prevBtn = document.getElementById('nfl-prev-week');
+    const nextBtn = document.getElementById('nfl-next-week');
+    const currentWeekBtn = document.getElementById('nfl-current-week-btn');
+    const refreshBtn = document.getElementById('nfl-refresh-btn');
+    const retryBtn = document.getElementById('nfl-retry-btn');
+    const gamesGrid = document.getElementById('nfl-games-grid');
+    const loadingState = document.getElementById('nfl-loading-state');
+    const errorState = document.getElementById('nfl-error-state');
+    const weekSummary = document.getElementById('nfl-week-summary');
+    const lastUpdated = document.getElementById('nfl-last-updated');
+    const seasonBadge = document.getElementById('nfl-season-badge');
+
+    if (!weekSelect || !seasonTypeSelect || !gamesGrid) return;
+
+    const POSTSEASON_WEEKS = [
+      { value: '1', label: 'Wild Card Round' },
+      { value: '2', label: 'Divisional Round' },
+      { value: '3', label: 'Conference Championships' },
+      { value: '4', label: 'Pro Bowl' },
+      { value: '5', label: 'Super Bowl' },
+    ];
+
+    const PRESEASON_WEEKS = [
+      { value: '1', label: 'Hall of Fame Weekend' },
+      { value: '2', label: 'Preseason Week 1' },
+      { value: '3', label: 'Preseason Week 2' },
+      { value: '4', label: 'Preseason Week 3' },
+    ];
+
+    let activeWeek = null;
+    let activeSeasonType = '2';
+    let defaultWeek = null;
+    let defaultSeasonType = '2';
+    let activeYear = new Date().getFullYear();
+
+    function populateWeekOptions(seasonType, selectedWeek) {
+      weekSelect.innerHTML = '';
+      if (String(seasonType) === '3') {
+        POSTSEASON_WEEKS.forEach((w) => {
+          const opt = document.createElement('option');
+          opt.value = w.value;
+          opt.textContent = w.label;
+          weekSelect.appendChild(opt);
+        });
+      } else if (String(seasonType) === '1') {
+        PRESEASON_WEEKS.forEach((w) => {
+          const opt = document.createElement('option');
+          opt.value = w.value;
+          opt.textContent = w.label;
+          weekSelect.appendChild(opt);
+        });
+      } else {
+        for (let i = 1; i <= 18; i++) {
+          const opt = document.createElement('option');
+          opt.value = String(i);
+          opt.textContent = 'Week ' + i;
+          weekSelect.appendChild(opt);
+        }
+      }
+      if (selectedWeek) {
+        weekSelect.value = String(selectedWeek);
+      }
+      updateNavButtons();
+    }
+
+    function getMaxWeek(seasonType) {
+      if (String(seasonType) === '3') return 5;
+      if (String(seasonType) === '1') return 4;
+      return 18;
+    }
+
+    function updateNavButtons() {
+      const maxW = getMaxWeek(activeSeasonType);
+      const curW = parseInt(weekSelect.value || '1', 10);
+      if (prevBtn) prevBtn.disabled = curW <= 1;
+      if (nextBtn) nextBtn.disabled = curW >= maxW;
+    }
+
+    function formatGameDate(isoDate) {
+      try {
+        const d = new Date(isoDate);
+        return d.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+        });
+      } catch (e) {
+        return isoDate;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderGames(data) {
+      const events = data.events || [];
+      const weekNum = data.week && data.week.number ? data.week.number : activeWeek || 1;
+      const seasonYear = data.season && data.season.year ? data.season.year : activeYear;
+      const seasonType = data.season && data.season.type ? String(data.season.type) : activeSeasonType;
+
+      activeWeek = weekNum;
+      activeSeasonType = seasonType;
+      activeYear = seasonYear;
+
+      if (defaultWeek === null) {
+        defaultWeek = weekNum;
+        defaultSeasonType = seasonType;
+      }
+
+      seasonTypeSelect.value = seasonType;
+      populateWeekOptions(seasonType, weekNum);
+
+      const stageLabel =
+        seasonType === '3'
+          ? (POSTSEASON_WEEKS.find((w) => w.value === String(weekNum)) || { label: 'Postseason' }).label
+          : seasonType === '1'
+            ? (PRESEASON_WEEKS.find((w) => w.value === String(weekNum)) || { label: 'Preseason' }).label
+            : 'Week ' + weekNum;
+
+      if (weekSummary) {
+        weekSummary.textContent =
+          seasonYear + ' NFL Season • ' + stageLabel + ' (' + events.length + ' Matchups)';
+      }
+
+      if (seasonBadge) {
+        seasonBadge.innerHTML =
+          '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>' +
+          escapeHtml(seasonYear + ' ' + stageLabel) +
+          '</span>';
+      }
+
+      if (lastUpdated) {
+        const now = new Date();
+        lastUpdated.textContent =
+          'Updated ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      }
+
+      if (events.length === 0) {
+        gamesGrid.innerHTML =
+          '<div class="col-span-full rounded-2xl bg-mizzou-slate800/60 border border-white/10 p-8 text-center">' +
+          '<p class="font-display text-xl uppercase text-white">No games scheduled for this week</p>' +
+          '<p class="text-xs text-gray-400 mt-1">Use the week selector above to browse other weeks of the NFL season.</p>' +
+          '</div>';
+        return;
+      }
+
+      // Sort games chronologically
+      const sortedEvents = events.slice().sort(function (a, b) {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+
+      const cardsHtml = sortedEvents
+        .map(function (event) {
+          const competition = (event.competitions && event.competitions[0]) || {};
+          const competitors = competition.competitors || [];
+          const away =
+            competitors.find(function (c) {
+              return c.homeAway === 'away';
+            }) || competitors[0] || {};
+          const home =
+            competitors.find(function (c) {
+              return c.homeAway === 'home';
+            }) || competitors[1] || {};
+
+          const statusObj = (event.status && event.status.type) || {};
+          const state = statusObj.state || 'pre'; // 'pre' | 'in' | 'post'
+          const shortDetail = statusObj.shortDetail || formatGameDate(event.date);
+
+          const isLive = state === 'in';
+          const isFinal = state === 'post';
+          const showScore = isLive || isFinal;
+
+          const awayScore = parseInt(away.score || '0', 10);
+          const homeScore = parseInt(home.score || '0', 10);
+          const awayWinning = showScore && awayScore > homeScore;
+          const homeWinning = showScore && homeScore > awayScore;
+
+          const broadcast =
+            (competition.broadcasts &&
+              competition.broadcasts[0] &&
+              competition.broadcasts[0].names &&
+              competition.broadcasts[0].names.join('/')) ||
+            event.broadcast ||
+            'NFL Sunday Ticket';
+
+          const venueName =
+            (competition.venue && competition.venue.fullName) || '';
+          const oddsDetail =
+            state === 'pre' &&
+            competition.odds &&
+            competition.odds[0] &&
+            competition.odds[0].details
+              ? competition.odds[0].details
+              : '';
+
+          let statusBadgeHtml = '';
+          if (isLive) {
+            statusBadgeHtml =
+              '<span class="inline-flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md">' +
+              '<span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>' +
+              escapeHtml(shortDetail) +
+              '</span>';
+          } else if (isFinal) {
+            statusBadgeHtml =
+              '<span class="inline-flex items-center bg-mizzou-black text-gray-300 border border-white/15 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md">' +
+              escapeHtml(shortDetail) +
+              '</span>';
+          } else {
+            statusBadgeHtml =
+              '<span class="inline-flex items-center bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md">' +
+              escapeHtml(formatGameDate(event.date)) +
+              '</span>';
+          }
+
+          function renderTeamRow(comp, isLeader) {
+            const team = comp.team || {};
+            const logo = team.logo || 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png';
+            const name = team.shortDisplayName || team.displayName || 'TBD';
+            const abbr = team.abbreviation || '';
+            const record =
+              (comp.records && comp.records[0] && comp.records[0].summary) || '';
+
+            return (
+              '<div class="flex items-center justify-between gap-2 py-2 px-2.5 rounded-xl ' +
+              (isLeader ? 'bg-mizzou-gold/10 border border-mizzou-gold/30' : 'bg-mizzou-black/50 border border-white/5') +
+              '">' +
+              '<div class="flex items-center gap-2.5 min-w-0">' +
+              '<img src="' +
+              escapeHtml(logo) +
+              '" alt="' +
+              escapeHtml(name) +
+              ' logo" width="36" height="36" loading="lazy" class="w-9 h-9 object-contain shrink-0" />' +
+              '<div class="min-w-0">' +
+              '<div class="flex items-center gap-1.5">' +
+              '<span class="font-display text-base sm:text-lg font-bold uppercase tracking-wide truncate ' +
+              (isLeader ? 'text-mizzou-gold' : 'text-white') +
+              '">' +
+              escapeHtml(name) +
+              '</span>' +
+              (abbr
+                ? '<span class="text-[10px] font-bold uppercase text-gray-400 bg-white/5 px-1.5 py-0.5 rounded">' +
+                  escapeHtml(abbr) +
+                  '</span>'
+                : '') +
+              '</div>' +
+              (record
+                ? '<p class="text-[11px] text-gray-400 font-medium">' + escapeHtml(record) + '</p>'
+                : '') +
+              '</div>' +
+              '</div>' +
+              '<div class="shrink-0 text-right">' +
+              (showScore
+                ? '<span class="font-display text-2xl font-bold ' +
+                  (isLeader ? 'text-mizzou-gold' : 'text-gray-300') +
+                  '">' +
+                  escapeHtml(comp.score || '0') +
+                  '</span>'
+                : '<span class="text-xs font-semibold uppercase text-gray-400">' +
+                  (comp.homeAway === 'home' ? 'HOME' : 'AWAY') +
+                  '</span>') +
+              '</div>' +
+              '</div>'
+            );
+          }
+
+          return (
+            '<article class="group rounded-2xl bg-mizzou-slate800/80 hover:bg-mizzou-slate800 border border-white/15 hover:border-mizzou-gold/60 p-4 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 shadow-md">' +
+            '<div>' +
+            '<div class="flex items-center justify-between gap-2 mb-3">' +
+            statusBadgeHtml +
+            '<span class="text-[11px] font-extrabold uppercase tracking-wider bg-mizzou-black/80 text-gray-200 border border-white/10 px-2 py-0.5 rounded">' +
+            '📺 ' +
+            escapeHtml(broadcast) +
+            '</span>' +
+            '</div>' +
+            '<div class="space-y-2">' +
+            renderTeamRow(away, awayWinning) +
+            renderTeamRow(home, homeWinning) +
+            '</div>' +
+            '</div>' +
+            '<div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-gray-400">' +
+            '<span class="truncate">' +
+            escapeHtml(venueName || "Showing Live at Ray's SportsHouse") +
+            '</span>' +
+            (oddsDetail
+              ? '<span class="text-mizzou-gold font-bold shrink-0">' + escapeHtml(oddsDetail) + '</span>'
+              : '<span class="text-mizzou-gold font-bold shrink-0">54+ HD TVs</span>') +
+            '</div>' +
+            '</article>'
+          );
+        })
+        .join('');
+
+      gamesGrid.innerHTML = cardsHtml;
+    }
+
+    async function fetchSchedule(week, seasonType) {
+      loadingState.classList.remove('hidden');
+      errorState.classList.add('hidden');
+      gamesGrid.classList.add('hidden');
+
+      try {
+        let url = API_BASE;
+        const params = [];
+        if (week) params.push('week=' + encodeURIComponent(week));
+        if (seasonType) params.push('seasontype=' + encodeURIComponent(seasonType));
+        if (params.length > 0) {
+          url += '?' + params.join('&');
+        }
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        loadingState.classList.add('hidden');
+        gamesGrid.classList.remove('hidden');
+        gamesGrid.classList.add('grid');
+        renderGames(data);
+      } catch (err) {
+        console.error('NFL Schedule Widget error:', err);
+        loadingState.classList.add('hidden');
+        errorState.classList.remove('hidden');
+      }
+    }
+
+    // Event Listeners
+    weekSelect.addEventListener('change', function () {
+      activeWeek = parseInt(weekSelect.value, 10);
+      updateNavButtons();
+      fetchSchedule(activeWeek, activeSeasonType);
+    });
+
+    seasonTypeSelect.addEventListener('change', function () {
+      activeSeasonType = seasonTypeSelect.value;
+      activeWeek = 1;
+      populateWeekOptions(activeSeasonType, 1);
+      fetchSchedule(1, activeSeasonType);
+    });
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () {
+        const cur = parseInt(weekSelect.value || '1', 10);
+        if (cur > 1) {
+          activeWeek = cur - 1;
+          weekSelect.value = String(activeWeek);
+          updateNavButtons();
+          fetchSchedule(activeWeek, activeSeasonType);
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        const cur = parseInt(weekSelect.value || '1', 10);
+        const maxW = getMaxWeek(activeSeasonType);
+        if (cur < maxW) {
+          activeWeek = cur + 1;
+          weekSelect.value = String(activeWeek);
+          updateNavButtons();
+          fetchSchedule(activeWeek, activeSeasonType);
+        }
+      });
+    }
+
+    if (currentWeekBtn) {
+      currentWeekBtn.addEventListener('click', function () {
+        if (defaultWeek !== null) {
+          activeSeasonType = defaultSeasonType;
+          activeWeek = defaultWeek;
+          seasonTypeSelect.value = activeSeasonType;
+          populateWeekOptions(activeSeasonType, activeWeek);
+          fetchSchedule(activeWeek, activeSeasonType);
+        } else {
+          fetchSchedule();
+        }
+      });
+    }
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', function () {
+        fetchSchedule(activeWeek, activeSeasonType);
+      });
+    }
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function () {
+        fetchSchedule(activeWeek, activeSeasonType);
+      });
+    }
+
+    // Initial load (automatically detects current NFL week)
+    fetchSchedule();
+
+    // Auto-refresh live scores every 60 seconds
+    setInterval(function () {
+      if (!document.hidden) {
+        fetchSchedule(activeWeek, activeSeasonType);
+      }
+    }, 60000);
+  })();
+</script>
