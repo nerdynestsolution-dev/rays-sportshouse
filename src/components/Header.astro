@@ -20,22 +20,22 @@ const isActive = (href: string) => {
 ---
 
 <!-- Top Ticker Bar -->
-<div class="bg-mizzou-gold text-mizzou-black text-xs sm:text-sm font-bold py-1.5 px-4 border-b border-black/15">
-  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-    <div class="flex items-center gap-2">
-      <span class="inline-flex items-center gap-1 bg-mizzou-black text-mizzou-gold px-2 py-0.5 rounded text-[11px] uppercase tracking-wider font-extrabold">
+<div class="bg-mizzou-gold text-mizzou-black text-xs sm:text-sm font-bold py-2 px-3 sm:px-4 border-b border-black/15">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2">
+    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2 text-center sm:text-left leading-snug">
+      <span class="inline-flex items-center gap-1 bg-mizzou-black text-mizzou-gold px-2 py-0.5 rounded text-[11px] uppercase tracking-wider font-extrabold shrink-0">
         <Tv class="w-3.5 h-3.5" /> 54+ HD TVs
       </span>
-      <span class="truncate">
+      <span class="text-[11px] sm:text-xs md:text-sm font-extrabold">
         🐅 #2 Spot in MO for Mizzou Football • NFL Sunday Ticket &amp; RedZone • Full Game Sound!
       </span>
     </div>
-    <div class="hidden md:flex items-center gap-4 text-xs font-extrabold uppercase tracking-wide">
-      <a href="/hours-location" class="hover:underline flex items-center gap-1">
+    <div class="hidden xl:flex items-center gap-3 text-xs font-extrabold uppercase tracking-wide shrink-0">
+      <a href="/hours-location" class="hover:underline flex items-center gap-1 whitespace-nowrap">
         <MapPin class="w-3.5 h-3.5" /> 1732 S 9th St, Soulard STL
       </a>
       <span>•</span>
-      <a href="/specials" class="hover:underline flex items-center gap-1">
+      <a href="/specials" class="hover:underline flex items-center gap-1 whitespace-nowrap">
         <Flame class="w-3.5 h-3.5" /> M–F Happy Hour 3–6 PM
       </a>
     </div>
@@ -44,46 +44,46 @@ const isActive = (href: string) => {
 
 <!-- Sticky Main Navigation -->
 <header class="sticky top-0 z-50 bg-mizzou-black/95 backdrop-blur-md border-b border-mizzou-gold/25 shadow-lg">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[5rem] py-2.5 flex items-center justify-between gap-3 xl:gap-6">
     <!-- Brand Logo with Subtle Tiger Claw / Mascot Badge Styling -->
     <a
       href="/"
-      class="group flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-mizzou-gold rounded-lg"
+      class="group flex items-center gap-3 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-mizzou-gold rounded-lg"
       aria-label="Ray's SportsHouse Home"
     >
-      <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-mizzou-slate900 to-mizzou-black border-2 border-mizzou-gold flex items-center justify-center shadow-gold-glow group-hover:scale-105 transition-transform">
+      <div class="relative w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-xl bg-gradient-to-br from-mizzou-slate900 to-mizzou-black border-2 border-mizzou-gold flex items-center justify-center shadow-gold-glow group-hover:scale-105 transition-transform">
         <!-- Tiger Claw SVG Emblem -->
-        <svg class="w-8 h-8 text-mizzou-gold" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <svg class="w-7 h-7 sm:w-8 sm:h-8 text-mizzou-gold" viewBox="0 0 48 48" fill="none" aria-hidden="true">
           <path d="M10 11C13 20 14 29 16 38" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
           <path d="M20 8C22.5 19 23.5 29 24.5 40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
           <path d="M30 10C31.5 20 32 29 32.5 38" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
           <path d="M38 15C39 22 39 28 39 34" stroke="#FDB813" stroke-width="3.2" stroke-linecap="round"/>
         </svg>
-        <span class=" -bottom-1 -right-1 bg-mizzou-gold text-mizzou-black text-[9px] font-black px-1 rounded uppercase tracking-tighter leading-tight">
+        <span class="absolute -bottom-1 -right-1 bg-mizzou-gold text-mizzou-black text-[9px] font-black px-1 rounded uppercase tracking-tighter leading-tight shadow">
           STL
         </span>
       </div>
-      <div>
-        <div class="flex items-center gap-1.5">
-          <span class="font-display text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white group-hover:text-mizzou-gold transition-colors">
+      <div class="shrink-0">
+        <div class="flex items-center">
+          <span class="font-display text-xl sm:text-2xl xl:text-3xl font-bold uppercase tracking-wider text-white group-hover:text-mizzou-gold transition-colors whitespace-nowrap leading-none">
             Ray's <span class="text-mizzou-gold">SportsHouse</span>
           </span>
         </div>
-        <p class="text-[11px] uppercase tracking-[0.2em] text-gray-400 font-semibold -mt-1">
+        <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.16em] text-gray-400 font-semibold mt-1 whitespace-nowrap">
           Historic Soulard • St. Louis, MO
         </p>
       </div>
     </a>
 
     <!-- Desktop Navigation Links -->
-    <nav class="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
+    <nav class="hidden lg:flex items-center gap-1 xl:gap-1.5" aria-label="Main Navigation">
       {navLinks.map((link) => {
         const active = isActive(link.href);
         return (
           <a
             href={link.href}
             class:list={[
-              'px-3.5 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-all duration-150',
+              'px-2.5 xl:px-3.5 py-2 rounded-lg text-xs xl:text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-150',
               active
                 ? 'bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40'
                 : 'text-gray-200 hover:text-mizzou-gold hover:bg-white/5',
@@ -97,14 +97,14 @@ const isActive = (href: string) => {
     </nav>
 
     <!-- Primary Header CTA + Mobile Menu Button -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2.5 shrink-0">
       <a
         href="https://rayssportshouse.square.site/"
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden sm:inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-sm sm:text-base px-5 py-2.5 rounded-lg shadow-gold-glow hover:shadow-gold-glow-lg hover:-translate-y-0.5 transition-all duration-150"
+        class="hidden sm:inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-sm xl:text-base px-4 xl:px-5 py-2.5 rounded-lg shadow-gold-glow hover:shadow-gold-glow-lg hover:-translate-y-0.5 transition-all duration-150 whitespace-nowrap"
       >
-        <ShoppingBag class="w-4 h-4 stroke-[2.5]" />
+        <ShoppingBag class="w-4 h-4 stroke-[2.5] shrink-0" />
         <span>Order Now</span>
       </a>
 
@@ -182,7 +182,7 @@ const isActive = (href: string) => {
         class="w-full flex items-center justify-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-lg py-3.5 px-5 rounded-xl shadow-gold-glow"
       >
         <ShoppingBag class="w-5 h-5 stroke-[2.5]" />
-        <span>Order Online (Square)</span>
+        <span>Order Online</span>
       </a>
 
       <div class="bg-mizzou-black/70 rounded-xl p-4 border border-white/10 text-xs text-gray-300 space-y-2">
@@ -194,26 +194,33 @@ const isActive = (href: string) => {
   </div>
 </div>
 
-<!-- Persistent Sticky Bottom CTA Bar on Mobile -->
-<div class="fixed bottom-0 inset-x-0 z-40 sm:hidden bg-mizzou-black/95 backdrop-blur-md border-t-2 border-mizzou-gold px-3 py-2.5 shadow-2xl">
-  <div class="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
+<!-- Persistent Sticky Bottom CTA Bar on Mobile (3 Dedicated Actions: Order, Call, Directions) -->
+<div class="fixed bottom-0 inset-x-0 z-40 sm:hidden bg-mizzou-black/95 backdrop-blur-md border-t-2 border-mizzou-gold px-2.5 py-2 shadow-2xl">
+  <div class="grid grid-cols-3 gap-2 max-w-md mx-auto">
     <a
       href="https://rayssportshouse.square.site/"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center justify-center gap-2 bg-mizzou-gold text-mizzou-black font-display font-bold uppercase tracking-wider text-sm py-3 px-3 rounded-lg shadow-gold-glow"
+      class="flex items-center justify-center gap-1.5 bg-mizzou-gold text-mizzou-black font-display font-bold uppercase tracking-wider text-xs py-3 px-2 rounded-lg shadow-gold-glow"
     >
-      <ShoppingBag class="w-4 h-4 stroke-[2.5]" />
-      <span>Order Online</span>
+      <ShoppingBag class="w-3.5 h-3.5 stroke-[2.5] shrink-0" />
+      <span>Order</span>
+    </a>
+    <a
+      href={specialsData.location.phoneHref}
+      class="flex items-center justify-center gap-1.5 bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-xs py-3 px-2 rounded-lg"
+    >
+      <Phone class="w-3.5 h-3.5 text-mizzou-gold shrink-0" />
+      <span>Call Us</span>
     </a>
     <a
       href={specialsData.location.googleMapsDirectionsUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center justify-center gap-2 bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-sm py-3 px-3 rounded-lg"
+      class="flex items-center justify-center gap-1.5 bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-xs py-3 px-2 rounded-lg"
     >
-      <MapPin class="w-4 h-4 text-mizzou-gold" />
-      <span>Call / Directions</span>
+      <MapPin class="w-3.5 h-3.5 text-mizzou-gold shrink-0" />
+      <span>Directions</span>
     </a>
   </div>
 </div>
