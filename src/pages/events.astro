@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventCard from '../components/EventCard.astro';
+import eventsData from '../data/events.json';
+import { Trophy, Tv, Volume2, Calendar, ShoppingBag } from '@lucide/astro';
+
+const { events } = eventsData;
+const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 'Formula 1', 'Bar Events'];
+---
+
+<BaseLayout
+  title="Events & Watch Parties | Mizzou Football, NFL Sunday Ticket, UFC & F1 | Ray's SportsHouse"
+  description="Join Soulard's most electric watch parties at Ray's SportsHouse: #2 Best Spot in Missouri for Mizzou Football Saturdays, NFL Sunday Ticket & RedZone, UFC PPVs, F1 Grand Prix races, STL CITY SC matches, and Wednesday Trivia."
+>
+  <!-- PAGE HEADER -->
+  <section class="relative bg-mizzou-black border-b border-mizzou-gold/30 py-12 sm:py-16">
+    <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center gap-1.5 bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+            <Trophy class="w-3.5 h-3.5" /> 54+ HD Screens • Stadium Broadcast Sound
+          </span>
+          <h1 class="font-display text-4xl sm:text-6xl font-bold uppercase text-white">
+            Events &amp; <span class="text-mizzou-gold">Watch Parties</span>
+          </h1>
+          <p class="text-gray-300 text-base sm:text-lg mt-3 leading-relaxed">
+            Whether you're cheering on the Missouri Tigers, tracking every NFL Sunday Ticket drive, catching a UFC championship PPV, or pregaming for STL CITY SC, Blues, and Cardinals — every seat at Ray's is front row.
+          </p>
+        </div>
+
+        <!-- Audio & TV Guarantee Pill -->
+        <div class="bg-mizzou-slate900 border border-mizzou-gold/40 rounded-2xl p-4 sm:p-5 shrink-0 space-y-2">
+          <div class="flex items-center gap-2 text-mizzou-gold font-display font-bold uppercase text-lg">
+            <Volume2 class="w-5 h-5" />
+            <span>The Ray's 54+ Screen Promise</span>
+          </div>
+          <p class="text-xs text-gray-300 max-w-xs leading-relaxed">
+            Looking for a specific out-of-market college or pro matchup? Just ask our bartenders — with 54+ individually controlled HD receivers, we'll put your team on a screen right in front of your table!
+          </p>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="mt-8 flex items-center gap-2 overflow-x-auto pb-2" role="tablist" aria-label="Filter Watch Parties">
+        {categories.map((cat, idx) => (
+          <button
+            type="button"
+            data-event-filter={cat}
+            class:list={[
+              'event-filter-btn shrink-0 px-4 py-2 rounded-xl font-display font-bold uppercase tracking-wider text-sm transition-all',
+              idx === 0
+                ? 'bg-mizzou-gold text-mizzou-black shadow-gold-glow'
+                : 'bg-mizzou-slate900 text-gray-200 border border-white/15 hover:border-mizzou-gold hover:text-mizzou-gold',
+            ]}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- DYNAMIC SCHEDULE CARD GRID -->
+  <section class="py-12 sm:py-16 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="events-grid">
+        {events.map((event) => (
+          <div class="event-card-wrapper" data-category={event.category}>
+            <EventCard {...event} />
+          </div>
+        ))}
+      </div>
+
+      <!-- Large Group / Watch Party Callout -->
+      <div class="mt-14 rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/40 p-6 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div class="space-y-2 text-center lg:text-left">
+          <span class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
+            Bringing The Whole Crew To Soulard?
+          </span>
+          <h2 class="font-display text-2xl sm:text-4xl font-bold uppercase text-white">
+            Mizzou Alumni Groups, Fantasy Drafts &amp; Fight Night Crews Welcome
+          </h2>
+          <p class="text-sm sm:text-base text-gray-300 max-w-2xl">
+            For major Mizzou SEC kickoffs, NFL Sundays, and UFC PPV cards, booths fill up fast. Arrive early or order wing platters ahead on Square POS!
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
+          <a
+            href="https://rayssportshouse.square.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+          >
+            <ShoppingBag class="w-5 h-5" />
+            <span>Pre-Order Wing Platters</span>
+          </a>
+          <a
+            href="/hours-location"
+            class="inline-flex items-center gap-2 bg-mizzou-black hover:bg-mizzou-slate800 text-white border border-white/20 font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all"
+          >
+            <Calendar class="w-5 h-5 text-mizzou-gold" />
+            <span>Hours &amp; Directions</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('.event-filter-btn');
+    const eventWrappers = document.querySelectorAll<HTMLElement>('.event-card-wrapper');
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-event-filter');
+
+        filterButtons.forEach((b) => {
+          b.classList.remove('bg-mizzou-gold', 'text-mizzou-black', 'shadow-gold-glow');
+          b.classList.add('bg-mizzou-slate900', 'text-gray-200');
+        });
+        btn.classList.add('bg-mizzou-gold', 'text-mizzou-black', 'shadow-gold-glow');
+        btn.classList.remove('bg-mizzou-slate900', 'text-gray-200');
+
+        eventWrappers.forEach((card) => {
+          const cardCat = card.getAttribute('data-category');
+          if (filter === 'All Events' || cardCat === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+</BaseLayout>

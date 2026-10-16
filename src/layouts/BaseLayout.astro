@@ -1,0 +1,143 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogImage?: string;
+}
+
+const {
+  title = "Ray's SportsHouse | Soulard's Ultimate Sports Bar • 54+ HD TVs • St. Louis, MO",
+  description = "Ray's SportsHouse at 1732 S 9th St in historic Soulard, St. Louis. #2 Best Spot in Missouri to watch Mizzou Football, NFL Sunday Ticket & RedZone, UFC PPVs, F1, and STL sports across 54+ HD screens with full game sound.",
+  keywords = "Soulard sports bar, best bar to watch Mizzou football St Louis, NFL Sunday Ticket Soulard, UFC watch party St Louis, 54 TVs sports bar STL, Ray's SportsHouse, St Louis CITY SC watch party, Soulard happy hour",
+  ogImage = "/gallery/crowds/game-day-bar-crowd-and-hd-screens.jpg",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rayssportshouse.com');
+
+const jsonLdSchema = {
+  "@context": "https://schema.org",
+  "@type": ["BarOrPub", "SportsActivityLocation"],
+  "additionalType": "https://schema.org/BarOrPub",
+  "name": "Ray's SportsHouse",
+  "alternateName": "Ray's SportsHouse Soulard",
+  "description": "High-energy sports bar located in historic Soulard, St. Louis featuring 54+ HD screens, full game day audio, #2 Best Spot in Missouri to watch Mizzou Football, NFL Sunday Ticket & RedZone, UFC Pay-Per-Views, 24 draft taps, and scratch bar food.",
+  "url": "https://rayssportshouse.com",
+  "telephone": "+1-314-555-0199",
+  "priceRange": "$$",
+  "servesCuisine": ["American", "Bar Bites", "Sports Bar", "Wings", "Burgers"],
+  "paymentAccepted": "Cash, Credit Card, Debit Card, Apple Pay, Google Pay",
+  "currenciesAccepted": "USD",
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=1732+S+9th+St+St.+Louis+MO+63104",
+  "menu": "https://rayssportshouse.com/menu",
+  "acceptsReservations": "False",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1732 S 9th St",
+    "addressLocality": "St. Louis",
+    "addressRegion": "MO",
+    "postalCode": "63104",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 38.6085,
+    "longitude": -90.2054
+  },
+  "sameAs": [
+    "https://www.instagram.com/rayssoulard/",
+    "https://rayssportshouse.square.site/"
+  ],
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://rayssportshouse.square.site/",
+      "inLanguage": "en-US",
+      "actionPlatform": [
+        "http://schema.org/DesktopWebPlatform",
+        "http://schema.org/MobileWebPlatform"
+      ]
+    },
+    "deliveryMethod": "http://purl.org/goodrelations/v1#DeliveryModePickUp"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday"],
+      "opens": "15:00",
+      "closes": "23:59"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Wednesday", "Thursday", "Sunday"],
+      "opens": "11:00",
+      "closes": "23:59"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Friday", "Saturday"],
+      "opens": "11:00",
+      "closes": "01:30"
+    }
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Ray's SportsHouse Soulard" />
+    <meta name="geo.region" content="US-MO" />
+    <meta name="geo.placename" content="Soulard, St. Louis" />
+    <meta name="geo.position" content="38.6085;-90.2054" />
+
+    <!-- OpenGraph / Facebook -->
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Ray's SportsHouse" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Google Fonts with display=swap for zero CLS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Local SEO JSON-LD Schema Markup -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLdSchema)} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-mizzou-black text-white">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

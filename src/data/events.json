@@ -1,0 +1,137 @@
+{
+  "events": [
+    {
+      "id": "mizzou-saturdays",
+      "title": "Mizzou Tigers Football Watch Party",
+      "category": "Mizzou Football",
+      "league": "NCAA SEC",
+      "date": "Every Saturday (Fall Season)",
+      "time": "Doors Open 11:00 AM • Kickoff Sound ON",
+      "soundOn": true,
+      "featured": true,
+      "badge": "🐅 Official STL Tiger HQ",
+      "matchup": "Missouri Tigers vs. SEC Conference Rivals",
+      "description": "Owned by third-generation Mizzou alumni and voted the #2 Best Spot in Missouri to watch Mizzou Football! Full stadium game sound piped through the entire bar & patio.",
+      "deals": [
+        "Jayhawk Tears: $4.99 Bomb • $11.99 16oz Pint • $17.99 32oz Bucket",
+        "Boulevard MIZZOU Brew & Ray's APA by Schlafly on Draft",
+        "$13.99 Black & Gold Reserve & $12.99 M-I-Z Bloom Martini"
+      ],
+      "tvAllocation": "Main Wall + 40+ HD Screens + Patio Audio"
+    },
+    {
+      "id": "nfl-sunday-ticket",
+      "title": "Your House For Every NFL Game",
+      "category": "NFL",
+      "league": "NFL",
+      "date": "Every Sunday, Monday & Thursday NFL Game",
+      "time": "Doors Open 11:00 AM Sundays • All Games Live",
+      "soundOn": true,
+      "featured": true,
+      "badge": "🏈 NFL Sunday Ticket & RedZone",
+      "matchup": "All Early, Afternoon & Primetime NFL Matchups + RedZone",
+      "description": "Never miss a fantasy point or your team's drive. Every single NFL game is shown across our 54+ HD screens with NFL Sunday Ticket and dedicated RedZone screens.",
+      "deals": [
+        "$9.99 1/4 LB Smash Burger & Fries",
+        "Draft Specials Starting at $3.99 (including Busch Light)",
+        "$4.99 #STLMade Phorm Energy Bombs"
+      ],
+      "tvAllocation": "All 54+ HD Screens Labeled by Game"
+    },
+    {
+      "id": "ufc-ppv-nights",
+      "title": "UFC Pay-Per-View Fight Nights",
+      "category": "UFC",
+      "league": "UFC PPV",
+      "date": "Monthly Championship Saturdays",
+      "time": "Prelims 7:00 PM • Main Card 9:00 PM",
+      "soundOn": true,
+      "featured": true,
+      "badge": "🥊 Official UFC Bar",
+      "matchup": "UFC Championship Main Card & Prelims Live",
+      "description": "We show every numbered UFC Pay-Per-View and Fight Night live on the massive screens with booming octagon audio. Arrive early to claim a booth!",
+      "deals": [
+        "$4.99 Phorm Energy Bombs (Cherry Thunder, Jungle Jolt, Caffeine Creamsicle, July Phorth)",
+        "Ice-Cold Modelo Especial & Ray's APA on Draft",
+        "Late-Night Kitchen for Wings, Birria Fries & Smash Burgers"
+      ],
+      "tvAllocation": "Full House Audio for Main Card"
+    },
+    {
+      "id": "stl-city-sc",
+      "title": "St. Louis CITY SC Matchday Headquarters",
+      "category": "STL Local",
+      "league": "MLS",
+      "date": "Every Home & Away Matchday",
+      "time": "Pre-Match Party Starts 2 Hours Before Kickoff",
+      "soundOn": true,
+      "featured": true,
+      "badge": "⚽ ALL FOR CITY",
+      "matchup": "St. Louis CITY SC Home & Away MLS Matches",
+      "description": "Located just minutes south of Energizer Park in historic Soulard! Pregame with us before heading to the stadium or stay for the full MLS Season Pass broadcast with full match audio.",
+      "deals": [
+        "Ray's APA by Schlafly & Urban Chestnut Zwickel",
+        "$15.99 Toasted Beef Ravioli & One-Pound Chicken Wings",
+        "Mon–Fri Happy Hour (3PM – 6PM) Before Weekday Matches"
+      ],
+      "tvAllocation": "MLS Season Pass on Main Screens + Sound"
+    },
+    {
+      "id": "wednesday-girl-dinner-night",
+      "title": "Girl Dinner Wednesdays & 1/2 Price Cocktails",
+      "category": "Bar Events",
+      "league": "Weekly Feature",
+      "date": "Every Wednesday Night",
+      "time": "6:00 PM – Close",
+      "soundOn": true,
+      "featured": false,
+      "badge": "🍸 Every Wednesday 6PM–Close",
+      "matchup": "$13.99 Girl Dinner + Half-Price Cocktails, Mocktails & Martinis",
+      "description": "Make Wednesday night your favorite night in Soulard! Enjoy our signature $13.99 Girl Dinner combo tray alongside half-priced specialty cocktails, mocktails, and martinis from 6PM until close.",
+      "deals": [
+        "$13.99 Girl Dinner (Tenders, Fries, Caesar Salad & Dipping Sauce)",
+        "1/2 Price Specialty Cocktails (6PM – Close)",
+        "1/2 Price Craft Mocktails & Martinis (6PM – Close)"
+      ],
+      "tvAllocation": "Mid-Week Sports + Music Vibes"
+    },
+    {
+      "id": "cards-blues-stl",
+      "title": "Cardinals Baseball & Blues Hockey Nights",
+      "category": "STL Local",
+      "league": "MLB / NHL",
+      "date": "All Regular Season & Playoff Games",
+      "time": "Puck Drop & First Pitch Daily",
+      "soundOn": true,
+      "featured": false,
+      "badge": "🎵 Let's Go Blues & Cards",
+      "matchup": "St. Louis Blues & St. Louis Cardinals Broadcasts",
+      "description": "Your neighborhood Soulard home for Redbirds baseball and Note hockey. Catch every pitch and power play with cold Busch products and classic STL bar food.",
+      "deals": [
+        "🐾 Busch Light Drafts & Bottles 🐾",
+        "Mon–Fri Happy Hour (3PM – 6PM): $3.59 Bottles, $4.59 Busch Light Draft & $7.99 Bites",
+        "Toasted Beef Ravioli & Billionaire Bacon Smash Burgers"
+      ],
+      "tvAllocation": "Dedicated Regional Sports Network Screens"
+    },
+    {
+      "id": "f1-grand-prix",
+      "title": "Formula 1 Grand Prix Race Watch",
+      "category": "Formula 1",
+      "league": "F1",
+      "date": "Race Sundays & Sprint Weekends",
+      "time": "Lights Out Live & Replay Broadcasts",
+      "soundOn": true,
+      "featured": false,
+      "badge": "🏎️ Lights Out & Away We Go",
+      "matchup": "FIA Formula 1 World Championship Calendar",
+      "description": "Catch Formula 1 Grand Prix broadcasts across our 54+ HD screens with full race sound and kitchen service.",
+      "deals": [
+        "$11.99 Sarti Spritz & $12.99 Ray's Espresso Martini",
+        "$4.99 #STLMade Phorm Energy Bombs",
+        "Full Kitchen Open at 10:00 AM on Weekends"
+      ],
+      "tvAllocation": "Dedicated Pit Wall & Telemetry Screens"
+    }
+  ]
+}

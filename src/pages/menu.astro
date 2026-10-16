@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MenuItem from '../components/MenuItem.astro';
+import menuData from '../data/menu.json';
+import { ShoppingBag, Utensils, Beer, Flame, Sparkles, Wine, Zap } from '@lucide/astro';
+
+const { categories, squareOrderUrl, introBanner, foodDisclaimer } = menuData;
+---
+
+<BaseLayout
+  title="Menu & Drinks | Shareables, Smash Burgers, Cocktails & Drafts | Ray's SportsHouse Soulard"
+  description="Explore the official Ray's SportsHouse food and drink menu in Soulard, St. Louis: Toasted Beef Ravioli, Birria Fries, Chicken Wings, Billionaire Bacon Smash Burger, Specialty Mizzou Cocktails, Jayhawk Tears, Ray's APA by Schlafly, and Phorm Energy Bombs."
+>
+  <!-- PAGE HEADER -->
+  <section class="relative bg-mizzou-black border-b border-mizzou-gold/30 py-12 sm:py-16">
+    <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-1.5 bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+          <Utensils class="w-3.5 h-3.5" /> 3rd-Generation Mizzou Alumni Owned • Est. 2024
+        </span>
+        <h1 class="font-display text-4xl sm:text-6xl font-bold uppercase text-white">
+          Official <span class="text-mizzou-gold">Menu &amp; Drinks</span>
+        </h1>
+        <p class="text-gray-200 text-base sm:text-lg mt-4 leading-relaxed italic bg-mizzou-slate900/90 border-l-4 border-mizzou-gold p-4 rounded-r-xl">
+          "{introBanner}"
+        </p>
+      </div>
+
+      <!-- TOP PROMINENT SQUARE ONLINE ORDERING BANNER -->
+      <div class="mt-8 bg-gradient-to-r from-mizzou-gold via-mizzou-athletic to-mizzou-gold text-mizzou-black rounded-2xl p-5 sm:p-6 shadow-gold-glow flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4 text-center md:text-left">
+          <div class="hidden sm:flex w-12 h-12 rounded-xl bg-mizzou-black text-mizzou-gold items-center justify-center shrink-0">
+            <ShoppingBag class="w-6 h-6" />
+          </div>
+          <div>
+            <p class="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide">
+              Ordering takeout? Skip the line with our Square Online Ordering
+            </p>
+            <p class="text-xs sm:text-sm font-semibold text-black/80">
+              Fresh, hot Shareables, Wings, Smash Burgers, Wraps &amp; Flatbreads ready for pickup at 1732 S 9th St in Soulard.
+            </p>
+          </div>
+        </div>
+        <a
+          href={squareOrderUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-mizzou-black hover:bg-mizzou-slate900 text-mizzou-gold font-display font-bold uppercase tracking-wider text-base px-6 py-3.5 rounded-xl shadow-lg shrink-0 transition-all"
+        >
+          <ShoppingBag class="w-4 h-4" />
+          <span>Order Now</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STICKY CATEGORY TABS BAR -->
+  <div class="sticky top-20 z-30 bg-mizzou-slate900/95 backdrop-blur-md border-b border-white/15 py-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" role="tablist" aria-label="Menu Categories">
+        <button
+          type="button"
+          data-menu-tab="all"
+          class="menu-tab-btn shrink-0 px-4 py-2 rounded-xl font-display font-bold uppercase tracking-wider text-sm bg-mizzou-gold text-mizzou-black shadow-gold-glow transition-all"
+        >
+          All Menu &amp; Drinks
+        </button>
+        {categories.map((cat) => (
+          <button
+            type="button"
+            data-menu-tab={cat.id}
+            class="menu-tab-btn shrink-0 px-4 py-2 rounded-xl font-display font-bold uppercase tracking-wider text-sm bg-mizzou-black/80 text-gray-200 border border-white/15 hover:border-mizzou-gold hover:text-mizzou-gold transition-all"
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU SECTIONS -->
+  <section class="py-12 sm:py-16 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      {categories.map((category) => (
+        <div
+          id={category.id}
+          data-menu-section={category.id}
+          class="menu-category-section scroll-mt-36 space-y-6"
+        >
+          <div class="border-b-2 border-mizzou-gold/30 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-2.5 py-0.5 rounded">
+                  {category.group === 'food' ? '🍔 Ray\'s Kitchen' : '🍹 Ray\'s Bar & Taps'}
+                </span>
+              </div>
+              <h2 class="font-display text-3xl sm:text-4xl font-bold uppercase text-white mt-2">
+                {category.name}
+              </h2>
+              <p class="text-sm sm:text-base text-gray-300 mt-1">
+                {category.tagline}
+              </p>
+            </div>
+            <a
+              href={squareOrderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="self-start md:self-auto inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-mizzou-gold hover:underline"
+            >
+              <ShoppingBag class="w-3.5 h-3.5" />
+              <span>Order Online ↗</span>
+            </a>
+          </div>
+
+          <!-- Optional Wing Sauces & Rubs Callout -->
+          {category.flavors && (
+            <div class="bg-mizzou-slate900 border border-mizzou-gold/30 rounded-2xl p-4 sm:p-5">
+              <p class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2.5 flex items-center gap-1.5">
+                <Flame class="w-4 h-4" /> Chicken Wing Sauces &amp; Seasonings (Choice of Dressing):
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {category.flavors.map((flavor) => (
+                  <span class="bg-mizzou-black text-white border border-white/15 text-xs font-semibold px-3 py-1.5 rounded-lg">
+                    {flavor}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Optional Side Upgrades & Billionaire Bacon Add-On Banner -->
+          {category.upgrades && (
+            <div class="bg-gradient-to-r from-mizzou-slate900 via-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/40 rounded-2xl p-5 space-y-2">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold flex items-center gap-1.5">
+                <Sparkles class="w-4 h-4" /> Customize &amp; Upgrade Your Handheld or Salad:
+              </p>
+              <ul class="space-y-1.5 text-xs sm:text-sm text-gray-200 font-medium">
+                {category.upgrades.map((upgrade) => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-mizzou-gold font-bold">★</span>
+                    <span>{upgrade}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <!-- Optional Phorm Energy Callout -->
+          {category.energyNote && (
+            <div class="bg-mizzou-slate900 border border-mizzou-gold/40 rounded-2xl p-5">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold mb-1 flex items-center gap-1.5">
+                <Zap class="w-4 h-4" /> Phorm Energy (#STLMade) • $4.99 Bombs!
+              </p>
+              <p class="text-sm text-gray-200 leading-relaxed">
+                {category.energyNote}
+              </p>
+            </div>
+          )}
+
+          <!-- Optional Drafts / Bottles / Cans / Non-Alcoholic Multi-Column Board -->
+          {category.beerLists && (
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              <!-- Drafts -->
+              <div class="bg-mizzou-slate900 border border-mizzou-gold/40 rounded-2xl p-5">
+                <h3 class="font-display text-2xl font-bold uppercase text-mizzou-gold border-b border-white/10 pb-2 mb-3 flex items-center gap-2">
+                  <Beer class="w-5 h-5" /> Drafts
+                </h3>
+                <ul class="space-y-2 text-sm text-gray-200 font-medium">
+                  {category.beerLists.drafts.map((beer) => (
+                    <li class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-mizzou-gold shrink-0"></span>
+                      <span class:list={[beer.includes('MIZZOU') || beer.includes("Ray's APA") ? 'text-mizzou-gold font-bold' : '']}>
+                        {beer}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Bottles -->
+              <div class="bg-mizzou-slate900 border border-white/15 rounded-2xl p-5">
+                <h3 class="font-display text-2xl font-bold uppercase text-mizzou-gold border-b border-white/10 pb-2 mb-3">
+                  Bottles
+                </h3>
+                <ul class="space-y-2 text-sm text-gray-200 font-medium">
+                  {category.beerLists.bottles.map((bottle) => (
+                    <li class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-mizzou-gold shrink-0"></span>
+                      <span>{bottle}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Cans -->
+              <div class="bg-mizzou-slate900 border border-white/15 rounded-2xl p-5">
+                <h3 class="font-display text-2xl font-bold uppercase text-mizzou-gold border-b border-white/10 pb-2 mb-1">
+                  Cans
+                </h3>
+                <p class="text-[11px] italic text-gray-300 mb-3">
+                  Want your can topless for a draft experience? Ask!
+                </p>
+                <ul class="space-y-2 text-sm text-gray-200 font-medium">
+                  {category.beerLists.cans.map((can) => (
+                    <li class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-mizzou-gold shrink-0"></span>
+                      <span>{can}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Non-Alcoholic -->
+              <div class="bg-mizzou-slate900 border border-white/15 rounded-2xl p-5">
+                <h3 class="font-display text-2xl font-bold uppercase text-mizzou-gold border-b border-white/10 pb-2 mb-3">
+                  Non-Alcoholic
+                </h3>
+                <ul class="space-y-2 text-sm text-gray-200 font-medium">
+                  {category.beerLists.nonAlcoholic.map((na) => (
+                    <li class="flex items-center gap-2">
+                      <span class="w-1.5 h-1.5 rounded-full bg-mizzou-gold shrink-0"></span>
+                      <span>{na}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          <!-- Items Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {category.items.map((item) => (
+              <MenuItem
+                name={item.name}
+                price={item.price}
+                description={item.description}
+                badge={item.badge}
+                featured={item.featured}
+                spicy={item.spicy}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <!-- Food Disclaimer -->
+      <p class="text-xs text-gray-400 text-center italic pt-4">
+        {foodDisclaimer}
+      </p>
+
+      <!-- BOTTOM PROMINENT SQUARE ONLINE ORDERING BANNER -->
+      <div class="mt-8 bg-gradient-to-r from-mizzou-gold via-mizzou-athletic to-mizzou-gold text-mizzou-black rounded-2xl p-6 sm:p-8 shadow-gold-glow flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="space-y-1 text-center md:text-left">
+          <span class="inline-block bg-mizzou-black text-mizzou-gold text-[11px] font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded">
+            Fast Soulard Pickup
+          </span>
+          <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase">
+            Ordering takeout? Skip the line with our Square Online Ordering
+          </h3>
+          <p class="text-sm font-semibold text-black/80">
+            Order your Shareables, Wings, Smash Burgers, Wraps &amp; Flatbread Pizza directly on Square and pick up hot at the bar.
+          </p>
+        </div>
+        <a
+          href={squareOrderUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-mizzou-black hover:bg-mizzou-slate900 text-mizzou-gold font-display font-bold uppercase tracking-wider text-lg px-7 py-4 rounded-xl shadow-lg shrink-0 transition-all"
+        >
+          <ShoppingBag class="w-5 h-5" />
+          <span>Order Now</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const tabButtons = document.querySelectorAll<HTMLButtonElement>('.menu-tab-btn');
+    const sections = document.querySelectorAll<HTMLElement>('.menu-category-section');
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selected = btn.getAttribute('data-menu-tab');
+
+        tabButtons.forEach((b) => {
+          b.classList.remove('bg-mizzou-gold', 'text-mizzou-black', 'shadow-gold-glow');
+          b.classList.add('bg-mizzou-black/80', 'text-gray-200');
+        });
+        btn.classList.add('bg-mizzou-gold', 'text-mizzou-black', 'shadow-gold-glow');
+        btn.classList.remove('bg-mizzou-black/80', 'text-gray-200');
+
+        sections.forEach((sec) => {
+          const secId = sec.getAttribute('data-menu-section');
+          if (selected === 'all' || secId === selected) {
+            sec.classList.remove('hidden');
+          } else {
+            sec.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+</BaseLayout>

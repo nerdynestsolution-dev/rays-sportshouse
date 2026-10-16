@@ -1,0 +1,452 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EventCard from '../components/EventCard.astro';
+import MenuItem from '../components/MenuItem.astro';
+import menuData from '../data/menu.json';
+import eventsData from '../data/events.json';
+import specialsData from '../data/specials.json';
+import { getGalleryPhotos } from '../utils/getGalleryPhotos';
+import {
+  ShoppingBag,
+  Sparkles,
+  Tv,
+  Volume2,
+  CreditCard,
+  MapPin,
+  Flame,
+  Trophy,
+  ArrowRight,
+  Clock,
+  Beer,
+  Utensils,
+} from '@lucide/astro';
+import Instagram from '../components/InstagramIcon.astro';
+
+const featuredEvents = eventsData.events.filter((e) => e.featured).slice(0, 4);
+
+const featuredMenuItems = menuData.categories
+  .flatMap((cat) =>
+    cat.items
+      .filter((item) => item.featured)
+      .map((item) => ({ ...item, categoryName: cat.name }))
+  )
+  .slice(0, 6);
+
+const instagramPhotos = getGalleryPhotos().slice(0, 4);
+const { happyHour, location } = specialsData;
+---
+
+<BaseLayout
+  title="Ray's SportsHouse | Soulard's Ultimate Sports Headquarters • 54+ HD TVs • St. Louis"
+  description="Soulard's Ultimate Sports Headquarters at 1732 S 9th St, St. Louis, MO. 2nd Best Spot in Missouri to watch Mizzou Football, NFL Sunday Ticket & RedZone, UFC PPVs, F1, and STL sports on 54+ HD screens."
+>
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden bg-mizzou-black border-b-2 border-mizzou-gold/40">
+    <!-- Background Atmospheric Stadium Glow & Tiger Stripe Texture -->
+    <div class="absolute inset-0 bg-tiger-stripe opacity-80 pointer-events-none"></div>
+    <div
+      class="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-mizzou-gold/15 blur-[130px] rounded-full pointer-events-none"
+    ></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-20 lg:pb-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- Sub-headline Badges -->
+          <div class="flex flex-wrap gap-2.5">
+            <span class="inline-flex items-center gap-1.5 bg-mizzou-gold text-mizzou-black font-extrabold text-xs sm:text-sm px-3.5 py-1.5 rounded-full shadow-gold-glow">
+              🐅 2nd Best Spot To Watch Mizzou Football in Missouri
+            </span>
+            <span class="inline-flex items-center gap-1.5 bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-bold text-xs sm:text-sm px-3.5 py-1.5 rounded-full">
+              🏈 NFL Sunday Ticket &amp; RedZone Live
+            </span>
+            <span class="inline-flex items-center gap-1.5 bg-mizzou-slate900 text-gray-200 border border-white/15 font-semibold text-xs sm:text-sm px-3.5 py-1.5 rounded-full">
+              🥊 UFC, F1, Every Channel, Every Sport — 54+ HD Screens
+            </span>
+          </div>
+
+          <!-- Bold Main Headline -->
+          <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight leading-[0.98] text-white">
+            Soulard's Ultimate <span class="gold-gradient-text">Sports Headquarters</span>
+          </h1>
+
+          <!-- Supporting Lead Copy + Home Team Callout -->
+          <p class="text-base sm:text-lg text-gray-300 max-w-2xl leading-relaxed">
+            Wall-to-wall action across <strong class="text-white">54+ crystal-clear HD screens</strong> with full stadium broadcast sound, 24 ice-cold draft beers at 34°F, and scratch wings &amp; smash burgers in the heart of historic Soulard.
+          </p>
+
+          <!-- Home Team Callout Box -->
+          <div class="bg-mizzou-slate900/90 border-l-4 border-mizzou-gold rounded-r-xl p-4 max-w-2xl">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold mb-1">
+              🏆 Official Home Team Loyalty
+            </p>
+            <p class="text-sm text-gray-200 font-medium">
+              Proud supporter of <strong class="text-white">Mizzou Athletics (M-I-Z!)</strong>, <strong class="text-white">St. Louis Cardinals</strong>, <strong class="text-white">St. Louis Blues</strong>, and <strong class="text-white">St. Louis CITY SC</strong>.
+            </p>
+          </div>
+
+          <!-- Dual Quick CTAs -->
+          <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <a
+              href="https://rayssportshouse.square.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2.5 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-lg px-7 py-4 rounded-xl shadow-gold-glow hover:shadow-gold-glow-lg hover:-translate-y-0.5 transition-all"
+            >
+              <ShoppingBag class="w-5 h-5 stroke-[2.5]" />
+              <span>Order Takeout (Square POS)</span>
+            </a>
+            <a
+              href="/specials"
+              class="inline-flex items-center justify-center gap-2 bg-mizzou-slate900 hover:bg-mizzou-slate800 text-white border-2 border-mizzou-gold/70 hover:border-mizzou-gold font-display font-bold uppercase tracking-wider text-lg px-7 py-4 rounded-xl transition-all"
+            >
+              <Flame class="w-5 h-5 text-mizzou-gold" />
+              <span>View Game Day Specials</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Visual Stadium Scoreboard / Media Showcase Card -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/50 p-4 sm:p-5 shadow-gold-glow">
+            <div class="relative aspect-[16/11] rounded-2xl overflow-hidden bg-mizzou-black">
+              <img
+                src="/gallery/crowds/game-day-bar-crowd-and-hd-screens.jpg"
+                alt="Ray's SportsHouse wall-to-wall 54+ HD screens and packed bar in Soulard"
+                width="1000"
+                height="688"
+                loading="eager"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+              <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                <span class="bg-red-600 text-white text-[11px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                  LIVE ON 54+ SCREENS
+                </span>
+                <span class="bg-mizzou-black/90 text-mizzou-gold border border-mizzou-gold/40 text-xs font-extrabold px-2.5 py-1 rounded-md">
+                  1732 S 9th St • Soulard
+                </span>
+              </div>
+              <div class="absolute bottom-3 left-3 right-3">
+                <p class="font-display text-2xl font-bold uppercase text-white">
+                  Every Seat Is Front Row
+                </p>
+                <p class="text-xs text-gray-300 mt-0.5">
+                  24 Cold Draft Lines • Stadium Sound • Scratch Kitchen Open Late
+                </p>
+              </div>
+            </div>
+
+            <!-- Live Scoreboard Strip Inside Hero Card -->
+            <div class="mt-4 grid grid-cols-3 gap-2.5 text-center">
+              <div class="bg-mizzou-black/80 border border-white/10 rounded-xl p-3">
+                <p class="font-display text-2xl sm:text-3xl font-bold text-mizzou-gold">54+</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-300 font-semibold">HD TVs &amp; Screens</p>
+              </div>
+              <div class="bg-mizzou-black/80 border border-white/10 rounded-xl p-3">
+                <p class="font-display text-2xl sm:text-3xl font-bold text-mizzou-gold">#2</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-300 font-semibold">Mizzou Bar in MO</p>
+              </div>
+              <div class="bg-mizzou-black/80 border border-white/10 rounded-xl p-3">
+                <p class="font-display text-2xl sm:text-3xl font-bold text-mizzou-gold">24</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-300 font-semibold">34°F Draft Taps</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 TRUST BADGES BAR -->
+      <div class="mt-12 pt-8 border-t border-white/15 grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="flex items-center gap-3.5 bg-mizzou-slate900/90 border border-white/10 rounded-2xl p-4">
+          <div class="w-11 h-11 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold shrink-0">
+            <Tv class="w-6 h-6" />
+          </div>
+          <div>
+            <p class="font-display text-lg font-bold uppercase text-white">54+ TVs</p>
+            <p class="text-xs text-gray-400">Zero blind spots inside or on patio</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3.5 bg-mizzou-slate900/90 border border-white/10 rounded-2xl p-4">
+          <div class="w-11 h-11 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold shrink-0">
+            <Volume2 class="w-6 h-6" />
+          </div>
+          <div>
+            <p class="font-display text-lg font-bold uppercase text-white">Full Sound on Game Days</p>
+            <p class="text-xs text-gray-400">Stadium audio &amp; Mizzou fight song</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3.5 bg-mizzou-slate900/90 border border-white/10 rounded-2xl p-4">
+          <div class="w-11 h-11 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold shrink-0">
+            <CreditCard class="w-6 h-6" />
+          </div>
+          <div>
+            <p class="font-display text-lg font-bold uppercase text-white">All Major Cards Accepted</p>
+            <p class="text-xs text-gray-400">Visa, MC, Amex, Discover &amp; Apple Pay</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3.5 bg-mizzou-slate900/90 border border-white/10 rounded-2xl p-4">
+          <div class="w-11 h-11 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold shrink-0">
+            <MapPin class="w-6 h-6" />
+          </div>
+          <div>
+            <p class="font-display text-lg font-bold uppercase text-white">Located in Historic Soulard</p>
+            <p class="text-xs text-gray-400">1732 S 9th St • Minutes from Downtown</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HAPPY HOUR HIGHLIGHT BANNER -->
+  <section class="bg-gradient-to-r from-mizzou-gold via-mizzou-athletic to-mizzou-gold text-mizzou-black py-10 border-b-2 border-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div class="space-y-2 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 bg-mizzou-black text-mizzou-gold text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+            <Clock class="w-3.5 h-3.5" /> Weekday Clock-Out Ritual
+          </div>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold uppercase tracking-tight">
+            {happyHour.schedule}
+          </h2>
+          <p class="text-sm sm:text-base font-semibold text-black/85 max-w-2xl">
+            $3.59 Bottled Beers (Yuengling Flight, Coors Light, Yuengling Lager, Miller High Life, 16oz Natty Light) • $4.59 Busch Light Draft &amp; Rail Liquor • $5.59 Modelo Draft • $3.99 Specialty Shots • $4.99 Redbull House Bombs • <span class="underline decoration-2 font-extrabold">$7.99 Food: Big Easy Sweet Potato Tots, Creole Chicken Tenders &amp; Cajun Bacon Mac &amp; Cheese Bites!</span>
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
+          <a
+            href="/specials"
+            class="inline-flex items-center gap-2 bg-mizzou-black hover:bg-mizzou-slate900 text-mizzou-gold font-display font-bold uppercase tracking-wider text-base px-6 py-3.5 rounded-xl shadow-lg transition-all"
+          >
+            <span>See All Drink &amp; Food Specials</span>
+            <ArrowRight class="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK GAME DAY SCHEDULE TEASER -->
+  <section class="py-16 sm:py-20 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full mb-3">
+            <Trophy class="w-3.5 h-3.5" /> Game Day Watch Parties
+          </span>
+          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+            What's Playing on <span class="text-mizzou-gold">54+ Screens</span>
+          </h2>
+        </div>
+        <a
+          href="/events"
+          class="inline-flex items-center gap-2 text-mizzou-gold hover:text-mizzou-goldLight font-display font-bold uppercase tracking-wider text-base group"
+        >
+          <span>View Full Watch Party Schedule</span>
+          <ArrowRight class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredEvents.map((event) => (
+          <EventCard {...event} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED MENU PICKS -->
+  <section class="py-16 sm:py-20 bg-mizzou-slate900/60 border-y border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full mb-3">
+            <Utensils class="w-3.5 h-3.5" /> Scratch Bar Kitchen &amp; Cold Taps
+          </span>
+          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+            Featured <span class="text-mizzou-gold">Game Day Picks</span>
+          </h2>
+          <p class="text-gray-300 text-sm sm:text-base mt-2 max-w-2xl">
+            From Birria Fries, Toasted Beef Ravioli, and our Billionaire Bacon Smash Burger to Jayhawk Tears buckets, Black &amp; Gold Reserve bourbon cocktails, and Ray's APA by Schlafly.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            href="/menu"
+            class="inline-flex items-center gap-2 bg-mizzou-slate800 hover:bg-mizzou-slate700 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider px-5 py-3 rounded-xl transition-all"
+          >
+            <Beer class="w-4 h-4 text-mizzou-gold" />
+            <span>Explore Full Menu</span>
+          </a>
+          <a
+            href="https://rayssportshouse.square.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-5 py-3 rounded-xl shadow-gold-glow transition-all"
+          >
+            <ShoppingBag class="w-4 h-4 stroke-[2.5]" />
+            <span>Order Online</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredMenuItems.map((item) => (
+          <MenuItem
+            name={item.name}
+            price={item.price}
+            description={item.description}
+            badge={item.badge || item.categoryName}
+            featured={item.featured}
+            spicy={item.spicy}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM FEED PLACEHOLDER (@rayssoulard) -->
+  <section class="py-16 sm:py-20 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full mb-3">
+            <Instagram class="w-3.5 h-3.5" /> Live From 9th Street
+          </span>
+          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+            Follow <span class="text-mizzou-gold">{location.instagramHandle}</span> on Instagram
+          </h2>
+          <p class="text-sm sm:text-base text-gray-300 mt-1">
+            Tag <strong class="text-white">{location.instagramHandle}</strong> in your game day stories, touchdown celebrations, and bucket towers.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a
+            href={location.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-5 py-3 rounded-xl shadow-gold-glow transition-all"
+          >
+            <Instagram class="w-4 h-4" />
+            <span>Follow {location.instagramHandle}</span>
+          </a>
+          <a
+            href="/gallery"
+            class="inline-flex items-center gap-2 bg-mizzou-slate800 hover:bg-mizzou-slate700 text-white border border-white/15 font-display font-bold uppercase tracking-wider px-5 py-3 rounded-xl transition-all"
+          >
+            <span>Full Gallery</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {instagramPhotos.map((photo) => (
+          <a
+            href={location.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative aspect-square rounded-2xl overflow-hidden bg-mizzou-slate900 border border-white/15 hover:border-mizzou-gold transition-all"
+          >
+            <img
+              src={photo.image}
+              alt={photo.title}
+              width="600"
+              height="600"
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent flex flex-col justify-end p-4">
+              <span class="self-start text-[10px] font-extrabold uppercase tracking-wider bg-mizzou-gold text-mizzou-black px-2 py-0.5 rounded mb-1.5">
+                {photo.tag}
+              </span>
+              <p class="font-display text-lg font-bold uppercase text-white leading-tight">
+                {photo.title}
+              </p>
+              <p class="text-xs text-gray-300 line-clamp-2 mt-1">
+                {photo.caption}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE GOOGLE MAP EMBED & LOCATION SNAPSHOT -->
+  <section class="py-16 sm:py-20 bg-mizzou-slate900/80 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-5 space-y-5">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full">
+            <MapPin class="w-3.5 h-3.5" /> Historic Soulard • St. Louis, MO
+          </span>
+          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+            Find Us On <span class="text-mizzou-gold">South 9th Street</span>
+          </h2>
+          <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+            Right in the heart of historic Soulard — minutes from Busch Stadium, Enterprise Center, and Energizer Park. Stop in for cold beer, wall-to-wall sports, and St. Louis hospitality.
+          </p>
+
+          <div class="bg-mizzou-black/80 border border-mizzou-gold/30 rounded-2xl p-5 space-y-3 text-sm">
+            <div>
+              <p class="text-xs uppercase tracking-wider text-mizzou-gold font-bold">Address</p>
+              <p class="text-white font-semibold text-base">{location.fullAddress} (Soulard)</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider text-mizzou-gold font-bold">Bar Hours</p>
+              <p class="text-gray-200">Mon – Tue: 3:00 PM – Midnight</p>
+              <p class="text-gray-200">Wed – Thu &amp; Sun: 11:00 AM – Midnight</p>
+              <p class="text-gray-200">Fri – Sat: 11:00 AM – 1:30 AM</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider text-mizzou-gold font-bold">Kitchen Hours</p>
+              <p class="text-gray-200">Sunday – Thursday: Until 9:00 PM</p>
+              <p class="text-gray-200">Friday – Saturday: Until 11:00 PM</p>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-wider text-mizzou-gold font-bold">Payments Accepted</p>
+              <p class="text-gray-300">All Major Credit/Debit Cards, Apple Pay, Google Pay &amp; Cash</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3 pt-1">
+            <a
+              href={location.googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+            >
+              <MapPin class="w-4 h-4" />
+              <span>Get Directions</span>
+            </a>
+            <a
+              href="/hours-location"
+              class="inline-flex items-center gap-2 bg-mizzou-slate800 hover:bg-mizzou-slate700 text-white border border-white/15 font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all"
+            >
+              <span>Full Hours &amp; Parking Info</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="rounded-2xl overflow-hidden border-2 border-mizzou-gold/40 shadow-gold-glow bg-mizzou-black h-[380px] sm:h-[440px]">
+            <iframe
+              title="Ray's SportsHouse Interactive Map - 1732 S 9th St, St. Louis, MO 63104"
+              src={location.googleMapsEmbedUrl}
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

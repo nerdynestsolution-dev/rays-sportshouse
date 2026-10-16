@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #000000;
+    color: #FFFFFF;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  body {
+    @apply bg-mizzou-black text-white antialiased selection:bg-mizzou-gold selection:text-mizzou-black overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+    letter-spacing: 0.02em;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gold-gradient-text {
+    @apply bg-gradient-to-r from-mizzou-gold via-mizzou-goldLight to-mizzou-athletic bg-clip-text text-transparent;
+  }
+  .gold-border-glow {
+    box-shadow: 0 0 25px -5px rgba(241, 184, 45, 0.35), inset 0 0 15px -8px rgba(241, 184, 45, 0.25);
+  }
+}

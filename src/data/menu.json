@@ -1,0 +1,436 @@
+{
+  "squareOrderUrl": "https://rayssportshouse.square.site/",
+  "introBanner": "Opened in 2024, Ray's SportsHouse is owned and operated by third-generation Mizzou alumni, the Ray family! We're the home of Mizzou in St. Louis and the best sports destination in the neighborhood. Thank you for joining us; we're glad to see you!",
+  "foodDisclaimer": "* Consuming raw or undercooked meats, poultry, seafood, shellfish or eggs may increase our risk of foodborne illness.",
+  "categories": [
+    {
+      "id": "shareables",
+      "name": "Shareables",
+      "group": "food",
+      "tagline": "Scratch-made shareable plates, crispy wings, and St. Louis favorites built for the whole table.",
+      "flavors": [
+        "Ray's Almost Famous Hot Sauce",
+        "Spicy Honey",
+        "Carolina Reaper",
+        "BBQ",
+        "Jerk Seasoning",
+        "Lemon Aleppo Pepper"
+      ],
+      "items": [
+        {
+          "name": "White Bean Dip",
+          "price": "$11.99",
+          "description": "House-made hummus swirled with Calabrian chile oil; served with veggies and grilled naan.",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Street Corn Bruschetta",
+          "price": "$11.99",
+          "description": "Three tall slices of grilled bread spread with ricotta cheese and a fire-roasted corn/onions/poblano peppers blend; drizzled with house made smoked paprika crema.",
+          "badge": "House Specialty",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Bavarian Pretzels",
+          "price": "$11.99",
+          "description": "7.5\" soft pretzel sticks served with your choice of hatch chile queso or special blend of whole-grain mustard and honey.",
+          "badge": "Bar Classic",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Potato Skins",
+          "price": "$13.99",
+          "description": "Tater boats filled with pimento cheese; topped with crumbled smoked bacon & fresh chives; served with sour cream or ranch.",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Garlic Breaded Cheese Curds",
+          "price": "$13.99",
+          "description": "Inspired by classic cheesy garlic bread; choose from our own Calabrian chile marinara or pesto sauce.",
+          "badge": "Fan Favorite",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Buffalo Chicken Empanadas",
+          "price": "$13.99",
+          "description": "Chicken and cheese in a crispy pastry; served with ranch dressing.",
+          "badge": null,
+          "featured": false,
+          "spicy": true
+        },
+        {
+          "name": "Birria Fries",
+          "price": "$15.99",
+          "description": "Fries loaded with braised beef over hatch chile queso and topped with pickled red onions and fresh jalapeños.",
+          "badge": "Must Try",
+          "featured": true,
+          "spicy": true
+        },
+        {
+          "name": "Toasted Beef Ravioli",
+          "price": "$15.99",
+          "description": "Large round pastas filled with ground beef, spinach and cheese; choose from our own Calabrian chile marinara or pesto sauce.",
+          "badge": "STL Staple",
+          "featured": true,
+          "spicy": false
+        },
+        {
+          "name": "Tostadas Trio*",
+          "price": "$15.99",
+          "description": "Seared ahi tuna with avocado, smoked paprika kohlrabi slaw, pineapple pico de gallo made from scratch and fresh jalapeños covering three crispy corn tortillas.",
+          "badge": "Chef's Pick",
+          "featured": false,
+          "spicy": true
+        },
+        {
+          "name": "Chicken Wings",
+          "price": "$15.99",
+          "description": "One pound of wingettes and drumettes; select from Ray's Almost Famous Hot Sauce, Spicy Honey, Carolina Reaper, BBQ, Jerk Seasoning or Lemon Aleppo Pepper; choice of dressing.",
+          "badge": "Game Day Pick",
+          "featured": true,
+          "spicy": true
+        }
+      ]
+    },
+    {
+      "id": "salads-wraps-sandwiches-pizza",
+      "name": "Salads, Wraps, Sandwiches & Pizza",
+      "group": "food",
+      "tagline": "Handhelds, wraps, salads, and crispy flatbread pizza. Sandwiches & wraps served with fries.",
+      "upgrades": [
+        "Add two slices of our homemade gold-dusted Billionaire candied & peppered bacon — $4",
+        "Upgrade your sides: Cheddar Sour Cream Tots, Cajun Mac & Cheese Bites, or side Garden Salad — $3",
+        "Upgrade your sides: Sweet Potato Tots, Battered Onion Petals, or side Caesar Salad — $2"
+      ],
+      "items": [
+        {
+          "name": "Crispy Chicken Caesar Salad",
+          "price": "$13.99",
+          "description": "Romaine lettuce tossed in herbed dressing and served with breaded chicken breast, panko and parmesan cheese. (Wrap your salad and add a side for $4)",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "BBQ Southwest Chicken Salad",
+          "price": "$15.99",
+          "description": "Romaine lettuce with breaded chicken tossed in BBQ sauce, fire-roasted corn/onions/poblano peppers blend, black beans, tomatoes and cheese blend; served with ranch. (Wrap your salad and add a side for $4)",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Falafel Naan Wrap",
+          "price": "$13.99",
+          "description": "Green chickpea falafel, seedless cucumbers, avocado, grape tomatoes, smoked feta and fresh dill; served with fries.",
+          "badge": "Vegetarian",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Hot Chicken Wrap or Sandwich",
+          "price": "$13.99",
+          "description": "Breaded chicken in Almost Famous Ray's Hot Sauce; ranch kohlrabi slaw, pimento cheese and pickles; served with fries.",
+          "badge": "Almost Famous",
+          "featured": false,
+          "spicy": true
+        },
+        {
+          "name": "Avocado BLT Wrap or Sandwich",
+          "price": "$13.99",
+          "description": "Avocado, gold-dusted Billionaire Bacon, artisan romaine lettuce and tomato with our house made smoked paprika crema; served with fries. (Add cajun-seasoned roasted turkey or crispy breaded chicken breast for $4)",
+          "badge": "Billionaire Bacon",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Pastrami Reuben Sandwich",
+          "price": "$15.99",
+          "description": "Pastrami, Swiss cheese and sauerkraut with our Everything Sauce on sourdough striped rye; served with fries.",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Smash Burger",
+          "price": "$15.99",
+          "description": "Fresh onions hand smashed into two ground beef patties topped with melted white American cheese, crunchy pickles and Billionaire Bacon; stacked between toasted buns and amplified by our Everything Sauce; served with fries.",
+          "badge": "House Signature",
+          "featured": true,
+          "spicy": false
+        },
+        {
+          "name": "Prosciutto Margherita Flatbread Pizza",
+          "price": "$15.99",
+          "description": "Sun-dried tomatoes, mozzarella pearls, prosciutto and pesto are precisely placed over our own Calabrian chile marinara, topping a natural edge flatbread crust that is baked to crispy perfection.",
+          "badge": "Crispy Flatbread",
+          "featured": false,
+          "spicy": false
+        }
+      ]
+    },
+    {
+      "id": "specialty-cocktails",
+      "name": "Specialty Cocktails",
+      "group": "drinks",
+      "tagline": "Mizzou-inspired house creations, game-day bombs & buckets, and craft pours.",
+      "items": [
+        {
+          "name": "Jayhawk Tears",
+          "price": "$4.99 / $11.99 / $17.99",
+          "description": "A double shot of Parrot Bay Coconut Rum™ teams up with blue Gatorade, enemy tears, and blue curacao liqueur for a thirst quenching good time. (Bomb $4.99 • 16oz Pint $11.99 • 32oz Bucket $17.99)",
+          "badge": "🐅 Mizzou Favorite",
+          "featured": true,
+          "spicy": false
+        },
+        {
+          "name": "Sarti Spritz",
+          "price": "$11.99",
+          "description": "Sarti Rosa Aperitivo™ pairs with Prosecco for a colorful pink spritz swirling with notes of mango, blood orange, passionfruit, and honeysuckle.",
+          "badge": "Featured Spritz",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Black & Gold Reserve",
+          "price": "$13.99",
+          "description": "Yellowstone 93™ bourbon, maple syrup, orange, and bitters come together with a smoky finish for a bold, Missouri-inspired old fashioned worthy of the black and gold.",
+          "badge": "Black & Gold",
+          "featured": true,
+          "spicy": false
+        },
+        {
+          "name": "Rays of Sunshine",
+          "price": "$12.99",
+          "description": "Kasama™ aged rum blended with pineapple, lime, and a touch of almond, finished with orange bitters for a bright, easy-drinking win.",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Mom's Weekend",
+          "price": "$12.99",
+          "description": "Svedka™ blueberry vodka, riesling, and rosemary make this light, fruity, and dangerously easy to drink.",
+          "badge": "CoMo Classic",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Fall Kick-Off Marg",
+          "price": "$12.99",
+          "description": "Cranberry-infused Espolon™ Blanco tequila packs an autumn flavor punch, balanced with fresh lime and triple sec for an unforgettable house-made margarita.",
+          "badge": null,
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "M-I-Z Bloom Martini",
+          "price": "$12.99",
+          "description": "S.T.I.L.L. Gin™, apricot, and lavender honey bring floral notes balanced with lemon for a crisp, refreshing cocktail that still plays with precision.",
+          "badge": "M-I-Z",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Ray's Espresso Martini",
+          "price": "$12.99",
+          "description": "Cold brew, Hi-Post™ espresso vodka, Kahlua™, and Svedka™ vanilla vodka, blended into a smooth yet slightly sweet coffee cocktail built to keep you going.",
+          "badge": "Crowd Pick",
+          "featured": false,
+          "spicy": false
+        }
+      ]
+    },
+    {
+      "id": "craft-mocktails-beverages",
+      "name": "Craft Mocktails & Beverages",
+      "group": "drinks",
+      "tagline": "Zero-proof craft mocktails (with optional spirit add-ons) and fountain refreshments.",
+      "items": [
+        {
+          "name": "Island Timeout",
+          "price": "$8.99",
+          "description": "Lemonade, raspberry, lime, and cranberry come together for a smooth, fruity mocktail with island sweetness and a refreshing finish. (Add a shot of Bacardi™ Silver Rum or Malibu™ Coconut Rum for $2.99!)",
+          "badge": "Craft Mocktail",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Z-O-U Sparkler",
+          "price": "$8.99",
+          "description": "Blueberry, lemon, and cranberry topped with limoncello La Croix™ for a crisp, bubbly mocktail. (Add a shot of lemon vodka for $2.99!)",
+          "badge": "Z-O-U",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Soft Drinks, Lemonade, Iced Tea or Coffee",
+          "price": "$2.99",
+          "description": "Pepsi, Diet Pepsi, Dr. Pepper, Diet Dr. Pepper, Mountain Dew, Starry, Mug Root Beer, Lemonade, Iced Tea or Coffee.",
+          "badge": "Beverages",
+          "featured": false,
+          "spicy": false
+        }
+      ]
+    },
+    {
+      "id": "drafts-bottles-cans",
+      "name": "Drafts, Bottles & Cans",
+      "group": "drinks",
+      "tagline": "Ice-cold drafts (including Ray's APA by Schlafly & Boulevard MIZZOU Brew), bottles, and topless-optional cans.",
+      "beerLists": {
+        "drafts": [
+          "Ray's APA by Schlafly",
+          "Boulevard MIZZOU Brew",
+          "Angry Orchard",
+          "Blue Moon",
+          "Bud Light",
+          "Bud Select",
+          "Busch Light",
+          "Elysian Space Dust IPA",
+          "Guinness",
+          "Kona Big Wave",
+          "Mango Cart",
+          "Michelob Ultra",
+          "Michelob Golden Light",
+          "Modelo Especial",
+          "Sam Adam's Oktoberfest"
+        ],
+        "bottles": [
+          "🐾 Busch Light 🐾",
+          "Boulevard Wheat",
+          "Bud Light",
+          "Bud Select",
+          "Budweiser",
+          "Kona Longboard",
+          "Michelob Ultra",
+          "Miller High Life",
+          "Miller Lite",
+          "Stella Artois",
+          "Yuengling Lager",
+          "Urban Chestnut Zwickel Light"
+        ],
+        "cans": [
+          "🐾 Goose Island IPA 🐾",
+          "Brick River Peach Cider",
+          "Busch Beer",
+          "Coors Light",
+          "Corona Extra",
+          "High Noon Varieties",
+          "Iron Hops Weizenbock",
+          "Lucky Ones Blueberry",
+          "Natural Light",
+          "Nutrl Varieties",
+          "Super Lyte Vodka + Ade",
+          "Urban Chestnut Zwickel",
+          "Yuengling Flight"
+        ],
+        "nonAlcoholic": [
+          "Brick River Rose NA Cider",
+          "Budweiser Zero",
+          "Guinness Zero",
+          "Michelob Ultra Zero",
+          "THC Drinks"
+        ]
+      },
+      "items": [
+        {
+          "name": "Ray's APA by Schlafly (Draft)",
+          "price": "Ask Server",
+          "description": "Our signature house American Pale Ale brewed in collaboration with St. Louis's own Schlafly Beer.",
+          "badge": "House Signature Draft",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Boulevard MIZZOU Brew (Draft)",
+          "price": "Ask Server",
+          "description": "Crisp, refreshing game-day lager brewed for Tiger fans.",
+          "badge": "🐅 Mizzou Draft",
+          "featured": false,
+          "spicy": false
+        }
+      ]
+    },
+    {
+      "id": "wines-phorm-energy",
+      "name": "Wines & Phorm Energy Bombs",
+      "group": "drinks",
+      "tagline": "$7.99 wines by the glass and #STLMade Phorm Energy creations ($4.99 bombs!).",
+      "energyNote": "Phorm Energy flavors are #STLMade with zero sugar, key electrolytes, and up to 200mg of natural caffeine from green tea. Mix with your favorite liquors, drink on its own, or choose from any of our creations for $4.99 bombs!",
+      "items": [
+        {
+          "name": "Cherry Thunder (Phorm Energy Bomb)",
+          "price": "$4.99",
+          "description": "Phorm Energy Silver Lightning + Smirnoff Cherry.",
+          "badge": "#STLMade Bomb",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Jungle Jolt (Phorm Energy Bomb)",
+          "price": "$4.99",
+          "description": "Phorm Energy Paradise Punch + Deep Eddy Lime.",
+          "badge": "#STLMade Bomb",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Caffeine Creamsicle (Phorm Energy Bomb)",
+          "price": "$4.99",
+          "description": "Phorm Energy Orange Fury + Svedka Vanilla.",
+          "badge": "#STLMade Bomb",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "July Phorth (Phorm Energy Bomb)",
+          "price": "$4.99",
+          "description": "Phorm Energy Screamin' Freedom + Deep Eddy Lemon.",
+          "badge": "#STLMade Bomb",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Josh Cellar's™ Chardonnay",
+          "price": "$7.99",
+          "description": "Served by the glass.",
+          "badge": "Wine by the Glass",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Josh Cellar's™ Cabernet Sauvignon",
+          "price": "$7.99",
+          "description": "Served by the glass.",
+          "badge": "Wine by the Glass",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Woodbridge™ Pinot Gris",
+          "price": "$7.99",
+          "description": "Served by the glass.",
+          "badge": "Wine by the Glass",
+          "featured": false,
+          "spicy": false
+        },
+        {
+          "name": "Chateau Ste Michelle™ Riesling",
+          "price": "$7.99",
+          "description": "Served by the glass.",
+          "badge": "Wine by the Glass",
+          "featured": false,
+          "spicy": false
+        }
+      ]
+    }
+  ]
+}

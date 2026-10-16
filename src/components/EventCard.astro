@@ -1,0 +1,106 @@
+---
+import { Volume2, Calendar, Clock, Tv, CheckCircle2 } from '@lucide/astro';
+
+export interface Props {
+  title: string;
+  category: string;
+  league: string;
+  date: string;
+  time: string;
+  soundOn: boolean;
+  featured?: boolean;
+  badge: string;
+  matchup: string;
+  description: string;
+  deals: string[];
+  tvAllocation: string;
+}
+
+const {
+  title,
+  category,
+  league,
+  date,
+  time,
+  soundOn,
+  featured = false,
+  badge,
+  matchup,
+  description,
+  deals,
+  tvAllocation,
+} = Astro.props;
+---
+
+<article
+  data-event-category={category}
+  class:list={[
+    'rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 border',
+    featured
+      ? 'bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-mizzou-gold/60 shadow-gold-glow'
+      : 'bg-mizzou-slate900 border-white/15 hover:border-mizzou-gold/50',
+  ]}
+>
+  <div>
+    <!-- Top Header Pills -->
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+      <span class="inline-flex items-center gap-1.5 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
+        {badge}
+      </span>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-bold uppercase tracking-widest bg-mizzou-black text-gray-200 border border-white/15 px-2.5 py-1 rounded-md">
+          {league}
+        </span>
+        {soundOn && (
+          <span class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-md">
+            <Volume2 class="w-3.5 h-3.5" /> Sound ON
+          </span>
+        )}
+      </div>
+    </div>
+
+    <!-- Title & Matchup -->
+    <h3 class="font-display text-2xl font-bold uppercase tracking-wide text-white">
+      {title}
+    </h3>
+    <p class="text-sm font-semibold text-mizzou-gold mt-1">
+      {matchup}
+    </p>
+
+    <!-- Date / Time / Screen Allocation -->
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300 bg-mizzou-black/60 p-3.5 rounded-xl border border-white/10">
+      <div class="flex items-center gap-2">
+        <Calendar class="w-4 h-4 text-mizzou-gold shrink-0" />
+        <span class="font-medium">{date}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <Clock class="w-4 h-4 text-mizzou-gold shrink-0" />
+        <span>{time}</span>
+      </div>
+      <div class="sm:col-span-2 flex items-center gap-2 pt-1 border-t border-white/10 text-gray-200">
+        <Tv class="w-4 h-4 text-mizzou-gold shrink-0" />
+        <span class="font-semibold">{tvAllocation}</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <p class="mt-4 text-sm text-gray-300 leading-relaxed">
+      {description}
+    </p>
+  </div>
+
+  <!-- Game Day Deals List -->
+  <div class="mt-5 pt-4 border-t border-white/10">
+    <p class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2.5">
+      🍺 Watch Party Specials:
+    </p>
+    <ul class="space-y-1.5 text-xs sm:text-sm text-gray-200">
+      {deals.map((deal) => (
+        <li class="flex items-start gap-2">
+          <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0 mt-0.5" />
+          <span>{deal}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</article>

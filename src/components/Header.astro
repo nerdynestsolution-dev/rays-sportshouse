@@ -1,0 +1,246 @@
+---
+import { Menu, X, ShoppingBag, MapPin, Phone, Tv, Flame } from '@lucide/astro';
+import specialsData from '../data/specials.json';
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/menu', label: 'Menu & Drinks' },
+  { href: '/specials', label: 'Specials' },
+  { href: '/events', label: 'Events' },
+  { href: '/gallery', label: 'Photo Gallery' },
+  { href: '/hours-location', label: 'Hours & Location' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+};
+---
+
+<!-- Top Ticker Bar -->
+<div class="bg-mizzou-gold text-mizzou-black text-xs sm:text-sm font-bold py-1.5 px-4 border-b border-black/15">
+  <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1 bg-mizzou-black text-mizzou-gold px-2 py-0.5 rounded text-[11px] uppercase tracking-wider font-extrabold">
+        <Tv class="w-3.5 h-3.5" /> 54+ HD TVs
+      </span>
+      <span class="truncate">
+        🐅 #2 Spot in MO for Mizzou Football • NFL Sunday Ticket &amp; RedZone • Full Game Sound!
+      </span>
+    </div>
+    <div class="hidden md:flex items-center gap-4 text-xs font-extrabold uppercase tracking-wide">
+      <a href="/hours-location" class="hover:underline flex items-center gap-1">
+        <MapPin class="w-3.5 h-3.5" /> 1732 S 9th St, Soulard STL
+      </a>
+      <span>•</span>
+      <a href="/specials" class="hover:underline flex items-center gap-1">
+        <Flame class="w-3.5 h-3.5" /> M–F Happy Hour 3–6 PM
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky Main Navigation -->
+<header class="sticky top-0 z-50 bg-mizzou-black/95 backdrop-blur-md border-b border-mizzou-gold/25 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <!-- Brand Logo with Subtle Tiger Claw / Mascot Badge Styling -->
+    <a
+      href="/"
+      class="group flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-mizzou-gold rounded-lg"
+      aria-label="Ray's SportsHouse Home"
+    >
+      <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-mizzou-slate900 to-mizzou-black border-2 border-mizzou-gold flex items-center justify-center shadow-gold-glow group-hover:scale-105 transition-transform">
+        <!-- Tiger Claw SVG Emblem -->
+        <svg class="w-8 h-8 text-mizzou-gold" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M10 11C13 20 14 29 16 38" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
+          <path d="M20 8C22.5 19 23.5 29 24.5 40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          <path d="M30 10C31.5 20 32 29 32.5 38" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
+          <path d="M38 15C39 22 39 28 39 34" stroke="#FDB813" stroke-width="3.2" stroke-linecap="round"/>
+        </svg>
+        <span class=" -bottom-1 -right-1 bg-mizzou-gold text-mizzou-black text-[9px] font-black px-1 rounded uppercase tracking-tighter leading-tight">
+          STL
+        </span>
+      </div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-display text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white group-hover:text-mizzou-gold transition-colors">
+            Ray's <span class="text-mizzou-gold">SportsHouse</span>
+          </span>
+        </div>
+        <p class="text-[11px] uppercase tracking-[0.2em] text-gray-400 font-semibold -mt-1">
+          Historic Soulard • St. Louis, MO
+        </p>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
+      {navLinks.map((link) => {
+        const active = isActive(link.href);
+        return (
+          <a
+            href={link.href}
+            class:list={[
+              'px-3.5 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-all duration-150',
+              active
+                ? 'bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40'
+                : 'text-gray-200 hover:text-mizzou-gold hover:bg-white/5',
+            ]}
+            aria-current={active ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Primary Header CTA + Mobile Menu Button -->
+    <div class="flex items-center gap-3">
+      <a
+        href="https://rayssportshouse.square.site/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden sm:inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-sm sm:text-base px-5 py-2.5 rounded-lg shadow-gold-glow hover:shadow-gold-glow-lg hover:-translate-y-0.5 transition-all duration-150"
+      >
+        <ShoppingBag class="w-4 h-4 stroke-[2.5]" />
+        <span>Order Now</span>
+      </a>
+
+      <!-- Mobile Hamburger Trigger -->
+      <button
+        id="mobile-menu-open"
+        type="button"
+        class="lg:hidden inline-flex items-center justify-center p-2.5 rounded-lg bg-mizzou-slate800 text-mizzou-gold border border-mizzou-gold/30 hover:bg-mizzou-slate700 focus:outline-none focus:ring-2 focus:ring-mizzou-gold"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+      >
+        <Menu class="w-6 h-6" id="menu-icon-open" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Slide-Out Drawer -->
+<div
+  id="mobile-drawer"
+  class="fixed inset-0 z-50 hidden lg:hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile Navigation Drawer"
+>
+  <!-- Backdrop -->
+  <div id="mobile-menu-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+  <!-- Drawer Panel -->
+  <div class="fixed inset-y-0 right-0 w-full max-w-xs bg-mizzou-slate900 border-l border-mizzou-gold/30 shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+    <div>
+      <div class="flex items-center justify-between pb-5 border-b border-white/10">
+        <span class="font-display text-xl font-bold uppercase tracking-wider text-white">
+          Ray's <span class="text-mizzou-gold">SportsHouse</span>
+        </span>
+        <button
+          id="mobile-menu-close"
+          type="button"
+          class="p-2 rounded-lg bg-mizzou-slate800 text-gray-300 hover:text-mizzou-gold border border-white/10"
+          aria-label="Close navigation menu"
+        >
+          <X class="w-6 h-6" />
+        </button>
+      </div>
+
+      <!-- Mobile Nav Links with large thumb-friendly targets -->
+      <nav class="mt-6 flex flex-col gap-2" aria-label="Mobile Navigation">
+        {navLinks.map((link) => {
+          const active = isActive(link.href);
+          return (
+            <a
+              href={link.href}
+              class:list={[
+                'flex items-center justify-between px-4 py-3.5 rounded-xl font-display text-lg uppercase tracking-wider transition-colors',
+                active
+                  ? 'bg-mizzou-gold text-mizzou-black font-bold'
+                  : 'text-white hover:bg-mizzou-slate800 hover:text-mizzou-gold border border-white/5',
+              ]}
+            >
+              <span>{link.label}</span>
+              <span class="text-xs opacity-75">→</span>
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+
+    <!-- Drawer Footer CTA & Quick Info -->
+    <div class="mt-8 pt-6 border-t border-white/10 space-y-4">
+      <a
+        href="https://rayssportshouse.square.site/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="w-full flex items-center justify-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-lg py-3.5 px-5 rounded-xl shadow-gold-glow"
+      >
+        <ShoppingBag class="w-5 h-5 stroke-[2.5]" />
+        <span>Order Online (Square)</span>
+      </a>
+
+      <div class="bg-mizzou-black/70 rounded-xl p-4 border border-white/10 text-xs text-gray-300 space-y-2">
+        <p class="font-bold text-mizzou-gold uppercase tracking-wider">📍 Historic Soulard</p>
+        <p>{specialsData.location.fullAddress}</p>
+        <p class="text-gray-400">54+ HD Screens • Full Game Audio • All Major Cards Accepted</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Persistent Sticky Bottom CTA Bar on Mobile -->
+<div class="fixed bottom-0 inset-x-0 z-40 sm:hidden bg-mizzou-black/95 backdrop-blur-md border-t-2 border-mizzou-gold px-3 py-2.5 shadow-2xl">
+  <div class="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
+    <a
+      href="https://rayssportshouse.square.site/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-center gap-2 bg-mizzou-gold text-mizzou-black font-display font-bold uppercase tracking-wider text-sm py-3 px-3 rounded-lg shadow-gold-glow"
+    >
+      <ShoppingBag class="w-4 h-4 stroke-[2.5]" />
+      <span>Order Online</span>
+    </a>
+    <a
+      href={specialsData.location.googleMapsDirectionsUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-center gap-2 bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-sm py-3 px-3 rounded-lg"
+    >
+      <MapPin class="w-4 h-4 text-mizzou-gold" />
+      <span>Call / Directions</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById('mobile-menu-open');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const backdrop = document.getElementById('mobile-menu-backdrop');
+  const drawer = document.getElementById('mobile-drawer');
+
+  function toggleMenu(show: boolean) {
+    if (!drawer || !openBtn) return;
+    if (show) {
+      drawer.classList.remove('hidden');
+      openBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    } else {
+      drawer.classList.add('hidden');
+      openBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  }
+
+  openBtn?.addEventListener('click', () => toggleMenu(true));
+  closeBtn?.addEventListener('click', () => toggleMenu(false));
+  backdrop?.addEventListener('click', () => toggleMenu(false));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') toggleMenu(false);
+  });
+</script>

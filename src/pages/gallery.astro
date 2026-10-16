@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGalleryPhotos } from '../utils/getGalleryPhotos';
+import specialsData from '../data/specials.json';
+import { Camera, Tv, ShoppingBag } from '@lucide/astro';
+import Instagram from '../components/InstagramIcon.astro';
+
+const photos = getGalleryPhotos();
+const { location } = specialsData;
+const categories = ['All Photos', '54+ Screens', 'Game Day Crowds', 'Food & Drinks', 'Patio & Interior'];
+---
+
+<BaseLayout
+  title="Photo Gallery | 54+ HD Screens, Game Day Atmosphere & Food | Ray's SportsHouse Soulard"
+  description="Take a look inside Ray's SportsHouse in historic Soulard, St. Louis: wall-to-wall 54+ HD screens, packed Mizzou & NFL watch party crowds, Soulard brick patio seating, and signature wings & smash burgers."
+>
+  <!-- PAGE HEADER -->
+  <section class="relative bg-mizzou-black border-b border-mizzou-gold/30 py-12 sm:py-16">
+    <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center gap-1.5 bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+            <Camera class="w-3.5 h-3.5" /> Inside Soulard's Sports Headquarters
+          </span>
+          <h1 class="font-display text-4xl sm:text-6xl font-bold uppercase text-white">
+            Photo <span class="text-mizzou-gold">Gallery</span>
+          </h1>
+          <p class="text-gray-300 text-base sm:text-lg mt-3 leading-relaxed">
+            Wall-to-wall 54+ HD screens, electric Mizzou Saturday &amp; NFL Sunday crowds, historic 9th Street brick courtyard seating, and scratch game day food &amp; drinks.
+          </p>
+        </div>
+
+        <a
+          href={location.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="self-start lg:self-auto inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+        >
+          <Instagram class="w-5 h-5" />
+          <span>Follow {location.instagramHandle}</span>
+        </a>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="mt-8 flex items-center gap-2 overflow-x-auto pb-2" role="tablist" aria-label="Gallery Categories">
+        {categories.map((cat, idx) => (
+          <button
+            type="button"
+            data-gallery-filter={cat}
+            class:list={[
+              'gallery-filter-btn shrink-0 px-4 py-2 rounded-xl font-display font-bold uppercase tracking-wider text-sm transition-all',
+              idx === 0
+                ? 'bg-mizzou-gold text-mizzou-black shadow-gold-glow'
+                : 'bg-mizzou-slate900 text-gray-200 border border-white/15 hover:border-mizzou-gold hover:text-mizzou-gold',
+            ]}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RESPONSIVE MASONRY PHOTO GRID -->
+  <section class="py-12 sm:py-16 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6" id="gallery-masonry">
+        {photos.map((photo) => (
+          <figure
+            data-gallery-category={photo.category}
+            class="gallery-item break-inside-avoid group relative rounded-2xl overflow-hidden bg-mizzou-slate900 border border-white/15 hover:border-mizzou-gold shadow-lg transition-all duration-200"
+          >
+            <div class:list={['relative w-full overflow-hidden bg-mizzou-slate800', photo.aspect]}>
+              <img
+                src={photo.image}
+                alt={photo.title}
+                width="900"
+                height="700"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div class="absolute top-3 left-3 flex items-center gap-2">
+                <span class="bg-mizzou-gold text-mizzou-black text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md shadow">
+                  {photo.tag}
+                </span>
+                <span class="bg-mizzou-black/85 text-gray-200 border border-white/15 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                  {photo.category}
+                </span>
+              </div>
+            </div>
+
+            <figcaption class="p-5 bg-mizzou-slate900">
+              <h2 class="font-display text-xl font-bold uppercase text-white group-hover:text-mizzou-gold transition-colors">
+                {photo.title}
+              </h2>
+              <p class="text-sm text-gray-300 mt-1.5 leading-relaxed">
+                {photo.caption}
+              </p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <!-- Instagram & Visit Callout -->
+      <div class="mt-14 rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/40 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="space-y-2 text-center md:text-left">
+          <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
+            Share Your Game Day Memories
+          </p>
+          <h3 class="font-display text-2xl sm:text-4xl font-bold uppercase text-white">
+            Tag <span class="text-mizzou-gold">{location.instagramHandle}</span> on Game Day
+          </h3>
+          <p class="text-sm text-gray-300 max-w-xl">
+            Snap your table's bucket tower, Mizzou touchdown celebration, or wing spread and tag us on Instagram to be featured!
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
+          <a
+            href={location.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+          >
+            <Instagram class="w-5 h-5" />
+            <span>@rayssoulard on Instagram</span>
+          </a>
+          <a
+            href={location.squareOrderUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-mizzou-black hover:bg-mizzou-slate800 text-white border border-white/20 font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all"
+          >
+            <ShoppingBag class="w-5 h-5 text-mizzou-gold" />
+            <span>Order Online</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.gallery-filter-btn');
+    const items = document.querySelectorAll<HTMLElement>('.gallery-item');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selected = btn.getAttribute('data-gallery-filter');
+
+        buttons.forEach((b) => {
+          b.classList.remove('bg-mizzou-gold', 'text-mizzou-black', 'shadow-gold-glow');
+          b.classList.add('bg-mizzou-slate900', 'text-gray-200');
+        });
+        btn.classList.add('bg-mizzou-gold', 'text-mizzou-black', 'shadow-gold-glow');
+        btn.classList.remove('bg-mizzou-slate900', 'text-gray-200');
+
+        items.forEach((item) => {
+          const cat = item.getAttribute('data-gallery-category');
+          if (selected === 'All Photos' || cat === selected) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+</BaseLayout>

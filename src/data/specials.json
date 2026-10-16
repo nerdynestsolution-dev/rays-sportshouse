@@ -1,0 +1,133 @@
+{
+  "happyHour": {
+    "title": "Happy Hour @ Ray's SportsHouse",
+    "schedule": "Monday – Friday | 3:00 PM – 6:00 PM",
+    "subtitle": "Soulard's best weekday clock-out ritual from 3PM until 6PM. Ice-cold beers, rail pours, bombs, shots, and $7.99 Happy Hour bites across 54+ HD screens.",
+    "drinkDeals": [
+      {
+        "item": "Bottled Beer — $3.59",
+        "detail": "Yuengling Flight • Coors Light • Yuengling Lager • Miller High Life • Natural Light (16 oz)"
+      },
+      {
+        "item": "Draft Beer Specials",
+        "detail": "Modelo: $5.59 • Busch Light: $4.59"
+      },
+      {
+        "item": "Rail Liquor — $4.59",
+        "detail": "House rail spirits & mixers"
+      },
+      {
+        "item": "Select Specialty Shots — $3.99",
+        "detail": "Ask your bartender for today's featured specialty shot lineup"
+      },
+      {
+        "item": "Redbull House Bomb — $4.99",
+        "detail": "High-energy house bomb special"
+      }
+    ],
+    "foodDeals": [
+      {
+        "item": "Big Easy Sweet Potato Tots",
+        "price": "$7.99",
+        "detail": "Happy Hour Food Special (3PM – 6PM)"
+      },
+      {
+        "item": "Creole Chicken Tenders",
+        "price": "$7.99",
+        "detail": "Happy Hour Food Special (3PM – 6PM)"
+      },
+      {
+        "item": "Cajun Bacon Mac & Cheese Bites",
+        "price": "$7.99",
+        "detail": "Happy Hour Food Special (3PM – 6PM)"
+      }
+    ]
+  },
+  "gameDaySpecials": [
+    {
+      "id": "nfl-game-day",
+      "day": "Every NFL Game",
+      "badge": "🏈 NFL Sunday Ticket + RedZone",
+      "title": "Your House For Every NFL Game",
+      "timing": "All NFL Games • Sunday Ticket & RedZone Live",
+      "description": "Every single NFL game live across 54+ HD TVs with NFL Sunday Ticket and NFL RedZone, paired with unbeatable game day burger and draft deals.",
+      "highlights": [
+        "$9.99 1/4 LB Smash Burger & Fries",
+        "Draft Specials Starting at $3.99 (including ice-cold Busch Light)",
+        "Every Out-of-Market Game on NFL Sunday Ticket + Dedicated RedZone Screens",
+        "Full Stadium Audio & 54+ HD Screens"
+      ]
+    },
+    {
+      "id": "wednesday-girl-dinner",
+      "day": "Every Wednesday",
+      "badge": "🍸 Girl Dinner Wednesdays",
+      "title": "Girl Dinner & 1/2 Price Specialty Cocktails",
+      "timing": "Every Wednesday | 6:00 PM – Close",
+      "description": "Your ultimate mid-week night out in Soulard! Grab our signature Girl Dinner tray and enjoy half-priced specialty cocktails, mocktails, and martinis all evening.",
+      "highlights": [
+        "$13.99 Girl Dinner (Crispy Chicken Tenders, Seasoned Fries, Side Caesar Salad & Dipping Sauce)",
+        "1/2 PRICE Specialty Cocktails (6PM – Close)",
+        "1/2 PRICE Craft Mocktails (Island Timeout & Z-O-U Sparkler)",
+        "1/2 PRICE Martinis (M-I-Z Bloom Martini & Ray's Espresso Martini)"
+      ]
+    },
+    {
+      "id": "lunch-special",
+      "day": "Tuesday – Friday",
+      "badge": "🍽️ Fast 25-Min Lunch",
+      "title": "$9.99 Weekday Lunch Special",
+      "timing": "Every Tuesday – Friday | 11:00 AM – 2:00 PM",
+      "description": "Built to level up your lunch break — be in and out in under 25 minutes! Lunch plans = handled.",
+      "highlights": [
+        "Select Lunch Items for Just $9.99",
+        "$2.99 Domestic Beers",
+        "$3.99 Rail Liquor & Select Shots like Fireball!",
+        "Available Tuesday – Friday from 11:00 AM to 2:00 PM"
+      ]
+    },
+    {
+      "id": "mizzou-saturday",
+      "day": "Mizzou Saturdays",
+      "badge": "🐅 M-I-Z — Z-O-U",
+      "title": "Home of Mizzou in St. Louis",
+      "timing": "All Day Saturdays During Mizzou Games",
+      "description": "Owned and operated by third-generation Mizzou alumni! Experience the #2 Best Spot in Missouri to watch Mizzou Football with wall-to-wall Black & Gold energy.",
+      "highlights": [
+        "Jayhawk Tears: $4.99 Bomb • $11.99 16oz Pint • $17.99 32oz Bucket",
+        "Boulevard MIZZOU Brew & Ray's APA by Schlafly on Draft",
+        "$13.99 Black & Gold Reserve Bourbon Old Fashioned",
+        "$4.99 #STLMade Phorm Energy Bombs"
+      ]
+    }
+  ],
+  "kitchenHoursSummary": {
+    "sundayToThursday": "Until 9:00 PM",
+    "fridayToSaturday": "Until 11:00 PM"
+  },
+  "hours": [
+    { "day": "Monday", "hours": "3:00 PM – Midnight", "kitchen": "3:00 PM – 9:00 PM (Until 9PM)" },
+    { "day": "Tuesday", "hours": "3:00 PM – Midnight", "kitchen": "3:00 PM – 9:00 PM (Until 9PM)" },
+    { "day": "Wednesday", "hours": "11:00 AM – Midnight", "kitchen": "11:00 AM – 9:00 PM (Until 9PM)" },
+    { "day": "Thursday", "hours": "11:00 AM – Midnight", "kitchen": "11:00 AM – 9:00 PM (Until 9PM)" },
+    { "day": "Friday", "hours": "11:00 AM – 1:30 AM", "kitchen": "11:00 AM – 11:00 PM (Until 11PM)" },
+    { "day": "Saturday", "hours": "11:00 AM – 1:30 AM", "kitchen": "11:00 AM – 11:00 PM (Until 11PM)" },
+    { "day": "Sunday", "hours": "11:00 AM – Midnight", "kitchen": "11:00 AM – 9:00 PM (Until 9PM)" }
+  ],
+  "location": {
+    "name": "Ray's SportsHouse",
+    "street": "1732 S 9th St",
+    "neighborhood": "Historic Soulard",
+    "city": "St. Louis",
+    "state": "MO",
+    "zip": "63104",
+    "fullAddress": "1732 S 9th St, St. Louis, MO 63104",
+    "phone": "(314) 555-0199",
+    "phoneHref": "tel:+13145550199",
+    "instagramHandle": "@rayssoulard",
+    "instagramUrl": "https://www.instagram.com/rayssoulard/",
+    "squareOrderUrl": "https://rayssportshouse.square.site/",
+    "googleMapsDirectionsUrl": "https://www.google.com/maps/dir/?api=1&destination=1732+S+9th+St+St.+Louis+MO+63104",
+    "googleMapsEmbedUrl": "https://www.google.com/maps?q=1732+S+9th+St,+St.+Louis,+MO+63104&output=embed"
+  }
+}

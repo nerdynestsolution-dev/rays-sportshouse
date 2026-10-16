@@ -1,0 +1,172 @@
+---
+import { MapPin, Clock, Phone, ShoppingBag, CreditCard, Tv, ShieldCheck } from '@lucide/astro';
+import Instagram from './InstagramIcon.astro';
+import specialsData from '../data/specials.json';
+
+const { location, hours } = specialsData;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-mizzou-slate900 border-t-2 border-mizzou-gold/30 text-gray-300 pb-24 sm:pb-12">
+  <!-- Pre-Footer Game Day Callout Banner -->
+  <div class="bg-gradient-to-r from-mizzou-black via-mizzou-slate800 to-mizzou-black border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="text-center md:text-left">
+        <span class="inline-block text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full mb-2">
+          Hungry For Game Day?
+        </span>
+        <h2 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white">
+          Skip The Line — Order Wings, Smash Burgers &amp; Shareables Online
+        </h2>
+        <p class="text-sm text-gray-400 mt-1">
+          Fast Square POS pickup right on 9th Street in Historic Soulard.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
+        <a
+          href={location.squareOrderUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+        >
+          <ShoppingBag class="w-5 h-5 stroke-[2.5]" />
+          <span>Order Takeout Now</span>
+        </a>
+        <a
+          href={location.googleMapsDirectionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-mizzou-slate800 hover:bg-mizzou-slate700 text-white border border-white/15 font-display font-bold uppercase tracking-wider px-5 py-3.5 rounded-xl transition-all"
+        >
+          <MapPin class="w-5 h-5 text-mizzou-gold" />
+          <span>Get Directions</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer Grid -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <!-- Column 1: Brand & Home Teams -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-mizzou-black border-2 border-mizzou-gold flex items-center justify-center">
+          <span class="font-display font-bold text-mizzou-gold text-lg">R</span>
+        </div>
+        <span class="font-display text-2xl font-bold uppercase tracking-wider text-white">
+          Ray's <span class="text-mizzou-gold">SportsHouse</span>
+        </span>
+      </div>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Soulard's high-energy sports headquarters featuring <strong class="text-white">54+ HD screens</strong>, wall-to-wall game sound, 24 ice-cold draft taps, and scratch bar food.
+      </p>
+      <div class="pt-1 space-y-2 text-xs text-gray-300">
+        <div class="flex items-center gap-2">
+          <Tv class="w-4 h-4 text-mizzou-gold shrink-0" />
+          <span>#2 Best Spot to Watch Mizzou Football in MO</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <ShieldCheck class="w-4 h-4 text-mizzou-gold shrink-0" />
+          <span>Proud Home of Mizzou, Cardinals, Blues &amp; CITY SC</span>
+        </div>
+      </div>
+      <div class="pt-2 flex items-center gap-3">
+        <a
+          href={location.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 bg-mizzou-black hover:bg-mizzou-gold hover:text-mizzou-black text-white border border-mizzou-gold/40 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors"
+        >
+          <Instagram class="w-4 h-4" />
+          <span>{location.instagramHandle}</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Column 2: Quick Navigation -->
+    <div>
+      <h3 class="font-display text-lg font-bold uppercase tracking-wider text-mizzou-gold mb-4">
+        Explore Ray's
+      </h3>
+      <ul class="space-y-2.5 text-sm">
+        <li><a href="/" class="hover:text-mizzou-gold transition-colors">Home Headquarters</a></li>
+        <li><a href="/menu" class="hover:text-mizzou-gold transition-colors">Menu &amp; 24 Draft Beers</a></li>
+        <li><a href="/specials" class="hover:text-mizzou-gold transition-colors">Happy Hour &amp; Game Day Specials</a></li>
+        <li><a href="/events" class="hover:text-mizzou-gold transition-colors">Watch Parties &amp; Schedule</a></li>
+        <li><a href="/gallery" class="hover:text-mizzou-gold transition-colors">Photo Gallery (54+ TVs)</a></li>
+        <li><a href="/hours-location" class="hover:text-mizzou-gold transition-colors">Hours, Map &amp; Directions</a></li>
+        <li>
+          <a
+            href={location.squareOrderUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-mizzou-gold font-bold hover:underline inline-flex items-center gap-1"
+          >
+            <span>Order Online via Square POS ↗</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Weekly Hours -->
+    <div>
+      <h3 class="font-display text-lg font-bold uppercase tracking-wider text-mizzou-gold mb-4 flex items-center gap-2">
+        <Clock class="w-4 h-4" />
+        <span>Operating Hours</span>
+      </h3>
+      <ul class="space-y-2 text-xs sm:text-sm">
+        {hours.map((item) => (
+          <li class="flex justify-between py-1 border-b border-white/5">
+            <span class="font-semibold text-white">{item.day}</span>
+            <span class="text-gray-300">{item.hours}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-3 pt-2 border-t border-white/10 space-y-1 text-[11px] font-medium">
+        <p class="text-white">
+          🍔 <span class="text-mizzou-gold font-bold">Kitchen:</span> Sun–Thu Until 9PM • Fri–Sat Until 11PM
+        </p>
+        <p class="text-mizzou-gold">
+          🍺 Happy Hour: Mon–Fri 3:00 PM – 6:00 PM
+        </p>
+      </div>
+    </div>
+
+    <!-- Column 4: Location & Payments -->
+    <div class="space-y-4">
+      <h3 class="font-display text-lg font-bold uppercase tracking-wider text-mizzou-gold mb-4 flex items-center gap-2">
+        <MapPin class="w-4 h-4" />
+        <span>Soulard Location</span>
+      </h3>
+      <address class="not-italic text-sm space-y-2 text-gray-300">
+        <p class="font-bold text-white text-base">Ray's SportsHouse</p>
+        <p>{location.street}</p>
+        <p>{location.city}, {location.state} {location.zip} (Soulard)</p>
+        <p class="pt-1">
+          <a href={location.phoneHref} class="inline-flex items-center gap-1.5 text-mizzou-gold font-bold hover:underline">
+            <Phone class="w-4 h-4" />
+            <span>{location.phone}</span>
+          </a>
+        </p>
+      </address>
+
+      <div class="bg-mizzou-black/80 border border-white/10 rounded-xl p-3.5 text-xs space-y-1.5">
+        <div class="flex items-center gap-2 text-mizzou-gold font-bold uppercase tracking-wider">
+          <CreditCard class="w-4 h-4" />
+          <span>Payment Accepted</span>
+        </div>
+        <p class="text-gray-300 leading-relaxed">
+          We accept all major credit and debit cards (Visa, Mastercard, Amex, Discover), Apple Pay, Google Pay, and Cash.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright Bottom Bar -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+    <p>© {currentYear} Ray's SportsHouse • 1732 S 9th St, St. Louis, MO 63104. All Rights Reserved.</p>
+    <p class="text-gray-400">
+      Please Drink Responsibly • Proudly Rooted in Historic Soulard, STL
+    </p>
+  </div>
+</footer>
