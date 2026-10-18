@@ -1,17 +1,24 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
+import MizzouScheduleWidget from '../components/MizzouScheduleWidget.astro';
 import NflScheduleWidget from '../components/NflScheduleWidget.astro';
 import eventsData from '../data/events.json';
 import { Trophy, Tv, Volume2, Calendar, ShoppingBag } from '@lucide/astro';
 
 const { events } = eventsData;
+const mizzouEvent = events.find((e) => e.id === 'mizzou-saturdays');
+const nflEvent = events.find((e) => e.id === 'nfl-sunday-ticket');
+const otherEvents = events.filter(
+  (e) => e.id !== 'mizzou-saturdays' && e.id !== 'nfl-sunday-ticket'
+);
+
 const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 'Formula 1', 'Bar Events'];
 ---
 
 <BaseLayout
   title="Events & Watch Parties | Mizzou Football, NFL Sunday Ticket, UFC & F1 | Ray's SportsHouse"
-  description="Join Soulard's most electric watch parties at Ray's SportsHouse: #2 Best Spot in Missouri for Mizzou Football Saturdays, NFL Sunday Ticket & RedZone, UFC PPVs, F1 Grand Prix races, STL CITY SC matches, and Wednesday Trivia."
+  description="Join Soulard's most electric watch parties at Ray's SportsHouse: #2 Best Spot in Missouri for Mizzou Football Saturdays, NFL Sunday Ticket & RedZone, UFC PPVs, F1 Grand Prix races, STL CITY SC matches, and Wednesday Girl Dinner."
 >
   <!-- PAGE HEADER -->
   <section class="relative bg-mizzou-black border-b border-mizzou-gold/30 py-12 sm:py-16">
@@ -62,21 +69,31 @@ const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 
     </div>
   </section>
 
-  <!-- DYNAMIC SCHEDULE CARD GRID -->
+  <!-- DYNAMIC SCHEDULE SECTIONS & LIVE SCOREBOARD WIDGETS -->
   <section class="py-12 sm:py-16 bg-mizzou-black">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="events-grid">
-        {events.map((event) => (
-          <>
-            <div class="event-card-wrapper" data-category={event.category}>
-              <EventCard {...event} />
-            </div>
-            {event.id === 'nfl-sunday-ticket' && (
-              <div class="event-card-wrapper md:col-span-2" data-category="NFL">
-                <NflScheduleWidget />
-              </div>
-            )}
-          </>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12" id="events-grid">
+      <!-- 1. MIZZOU TIGERS FOOTBALL WATCH PARTY + LIVE MIZZOU SCHEDULE WIDGET -->
+      {mizzouEvent && (
+        <div class="event-card-wrapper space-y-6" data-category={mizzouEvent.category}>
+          <EventCard {...mizzouEvent} />
+          <MizzouScheduleWidget />
+        </div>
+      )}
+
+      <!-- 2. NFL SUNDAY TICKET & REDZONE + LIVE NFL SCHEDULE WIDGET -->
+      {nflEvent && (
+        <div class="event-card-wrapper space-y-6" data-category={nflEvent.category}>
+          <EventCard {...nflEvent} />
+          <NflScheduleWidget />
+        </div>
+      )}
+
+      <!-- 3. OTHER WATCH PARTIES & WEEKLY EVENTS GRID (UFC, STL CITY SC, CARDS/BLUES, F1, WEDNESDAY GIRL DINNER) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {otherEvents.map((event) => (
+          <div class="event-card-wrapper" data-category={event.category}>
+            <EventCard {...event} />
+          </div>
         ))}
       </div>
 

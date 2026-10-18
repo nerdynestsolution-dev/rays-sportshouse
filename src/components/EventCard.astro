@@ -2,6 +2,7 @@
 import { Volume2, Calendar, Clock, Tv, CheckCircle2 } from '@lucide/astro';
 
 export interface Props {
+  id?: string;
   title: string;
   category: string;
   league: string;
@@ -17,6 +18,7 @@ export interface Props {
 }
 
 const {
+  id,
   title,
   category,
   league,
@@ -33,6 +35,7 @@ const {
 ---
 
 <article
+  data-event-id={id}
   data-event-category={category}
   class:list={[
     'rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 border',
@@ -63,7 +66,7 @@ const {
     <h3 class="font-display text-2xl font-bold uppercase tracking-wide text-white">
       {title}
     </h3>
-    <p class="text-sm font-semibold text-mizzou-gold mt-1">
+    <p data-event-matchup class="text-sm font-semibold text-mizzou-gold mt-1">
       {matchup}
     </p>
 
@@ -71,15 +74,15 @@ const {
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300 bg-mizzou-black/60 p-3.5 rounded-xl border border-white/10">
       <div class="flex items-center gap-2">
         <Calendar class="w-4 h-4 text-mizzou-gold shrink-0" />
-        <span class="font-medium">{date}</span>
+        <span data-event-date class="font-medium">{date}</span>
       </div>
       <div class="flex items-center gap-2">
         <Clock class="w-4 h-4 text-mizzou-gold shrink-0" />
-        <span>{time}</span>
+        <span data-event-time>{time}</span>
       </div>
       <div class="sm:col-span-2 flex items-center gap-2 pt-1 border-t border-white/10 text-gray-200">
         <Tv class="w-4 h-4 text-mizzou-gold shrink-0" />
-        <span class="font-semibold">{tvAllocation}</span>
+        <span data-event-tv class="font-semibold">{tvAllocation}</span>
       </div>
     </div>
 

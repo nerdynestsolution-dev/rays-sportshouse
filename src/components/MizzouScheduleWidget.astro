@@ -1,0 +1,569 @@
+---
+// Self-contained, zero-dependency University of Missouri Tigers (Mizzou) Football Schedule Widget
+// Powered by ESPN's public College Football API (Team ID 142 - Missouri Tigers)
+---
+
+<div
+  id="rays-mizzou-schedule-widget"
+  class="rounded-3xl bg-gradient-to-b from-[#000000] via-[#111827] to-[#000000] border-2 border-[#F1B82D] p-5 sm:p-8 shadow-gold-glow text-white"
+>
+  <!-- Widget Header & Filter Controls -->
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-6 border-b border-[#F1B82D]/30">
+    <div class="flex items-start sm:items-center gap-4">
+      <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-black border-2 border-[#F1B82D] p-2 flex items-center justify-center shrink-0 shadow-gold-glow">
+        <img
+          src="https://a.espncdn.com/i/teamlogos/ncaa/500/142.png"
+          alt="Missouri Tigers Mizzou Logo"
+          width="56"
+          height="56"
+          loading="lazy"
+          class="w-full h-full object-contain"
+        />
+      </div>
+      <div class="space-y-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 bg-[#F1B82D] text-black text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
+            🐅 M-I-Z — Z-O-U • Official STL Watch HQ
+          </span>
+          <span
+            id="mizzou-record-badge"
+            class="inline-flex items-center gap-1.5 bg-black text-[#F1B82D] border border-[#F1B82D]/50 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
+          >
+            SEC Football
+          </span>
+        </div>
+        <h2 class="font-display text-2xl sm:text-4xl font-bold uppercase tracking-wide text-white">
+          Missouri Tigers <span class="text-[#F1B82D]">Season Schedule &amp; Scores</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-300">
+          Every Mizzou matchup shown live with <strong class="text-white">full stadium sound</strong> across 54+ HD screens. Enjoy <strong class="text-[#F1B82D]">Jayhawk Tears ($4.99 Bombs / $17.99 Buckets)</strong> &amp; <strong class="text-[#F1B82D]">Boulevard MIZZOU Brew</strong> on draft!
+        </p>
+      </div>
+    </div>
+
+    <!-- Filter Buttons & Season Selector -->
+    <div class="flex flex-wrap items-center gap-2 shrink-0">
+      <div class="inline-flex rounded-xl bg-black p-1 border border-[#F1B82D]/40" role="tablist" aria-label="Filter Mizzou Games">
+        <button
+          type="button"
+          data-mizzou-filter="all"
+          class="mizzou-filter-btn px-3 py-1.5 rounded-lg font-display font-bold uppercase tracking-wider text-xs bg-[#F1B82D] text-black transition-all"
+        >
+          All Games
+        </button>
+        <button
+          type="button"
+          data-mizzou-filter="upcoming"
+          class="mizzou-filter-btn px-3 py-1.5 rounded-lg font-display font-bold uppercase tracking-wider text-xs text-gray-300 hover:text-[#F1B82D] transition-all"
+        >
+          Upcoming
+        </button>
+        <button
+          type="button"
+          data-mizzou-filter="results"
+          class="mizzou-filter-btn px-3 py-1.5 rounded-lg font-display font-bold uppercase tracking-wider text-xs text-gray-300 hover:text-[#F1B82D] transition-all"
+        >
+          Results
+        </button>
+      </div>
+
+      <select
+        id="mizzou-season-select"
+        aria-label="Select Mizzou Football Season"
+        class="bg-black text-[#F1B82D] border-2 border-[#F1B82D]/60 focus:border-[#F1B82D] focus:outline-none rounded-xl px-3 py-2 text-xs sm:text-sm font-display font-bold uppercase tracking-wider cursor-pointer"
+      >
+        <option value="">Current Season</option>
+        <option value="2026">2026 Season</option>
+        <option value="2025">2025 Season</option>
+        <option value="2024">2024 Season</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Sub-bar: Season Summary & Refresh -->
+  <div class="flex flex-wrap items-center justify-between gap-2 py-3 text-xs text-gray-400">
+    <p id="mizzou-schedule-summary" class="font-semibold text-gray-200">
+      Loading Missouri Tigers football schedule...
+    </p>
+    <div class="flex items-center gap-3">
+      <span id="mizzou-last-updated" class="text-[11px] text-gray-400"></span>
+      <button
+        id="mizzou-refresh-btn"
+        type="button"
+        class="text-[#F1B82D] hover:underline font-bold uppercase tracking-wider text-[11px]"
+      >
+        ↻ Refresh Schedule
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton Grid -->
+  <div id="mizzou-loading-state" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+    {Array.from({ length: 6 }).map(() => (
+      <div class="rounded-2xl bg-[#1F2937]/50 border border-[#F1B82D]/20 p-4 animate-pulse space-y-3">
+        <div class="flex justify-between">
+          <div class="h-4 w-28 bg-white/10 rounded"></div>
+          <div class="h-4 w-16 bg-white/10 rounded"></div>
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white/10"></div>
+            <div class="h-4 w-32 bg-white/10 rounded"></div>
+          </div>
+          <div class="h-6 w-10 bg-white/10 rounded"></div>
+        </div>
+        <div class="h-3 w-full bg-white/10 rounded"></div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Error State -->
+  <div
+    id="mizzou-error-state"
+    class="hidden rounded-2xl bg-[#1F2937]/80 border border-red-500/40 p-6 text-center space-y-3 my-4"
+  >
+    <p class="font-display text-xl uppercase text-white">
+      Unable to load live Mizzou schedule right now
+    </p>
+    <p class="text-xs sm:text-sm text-gray-300">
+      Please check your connection or click retry. Doors open early for every Mizzou Saturday kickoff with full stadium sound!
+    </p>
+    <button
+      id="mizzou-retry-btn"
+      type="button"
+      class="inline-flex items-center gap-2 bg-[#F1B82D] text-black font-display font-bold uppercase tracking-wider text-xs px-4 py-2 rounded-lg"
+    >
+      Retry Loading Schedule
+    </button>
+  </div>
+
+  <!-- Mizzou Games Grid -->
+  <div id="mizzou-games-grid" class="hidden grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2"></div>
+</div>
+
+<script is:inline>
+  (function () {
+    const MIZZOU_TEAM_ID = '142';
+    const API_BASE =
+      'https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/' +
+      MIZZOU_TEAM_ID +
+      '/schedule';
+
+    const seasonSelect = document.getElementById('mizzou-season-select');
+    const filterBtns = document.querySelectorAll('.mizzou-filter-btn');
+    const refreshBtn = document.getElementById('mizzou-refresh-btn');
+    const retryBtn = document.getElementById('mizzou-retry-btn');
+    const gamesGrid = document.getElementById('mizzou-games-grid');
+    const loadingState = document.getElementById('mizzou-loading-state');
+    const errorState = document.getElementById('mizzou-error-state');
+    const scheduleSummary = document.getElementById('mizzou-schedule-summary');
+    const recordBadge = document.getElementById('mizzou-record-badge');
+    const lastUpdated = document.getElementById('mizzou-last-updated');
+
+    if (!gamesGrid || !seasonSelect) return;
+
+    let cachedEvents = [];
+    let currentFilter = 'all';
+    let selectedSeason = '';
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function extractScore(scoreField) {
+      if (scoreField === null || scoreField === undefined) return '';
+      if (typeof scoreField === 'object') {
+        if (scoreField.displayValue !== undefined) return String(scoreField.displayValue);
+        if (scoreField.value !== undefined) return String(scoreField.value);
+        return '';
+      }
+      return String(scoreField);
+    }
+
+    function extractLogo(teamObj) {
+      if (!teamObj) return 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png';
+      if (teamObj.logos && teamObj.logos[0] && teamObj.logos[0].href) {
+        return teamObj.logos[0].href;
+      }
+      if (teamObj.logo) return teamObj.logo;
+      return 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png';
+    }
+
+    function formatDateAndTime(isoDate, timeValid) {
+      try {
+        const d = new Date(isoDate);
+        const datePart = d.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        });
+        if (timeValid === false) {
+          return datePart + ' • TBD';
+        }
+        const timePart = d.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+        });
+        return datePart + ' • ' + timePart;
+      } catch (e) {
+        return isoDate;
+      }
+    }
+
+    function renderSchedule() {
+      const filtered = cachedEvents.filter(function (event) {
+        const comp = (event.competitions && event.competitions[0]) || {};
+        const statusObj = (comp.status && comp.status.type) || (event.status && event.status.type) || {};
+        const state = statusObj.state || 'pre';
+        if (currentFilter === 'upcoming') return state === 'pre' || state === 'in';
+        if (currentFilter === 'results') return state === 'post';
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        gamesGrid.innerHTML =
+          '<div class="col-span-full rounded-2xl bg-[#111827] border border-[#F1B82D]/30 p-8 text-center">' +
+          '<p class="font-display text-xl uppercase text-white">No Mizzou games match this filter</p>' +
+          '<p class="text-xs text-gray-400 mt-1">Switch to "All Games" above to view the full Missouri Tigers season slate.</p>' +
+          '</div>';
+        return;
+      }
+
+      // Identify the first upcoming game to highlight as "NEXT UP"
+      let nextUpEventId = null;
+      for (let i = 0; i < cachedEvents.length; i++) {
+        const c = (cachedEvents[i].competitions && cachedEvents[i].competitions[0]) || {};
+        const st = (c.status && c.status.type) || (cachedEvents[i].status && cachedEvents[i].status.type) || {};
+        if (st.state === 'pre') {
+          nextUpEventId = cachedEvents[i].id;
+          break;
+        }
+      }
+
+      gamesGrid.innerHTML = filtered
+        .map(function (event) {
+          const comp = (event.competitions && event.competitions[0]) || {};
+          const competitors = comp.competitors || [];
+
+          const mizzou =
+            competitors.find(function (c) {
+              return c.team && String(c.team.id) === MIZZOU_TEAM_ID;
+            }) || competitors[0] || {};
+
+          const opponent =
+            competitors.find(function (c) {
+              return c.team && String(c.team.id) !== MIZZOU_TEAM_ID;
+            }) || competitors[1] || {};
+
+          const oppTeam = opponent.team || {};
+          const oppName = oppTeam.displayName || oppTeam.shortDisplayName || 'TBD';
+          const oppLogo = extractLogo(oppTeam);
+          const oppRank =
+            opponent.curatedRank && opponent.curatedRank.current && opponent.curatedRank.current <= 25
+              ? '#' + opponent.curatedRank.current + ' '
+              : '';
+
+          const isNeutral = Boolean(comp.neutralSite);
+          const isHome = mizzou.homeAway === 'home';
+          const locationBadgeText = isNeutral ? 'NEUTRAL SITE' : isHome ? 'HOME • FAUROT FIELD' : 'AWAY • ROAD GAME';
+          const vsPrefix = isNeutral ? 'vs.' : isHome ? 'vs.' : '@';
+
+          const statusObj = (comp.status && comp.status.type) || (event.status && event.status.type) || {};
+          const state = statusObj.state || 'pre'; // 'pre' | 'in' | 'post'
+          const shortDetail = statusObj.shortDetail || formatDateAndTime(event.date, event.timeValid);
+
+          const isLive = state === 'in';
+          const isFinal = state === 'post';
+          const isNextUp = event.id === nextUpEventId;
+
+          const mizzouScore = extractScore(mizzou.score);
+          const oppScore = extractScore(opponent.score);
+          const mizzouWon = Boolean(mizzou.winner) || (isFinal && parseInt(mizzouScore, 10) > parseInt(oppScore, 10));
+
+          const broadcast =
+            (comp.broadcasts &&
+              comp.broadcasts[0] &&
+              ((comp.broadcasts[0].media && comp.broadcasts[0].media.shortName) ||
+                (comp.broadcasts[0].names && comp.broadcasts[0].names.join('/')))) ||
+            'SEC / ESPN';
+
+          const venueName = (comp.venue && comp.venue.fullName) || '';
+
+          let statusPillHtml = '';
+          if (isLive) {
+            statusPillHtml =
+              '<span class="inline-flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow">' +
+              '<span class="w-2 h-2 rounded-full bg-white animate-ping"></span>' +
+              'LIVE • ' +
+              escapeHtml(shortDetail) +
+              '</span>';
+          } else if (isFinal) {
+            statusPillHtml =
+              '<span class="inline-flex items-center gap-1.5 ' +
+              (mizzouWon
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                : 'bg-white/10 text-gray-300 border border-white/15') +
+              ' text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md">' +
+              (mizzouWon ? 'W • FINAL' : 'L • FINAL') +
+              '</span>';
+          } else {
+            statusPillHtml =
+              '<span class="inline-flex items-center gap-1.5 ' +
+              (isNextUp
+                ? 'bg-[#F1B82D] text-black font-black'
+                : 'bg-[#F1B82D]/15 text-[#F1B82D] border border-[#F1B82D]/40 font-extrabold') +
+              ' text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-md">' +
+              (isNextUp ? '🔥 NEXT UP • UPCOMING' : 'UPCOMING') +
+              '</span>';
+          }
+
+          return (
+            '<article class="group rounded-2xl ' +
+            (isLive || isNextUp
+              ? 'bg-gradient-to-b from-[#1F2937] to-[#111827] border-2 border-[#F1B82D] shadow-gold-glow'
+              : 'bg-[#111827]/95 hover:bg-[#1F2937] border border-[#F1B82D]/30 hover:border-[#F1B82D]') +
+            ' p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5">' +
+            '<div>' +
+            '<!-- Top Status & Home/Away Pill Row -->' +
+            '<div class="flex flex-wrap items-center justify-between gap-2 mb-3.5">' +
+            statusPillHtml +
+            '<span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded bg-black text-[#F1B82D] border border-[#F1B82D]/30">' +
+            escapeHtml(locationBadgeText) +
+            '</span>' +
+            '</div>' +
+            '<!-- Opponent Matchup Row -->' +
+            '<div class="flex items-center gap-3.5 py-2">' +
+            '<div class="w-12 h-12 rounded-xl bg-black border border-white/15 p-1.5 flex items-center justify-center shrink-0">' +
+            '<img src="' +
+            escapeHtml(oppLogo) +
+            '" alt="' +
+            escapeHtml(oppName) +
+            ' logo" width="40" height="40" loading="lazy" class="w-full h-full object-contain" />' +
+            '</div>' +
+            '<div class="min-w-0 flex-1">' +
+            '<p class="text-[11px] font-bold uppercase tracking-wider text-[#F1B82D]">' +
+            escapeHtml(vsPrefix) +
+            ' Opponent</p>' +
+            '<h3 class="font-display text-lg sm:text-xl font-bold uppercase text-white group-hover:text-[#F1B82D] transition-colors truncate">' +
+            escapeHtml(oppRank + oppName) +
+            '</h3>' +
+            '<p class="text-xs text-gray-300 font-medium mt-0.5">' +
+            escapeHtml(formatDateAndTime(event.date, event.timeValid)) +
+            '</p>' +
+            '</div>' +
+            '</div>' +
+            '<!-- Scoreboard Box (Live/Final) or Kickoff Watch Party Box (Upcoming) -->' +
+            (isLive || isFinal
+              ? '<div class="mt-3 rounded-xl bg-black/80 border border-[#F1B82D]/30 p-3 space-y-1.5">' +
+                '<div class="flex items-center justify-between text-sm">' +
+                '<span class="font-display font-bold uppercase tracking-wider text-[#F1B82D] flex items-center gap-1.5">' +
+                '🐅 Mizzou Tigers' +
+                '</span>' +
+                '<strong class="font-display text-xl font-extrabold text-[#F1B82D]">' +
+                escapeHtml(mizzouScore || '0') +
+                '</strong>' +
+                '</div>' +
+                '<div class="flex items-center justify-between text-sm border-t border-white/10 pt-1.5">' +
+                '<span class="font-medium text-gray-300 truncate pr-2">' +
+                escapeHtml(oppRank + (oppTeam.shortDisplayName || oppName)) +
+                '</span>' +
+                '<span class="font-display text-lg font-semibold text-gray-300">' +
+                escapeHtml(oppScore || '0') +
+                '</span>' +
+                '</div>' +
+                '</div>'
+              : '<div class="mt-3 rounded-xl bg-black/70 border border-white/10 p-3 flex items-center justify-between gap-2">' +
+                '<span class="text-xs text-gray-300 font-medium">🔊 Full Game Sound at Ray\'s</span>' +
+                '<span class="text-xs font-extrabold uppercase tracking-wider text-[#F1B82D]">M-I-Z!</span>' +
+                '</div>') +
+            '</div>' +
+            '<!-- Footer: TV Network & Stadium -->' +
+            '<div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-gray-400">' +
+            '<span class="inline-flex items-center gap-1 font-bold text-gray-200 bg-black px-2 py-0.5 rounded border border-white/10">' +
+            '📺 ' +
+            escapeHtml(broadcast) +
+            '</span>' +
+            '<span class="truncate text-right">' +
+            escapeHtml(venueName || 'Watch Party on 54+ HD TVs') +
+            '</span>' +
+            '</div>' +
+            '</article>'
+          );
+        })
+        .join('');
+    }
+
+    async function fetchMizzouSchedule(seasonYear) {
+      loadingState.classList.remove('hidden');
+      errorState.classList.add('hidden');
+      gamesGrid.classList.add('hidden');
+
+      try {
+        const url = seasonYear
+          ? API_BASE + '?season=' + encodeURIComponent(seasonYear)
+          : API_BASE;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        cachedEvents = data.events || [];
+        const seasonDisplay =
+          (data.season && data.season.year) ||
+          seasonYear ||
+          new Date().getFullYear();
+        const recordSummary =
+          (data.team && data.team.recordSummary) || '';
+        const standingSummary =
+          (data.team && data.team.standingSummary) || 'SEC';
+
+        if (recordBadge) {
+          recordBadge.textContent = recordSummary
+            ? 'Record: ' + recordSummary + (standingSummary ? ' • ' + standingSummary : '')
+            : 'SEC Football';
+        }
+
+        if (scheduleSummary) {
+          scheduleSummary.textContent =
+            seasonDisplay +
+            ' Mizzou Football Schedule (' +
+            cachedEvents.length +
+            ' Games)' +
+            (recordSummary ? ' • Overall Record: ' + recordSummary : '');
+        }
+
+        if (lastUpdated) {
+          lastUpdated.textContent =
+            'Updated ' +
+            new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        }
+
+        // Sync the Mizzou Watch Party EventCard above the widget with the live/next game
+        const mizzouCard = document.querySelector('[data-event-id="mizzou-saturdays"]');
+        if (mizzouCard && cachedEvents.length > 0) {
+          let featuredEvent = null;
+          for (let i = 0; i < cachedEvents.length; i++) {
+            const c = (cachedEvents[i].competitions && cachedEvents[i].competitions[0]) || {};
+            const st = (c.status && c.status.type) || (cachedEvents[i].status && cachedEvents[i].status.type) || {};
+            if (st.state === 'in' || st.state === 'pre') {
+              featuredEvent = cachedEvents[i];
+              break;
+            }
+          }
+          if (!featuredEvent) {
+            featuredEvent = cachedEvents[cachedEvents.length - 1];
+          }
+          if (featuredEvent) {
+            const comp = (featuredEvent.competitions && featuredEvent.competitions[0]) || {};
+            const competitors = comp.competitors || [];
+            const mizzouComp =
+              competitors.find(function (c) {
+                return c.team && String(c.team.id) === MIZZOU_TEAM_ID;
+              }) || competitors[0] || {};
+            const oppComp =
+              competitors.find(function (c) {
+                return c.team && String(c.team.id) !== MIZZOU_TEAM_ID;
+              }) || competitors[1] || {};
+            const oppTeam = oppComp.team || {};
+            const oppName = oppTeam.displayName || oppTeam.shortDisplayName || 'SEC Opponent';
+            const isHome = mizzouComp.homeAway === 'home';
+            const isNeutral = Boolean(comp.neutralSite);
+            const vsWord = isNeutral ? 'vs.' : isHome ? 'vs.' : 'at';
+            const stObj = (comp.status && comp.status.type) || (featuredEvent.status && featuredEvent.status.type) || {};
+            const stState = stObj.state || 'pre';
+            const broadcastName =
+              (comp.broadcasts &&
+                comp.broadcasts[0] &&
+                ((comp.broadcasts[0].media && comp.broadcasts[0].media.shortName) ||
+                  (comp.broadcasts[0].names && comp.broadcasts[0].names.join('/')))) ||
+              'SEC Network / ESPN';
+
+            const matchupEl = mizzouCard.querySelector('[data-event-matchup]');
+            const dateEl = mizzouCard.querySelector('[data-event-date]');
+            const timeEl = mizzouCard.querySelector('[data-event-time]');
+            const tvEl = mizzouCard.querySelector('[data-event-tv]');
+
+            if (matchupEl) {
+              const prefix = stState === 'in' ? '🔴 LIVE NOW: ' : stState === 'pre' ? 'Next Watch Party: ' : 'Latest Game: ';
+              matchupEl.textContent = prefix + 'Missouri Tigers ' + vsWord + ' ' + oppName + (recordSummary ? ' (' + recordSummary + ')' : '');
+            }
+            if (dateEl && featuredEvent.date) {
+              const d = new Date(featuredEvent.date);
+              dateEl.textContent = d.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              });
+            }
+            if (timeEl && featuredEvent.date) {
+              if (featuredEvent.timeValid === false) {
+                timeEl.textContent = 'Kickoff TBD • Doors Open 10:00 AM • Sound ON';
+              } else {
+                const d = new Date(featuredEvent.date);
+                const tStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                timeEl.textContent = 'Kickoff ' + tStr + ' • Full Stadium Sound ON';
+              }
+            }
+            if (tvEl) {
+              tvEl.textContent = 'Main Wall + 40+ HD Screens • Broadcast: ' + broadcastName + ' (Full Bar & Patio Audio)';
+            }
+          }
+        }
+
+        loadingState.classList.add('hidden');
+        gamesGrid.classList.remove('hidden');
+        gamesGrid.classList.add('grid');
+        renderSchedule();
+      } catch (err) {
+        console.error('Mizzou Schedule Widget error:', err);
+        loadingState.classList.add('hidden');
+        errorState.classList.remove('hidden');
+      }
+    }
+
+    // Filter tabs
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        currentFilter = btn.getAttribute('data-mizzou-filter') || 'all';
+        filterBtns.forEach(function (b) {
+          b.classList.remove('bg-[#F1B82D]', 'text-black');
+          b.classList.add('text-gray-300');
+        });
+        btn.classList.add('bg-[#F1B82D]', 'text-black');
+        btn.classList.remove('text-gray-300');
+        renderSchedule();
+      });
+    });
+
+    seasonSelect.addEventListener('change', function () {
+      selectedSeason = seasonSelect.value;
+      fetchMizzouSchedule(selectedSeason);
+    });
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', function () {
+        fetchMizzouSchedule(selectedSeason);
+      });
+    }
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function () {
+        fetchMizzouSchedule(selectedSeason);
+      });
+    }
+
+    // Initial load
+    fetchMizzouSchedule('');
+
+    // Auto-refresh every 60s for live Mizzou game scores
+    setInterval(function () {
+      if (!document.hidden) {
+        fetchMizzouSchedule(selectedSeason);
+      }
+    }, 60000);
+  })();
+</script>
