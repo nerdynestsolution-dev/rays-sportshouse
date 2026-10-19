@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventCard from '../components/EventCard.astro';
 import MenuItem from '../components/MenuItem.astro';
+import MizzouNextGameFloat from '../components/MizzouNextGameFloat.astro';
 import menuData from '../data/menu.json';
 import eventsData from '../data/events.json';
 import specialsData from '../data/specials.json';
@@ -449,4 +450,7 @@ const { happyHour, location } = specialsData;
       </div>
     </div>
   </section>
+
+  <!-- Floating Bottom-Right Next Mizzou Football Game Widget -->
+  <MizzouNextGameFloat />
 </BaseLayout>

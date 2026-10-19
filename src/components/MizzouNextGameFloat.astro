@@ -1,0 +1,727 @@
+---
+// Compact, lightweight floating widget displaying exclusively the next upcoming Mizzou Football game
+// Powered by ESPN's public College Football Schedule API (Team ID 142 - Missouri Tigers)
+---
+
+<aside
+  id="mizzou-next-game-float"
+  class="miz-float-root"
+  aria-label="Next Upcoming Mizzou Tigers Football Game"
+>
+  <style>
+    .miz-float-root {
+      --miz-black: #000000;
+      --miz-surface: #0f141c;
+      --miz-gold: #F1B82D;
+      --miz-gold-hover: #ffd100;
+      --miz-text: #ffffff;
+      --miz-muted: #9ca3af;
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 45;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--miz-text);
+      box-sizing: border-box;
+    }
+
+    /* Clear the mobile sticky bottom bar on small screens */
+    @media (max-width: 639px) {
+      .miz-float-root {
+        bottom: 68px;
+        right: 12px;
+        left: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        pointer-events: none;
+      }
+    }
+
+    .miz-float-root *,
+    .miz-float-root *::before,
+    .miz-float-root *::after {
+      box-sizing: inherit;
+    }
+
+    /* Expanded Floating Card */
+    .miz-float-card {
+      pointer-events: auto;
+      width: 330px;
+      max-width: calc(100vw - 24px);
+      background: linear-gradient(165deg, #000000 0%, #121824 60%, #000000 100%);
+      border: 2px solid var(--miz-gold);
+      border-radius: 18px;
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(241, 184, 45, 0.28);
+      overflow: hidden;
+      transform-origin: bottom right;
+      transition:
+        opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .miz-float-card.is-minimized {
+      opacity: 0;
+      transform: scale(0.85) translateY(16px);
+      pointer-events: none;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      visibility: hidden;
+    }
+
+    /* Top Gold Accent Header Bar */
+    .miz-float-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(90deg, rgba(241, 184, 45, 0.2) 0%, rgba(0, 0, 0, 0.9) 100%);
+      border-bottom: 1px solid rgba(241, 184, 45, 0.35);
+    }
+
+    .miz-float-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--miz-black);
+      background: var(--miz-gold);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .miz-float-badge.is-live {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    .miz-live-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: mizFloatPulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes mizFloatPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.45); opacity: 0.35; }
+    }
+
+    .miz-float-min-btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--miz-gold);
+      border: 1px solid rgba(241, 184, 45, 0.4);
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1;
+      transition: all 0.15s ease;
+    }
+
+    .miz-float-min-btn:hover {
+      background: var(--miz-gold);
+      color: var(--miz-black);
+    }
+
+    /* Card Body */
+    .miz-float-body {
+      padding: 14px 16px;
+    }
+
+    /* Teams Row */
+    .miz-teams-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 0 12px;
+    }
+
+    .miz-team-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .miz-team-logo-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: #000000;
+      border: 1.5px solid rgba(241, 184, 45, 0.45);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .miz-team-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .miz-team-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      line-height: 1.15;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .miz-team-name.is-mizzou {
+      color: var(--miz-gold);
+    }
+
+    .miz-team-sub {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--miz-muted);
+      margin-top: 2px;
+    }
+
+    .miz-vs-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      shrink: 0;
+      padding: 0 2px;
+    }
+
+    .miz-vs-pill {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--miz-black);
+      background: var(--miz-gold);
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.06em;
+    }
+
+    .miz-live-score {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--miz-gold);
+      margin-top: 4px;
+    }
+
+    /* Details Grid */
+    .miz-details-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(241, 184, 45, 0.25);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .miz-detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .miz-detail-item.full-span {
+      grid-column: 1 / -1;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .miz-detail-label {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--miz-gold);
+    }
+
+    .miz-detail-value {
+      font-weight: 700;
+      color: #f3f4f6;
+      font-size: 11.5px;
+    }
+
+    .miz-tv-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #000000;
+      color: var(--miz-gold);
+      border: 1px solid rgba(241, 184, 45, 0.45);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 11px;
+    }
+
+    /* Footer CTA inside floating card */
+    .miz-float-footer {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .miz-sound-note {
+      color: #d1d5db;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .miz-watch-link {
+      color: var(--miz-gold);
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      font-size: 12px;
+      transition: color 0.15s ease;
+    }
+
+    .miz-watch-link:hover {
+      color: var(--miz-gold-hover);
+      text-decoration: underline;
+    }
+
+    /* Minimized Launcher Pill Button */
+    .miz-float-launcher {
+      pointer-events: auto;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #000000;
+      color: #ffffff;
+      border: 2px solid var(--miz-gold);
+      border-radius: 999px;
+      padding: 7px 14px 7px 9px;
+      cursor: pointer;
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.8),
+        0 0 18px rgba(241, 184, 45, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .miz-float-launcher.is-visible {
+      display: inline-flex;
+    }
+
+    .miz-float-launcher:hover {
+      transform: translateY(-2px);
+      background: #121824;
+      box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.85),
+        0 0 24px rgba(241, 184, 45, 0.55);
+    }
+
+    .miz-launcher-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #000000;
+      border: 1.5px solid var(--miz-gold);
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .miz-launcher-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .miz-launcher-text {
+      text-align: left;
+      line-height: 1.15;
+    }
+
+    .miz-launcher-kicker {
+      display: block;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--miz-gold);
+    }
+
+    .miz-launcher-matchup {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .miz-launcher-expand-icon {
+      margin-left: 2px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--miz-gold);
+      color: var(--miz-black);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+  </style>
+
+  <!-- Expanded Widget Card -->
+  <div id="miz-float-card" class="miz-float-card" role="region" aria-label="Next Mizzou Game Card">
+    <div class="miz-float-header">
+      <span id="miz-float-status-badge" class="miz-float-badge">
+        <span class="miz-live-pulse"></span>
+        <span>Next Mizzou Game</span>
+      </span>
+      <button
+        type="button"
+        id="miz-float-minimize-btn"
+        class="miz-float-min-btn"
+        aria-label="Minimize Mizzou Next Game Widget"
+        title="Minimize"
+      >
+        —
+      </button>
+    </div>
+
+    <div id="miz-float-content" class="miz-float-body">
+      <p style="font-size: 12px; color: #d1d5db; margin: 8px 0; text-align: center;">
+        Loading next Mizzou Tigers matchup...
+      </p>
+    </div>
+  </div>
+
+  <!-- Minimized Floating Pill Button -->
+  <button
+    type="button"
+    id="miz-float-expand-btn"
+    class="miz-float-launcher"
+    aria-label="Expand Next Mizzou Football Game Widget"
+    title="Show Next Mizzou Game"
+  >
+    <span class="miz-launcher-logo">
+      <img
+        src="https://a.espncdn.com/i/teamlogos/ncaa/500/142.png"
+        alt="Mizzou Tigers Logo"
+        width="28"
+        height="28"
+      />
+    </span>
+    <span class="miz-launcher-text">
+      <span class="miz-launcher-kicker">🐅 Next Mizzou Game</span>
+      <span id="miz-launcher-label" class="miz-launcher-matchup">Mizzou Football</span>
+    </span>
+    <span class="miz-launcher-expand-icon" aria-hidden="true">▲</span>
+  </button>
+</aside>
+
+<script is:inline>
+  (function () {
+    const MIZZOU_ID = '142';
+    const MIZZOU_LOGO = 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png';
+    const SCHEDULE_ENDPOINT =
+      'https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/' +
+      MIZZOU_ID +
+      '/schedule';
+
+    const cardEl = document.getElementById('miz-float-card');
+    const contentEl = document.getElementById('miz-float-content');
+    const badgeEl = document.getElementById('miz-float-status-badge');
+    const minBtn = document.getElementById('miz-float-minimize-btn');
+    const expandBtn = document.getElementById('miz-float-expand-btn');
+    const launcherLabel = document.getElementById('miz-launcher-label');
+
+    if (!cardEl || !contentEl || !minBtn || !expandBtn) return;
+
+    function setMinimized(minimized) {
+      if (minimized) {
+        cardEl.classList.add('is-minimized');
+        expandBtn.classList.add('is-visible');
+      } else {
+        cardEl.classList.remove('is-minimized');
+        expandBtn.classList.remove('is-visible');
+      }
+      try {
+        sessionStorage.setItem('miz_next_game_minimized', minimized ? '1' : '0');
+      } catch (e) {}
+    }
+
+    // Restore user's session preference if they minimized earlier
+    try {
+      if (sessionStorage.getItem('miz_next_game_minimized') === '1') {
+        setMinimized(true);
+      }
+    } catch (e) {}
+
+    minBtn.addEventListener('click', function () {
+      setMinimized(true);
+    });
+
+    expandBtn.addEventListener('click', function () {
+      setMinimized(false);
+    });
+
+    function esc(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function extractLogo(team) {
+      if (!team) return MIZZOU_LOGO;
+      if (team.logos && team.logos[0] && team.logos[0].href) return team.logos[0].href;
+      if (team.logo) return team.logo;
+      return MIZZOU_LOGO;
+    }
+
+    function extractScore(scoreField) {
+      if (scoreField === null || scoreField === undefined) return '';
+      if (typeof scoreField === 'object') {
+        if (scoreField.displayValue !== undefined) return String(scoreField.displayValue);
+        if (scoreField.value !== undefined) return String(scoreField.value);
+        return '';
+      }
+      return String(scoreField);
+    }
+
+    function isolateNextGame(events) {
+      if (!Array.isArray(events) || events.length === 0) return null;
+      const now = Date.now();
+
+      // 1. Prioritize any game currently LIVE ('in') or upcoming ('pre')
+      for (let i = 0; i < events.length; i++) {
+        const ev = events[i];
+        const comp = (ev.competitions && ev.competitions[0]) || {};
+        const st = (comp.status && comp.status.type) || (ev.status && ev.status.type) || {};
+        if (st.state === 'in' || st.state === 'pre') {
+          return ev;
+        }
+        // Also check timestamp in case state hasn't flipped yet
+        const evTime = Date.parse(ev.date || '');
+        if (!isNaN(evTime) && evTime >= now && st.state !== 'post') {
+          return ev;
+        }
+      }
+
+      // Fallback to the final game of the list if all games in the current response are completed
+      return null;
+    }
+
+    async function fetchNextMizzouGame() {
+      try {
+        const res = await fetch(SCHEDULE_ENDPOINT);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        let events = data.events || [];
+        let nextEvent = isolateNextGame(events);
+
+        // If the current season has finished all games, check next calendar year's schedule
+        if (!nextEvent) {
+          const nextYear = new Date().getFullYear() + 1;
+          try {
+            const nextRes = await fetch(SCHEDULE_ENDPOINT + '?season=' + nextYear);
+            if (nextRes.ok) {
+              const nextData = await nextRes.json();
+              nextEvent = isolateNextGame(nextData.events || []);
+            }
+          } catch (e) {}
+        }
+
+        // If still no future event, fall back to the most recent game
+        if (!nextEvent && events.length > 0) {
+          nextEvent = events[events.length - 1];
+        }
+
+        if (!nextEvent) {
+          throw new Error('No upcoming Mizzou game found');
+        }
+
+        renderNextGame(nextEvent, data.team && data.team.recordSummary);
+      } catch (err) {
+        console.error('Mizzou Next Game Widget error:', err);
+        contentEl.innerHTML =
+          '<div style="text-align:center; padding: 6px 0;">' +
+          '<p style="font-family: Oswald, sans-serif; font-size: 15px; text-transform: uppercase; color: #F1B82D; margin: 0 0 4px;">🐅 Mizzou Tigers Football</p>' +
+          '<p style="font-size: 11px; color: #d1d5db; margin: 0;">Watch every Mizzou game live on 54+ HD screens with full stadium sound!</p>' +
+          '</div>';
+      }
+    }
+
+    function renderNextGame(ev, recordSummary) {
+      const comp = (ev.competitions && ev.competitions[0]) || {};
+      const competitors = comp.competitors || [];
+
+      const mizzou =
+        competitors.find(function (c) {
+          return c.team && String(c.team.id) === MIZZOU_ID;
+        }) || competitors[0] || {};
+
+      const opponent =
+        competitors.find(function (c) {
+          return c.team && String(c.team.id) !== MIZZOU_ID;
+        }) || competitors[1] || {};
+
+      const mizTeam = mizzou.team || {};
+      const oppTeam = opponent.team || {};
+
+      const mizLogo = extractLogo(mizTeam);
+      const oppLogo = extractLogo(oppTeam);
+      const oppName = oppTeam.shortDisplayName || oppTeam.displayName || 'Opponent';
+      const oppFullName = oppTeam.displayName || oppName;
+      const oppRank =
+        opponent.curatedRank && opponent.curatedRank.current && opponent.curatedRank.current <= 25
+          ? '#' + opponent.curatedRank.current + ' '
+          : '';
+
+      const isNeutral = Boolean(comp.neutralSite);
+      const isHome = mizzou.homeAway === 'home';
+      const vsText = isNeutral ? 'VS' : isHome ? 'VS' : 'AT';
+      const venueTag = isNeutral ? 'Neutral Site' : isHome ? 'Home • Faurot Field' : 'Away Game';
+
+      const stObj = (comp.status && comp.status.type) || (ev.status && ev.status.type) || {};
+      const state = stObj.state || 'pre';
+      const isLive = state === 'in';
+
+      if (badgeEl) {
+        if (isLive) {
+          badgeEl.className = 'miz-float-badge is-live';
+          badgeEl.innerHTML =
+            '<span class="miz-live-pulse"></span><span>LIVE NOW • ' +
+            esc(stObj.shortDetail || 'In Progress') +
+            '</span>';
+        } else {
+          badgeEl.className = 'miz-float-badge';
+          badgeEl.innerHTML =
+            '<span class="miz-live-pulse"></span><span>🐅 Next Mizzou Game</span>';
+        }
+      }
+
+      // Format Date & Kickoff Time
+      let formattedDate = 'TBD';
+      let formattedTime = 'TBD';
+      if (ev.date) {
+        const d = new Date(ev.date);
+        formattedDate = d.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        });
+        if (ev.timeValid === false) {
+          formattedTime = 'Kickoff TBD';
+        } else {
+          formattedTime = d.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+          });
+        }
+      }
+
+      // Extract Broadcast TV Network
+      const broadcast =
+        (comp.broadcasts &&
+          comp.broadcasts[0] &&
+          ((comp.broadcasts[0].media && comp.broadcasts[0].media.shortName) ||
+            (comp.broadcasts[0].names && comp.broadcasts[0].names.join(' / ')))) ||
+        'SEC Network / ESPN';
+
+      // Update Minimized Pill Label
+      if (launcherLabel) {
+        launcherLabel.textContent = 'Mizzou ' + (isHome || isNeutral ? 'vs.' : '@') + ' ' + oppName;
+      }
+
+      const mizScore = extractScore(mizzou.score);
+      const oppScore = extractScore(opponent.score);
+
+      contentEl.innerHTML =
+        '<div class="miz-teams-row">' +
+        '  <div class="miz-team-col">' +
+        '    <div class="miz-team-logo-wrap">' +
+        '      <img src="' + esc(mizLogo) + '" alt="Missouri Tigers logo" width="40" height="40" />' +
+        '    </div>' +
+        '    <span class="miz-team-name is-mizzou">Mizzou</span>' +
+        '    <span class="miz-team-sub">' + esc(recordSummary || 'Tigers') + '</span>' +
+        '  </div>' +
+        '  <div class="miz-vs-center">' +
+        '    <span class="miz-vs-pill">' + esc(vsText) + '</span>' +
+        (isLive
+          ? '<span class="miz-live-score">' + esc(mizScore || '0') + ' - ' + esc(oppScore || '0') + '</span>'
+          : '') +
+        '  </div>' +
+        '  <div class="miz-team-col">' +
+        '    <div class="miz-team-logo-wrap">' +
+        '      <img src="' + esc(oppLogo) + '" alt="' + esc(oppFullName) + ' logo" width="40" height="40" />' +
+        '    </div>' +
+        '    <span class="miz-team-name" title="' + esc(oppRank + oppFullName) + '">' + esc(oppRank + oppName) + '</span>' +
+        '    <span class="miz-team-sub">' + esc(venueTag) + '</span>' +
+        '  </div>' +
+        '</div>' +
+        '<div class="miz-details-box">' +
+        '  <div class="miz-detail-item">' +
+        '    <span class="miz-detail-label">📅 Game Date</span>' +
+        '    <span class="miz-detail-value">' + esc(formattedDate) + '</span>' +
+        '  </div>' +
+        '  <div class="miz-detail-item">' +
+        '    <span class="miz-detail-label">⏰ Kickoff Time</span>' +
+        '    <span class="miz-detail-value">' + esc(formattedTime) + '</span>' +
+        '  </div>' +
+        '  <div class="miz-detail-item full-span">' +
+        '    <span class="miz-detail-label">📺 Broadcast TV</span>' +
+        '    <span class="miz-tv-pill">' + esc(broadcast) + '</span>' +
+        '  </div>' +
+        '</div>' +
+        '<div class="miz-float-footer">' +
+        '  <span class="miz-sound-note">🔊 54+ TVs &amp; Full Sound</span>' +
+        '  <a href="/events" class="miz-watch-link">Watch Party Info →</a>' +
+        '</div>';
+    }
+
+    fetchNextMizzouGame();
+  })();
+</script>
