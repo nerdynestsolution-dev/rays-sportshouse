@@ -410,8 +410,8 @@
     }
   </style>
 
-  <!-- Expanded Widget Card -->
-  <div id="miz-float-card" class="miz-float-card" role="region" aria-label="Next Mizzou Game Card">
+  <!-- Expanded Widget Card (Starts Minimized by Default) -->
+  <div id="miz-float-card" class="miz-float-card is-minimized" role="region" aria-label="Next Mizzou Game Card">
     <div class="miz-float-header">
       <span id="miz-float-status-badge" class="miz-float-badge">
         <span class="miz-live-pulse"></span>
@@ -435,11 +435,11 @@
     </div>
   </div>
 
-  <!-- Minimized Floating Pill Button -->
+  <!-- Minimized Floating Pill Button (Visible by Default) -->
   <button
     type="button"
     id="miz-float-expand-btn"
-    class="miz-float-launcher"
+    class="miz-float-launcher is-visible"
     aria-label="Expand Next Mizzou Football Game Widget"
     title="Show Next Mizzou Game"
   >
@@ -485,17 +485,10 @@
         cardEl.classList.remove('is-minimized');
         expandBtn.classList.remove('is-visible');
       }
-      try {
-        sessionStorage.setItem('miz_next_game_minimized', minimized ? '1' : '0');
-      } catch (e) {}
     }
 
-    // Restore user's session preference if they minimized earlier
-    try {
-      if (sessionStorage.getItem('miz_next_game_minimized') === '1') {
-        setMinimized(true);
-      }
-    } catch (e) {}
+    // Always start minimized on page load so it never blocks the screen; user can tap to expand
+    setMinimized(true);
 
     minBtn.addEventListener('click', function () {
       setMinimized(true);
