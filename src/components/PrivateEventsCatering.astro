@@ -18,7 +18,7 @@ const { id = 'private-events' } = Astro.props;
 
 <section
   id={id}
-  class="relative py-16 sm:py-24 bg-mizzou-black border-t-2 border-b-2 border-mizzou-gold/40 overflow-hidden"
+  class="relative py-20 sm:py-28 bg-mizzou-black border-b border-white/10 overflow-hidden"
 >
   <!-- Ambient Tiger-Stripe & Stadium Gold Glow -->
   <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
@@ -26,75 +26,69 @@ const { id = 'private-events' } = Astro.props;
     class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[400px] bg-mizzou-gold/10 blur-[140px] rounded-full pointer-events-none"
   ></div>
 
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-      <!-- LEFT COLUMN: FLYER-INSPIRED SHOWCASE & VALUE PROPS -->
-      <div class="lg:col-span-6 space-y-6">
-        <div class="inline-flex items-center gap-2 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full shadow-gold-glow">
+  <div class="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <!-- LEFT COLUMN: SHOWCASE & VALUE PROPS -->
+      <div class="lg:col-span-6 space-y-8">
+        <div class="inline-flex items-center gap-2 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-gold-glow">
           <Sparkles class="w-3.5 h-3.5 stroke-[2.5]" />
           <span>Book Your Party At Ray's SportsHouse</span>
         </div>
 
-        <!-- Flyer-Inspired Underlined Gold Headline -->
-        <div class="space-y-2">
-          <h2 class="font-display text-4xl sm:text-6xl font-bold uppercase tracking-tight leading-[1.05] text-mizzou-gold">
-            <span class="underline decoration-mizzou-gold decoration-4 underline-offset-8">
-              Private Events
-            </span>
-            <br />
-            <span class="underline decoration-mizzou-gold decoration-4 underline-offset-8">
-              &amp; Catering
-            </span>
+        <!-- Clean Section Headline (No Underline) -->
+        <div class="space-y-3">
+          <h2 class="font-display text-4xl sm:text-6xl font-bold uppercase tracking-tight leading-tight text-white">
+            Private Events <span class="text-mizzou-gold">&amp; Catering</span>
           </h2>
-          <p class="pt-3 text-gray-200 text-base sm:text-lg leading-relaxed max-w-xl">
+          <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-xl">
             Host your next watch party, alumni meetup, birthday bash, fantasy draft, corporate happy hour, or catered event inside historic Soulard's ultimate sports headquarters.
           </p>
         </div>
 
-        <!-- 3 Highlighted Flyer Perks -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
-          <div class="rounded-2xl bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-4 shadow-gold-glow">
-            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold mb-2.5">
+        <!-- 3 Highlighted Perks with Generous Spacing -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+          <div class="rounded-2xl bg-mizzou-slate900/90 border border-mizzou-gold/30 p-5 sm:p-6">
+            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/30 flex items-center justify-center text-mizzou-gold mb-3">
               <Sparkles class="w-5 h-5" />
             </div>
             <p class="font-display text-xl font-bold uppercase text-[#FF8C42] tracking-wide">
               No Rental Fees!
             </p>
-            <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+            <p class="text-xs text-gray-300 mt-1.5 leading-relaxed">
               Zero room or table booking fees — reserve your space for free.
             </p>
           </div>
 
-          <div class="rounded-2xl bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-4 shadow-gold-glow">
-            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold mb-2.5">
+          <div class="rounded-2xl bg-mizzou-slate900/90 border border-mizzou-gold/30 p-5 sm:p-6">
+            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/30 flex items-center justify-center text-mizzou-gold mb-3">
               <Tv class="w-5 h-5" />
             </div>
             <p class="font-display text-xl font-bold uppercase text-[#FF8C42] tracking-wide">
               Speakers &amp; TVs to Use!
             </p>
-            <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+            <p class="text-xs text-gray-300 mt-1.5 leading-relaxed">
               54+ HD screens &amp; house sound system ready for your game or media.
             </p>
           </div>
 
-          <div class="rounded-2xl bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-4 shadow-gold-glow">
-            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold mb-2.5">
+          <div class="rounded-2xl bg-mizzou-slate900/90 border border-mizzou-gold/30 p-5 sm:p-6">
+            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/30 flex items-center justify-center text-mizzou-gold mb-3">
               <Users class="w-5 h-5" />
             </div>
             <p class="font-display text-xl font-bold uppercase text-[#FF8C42] tracking-wide">
               Any Size Group!
             </p>
-            <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+            <p class="text-xs text-gray-300 mt-1.5 leading-relaxed">
               From 10-person tables to full-bar buyouts &amp; custom catering trays.
             </p>
           </div>
         </div>
 
-        <!-- Flyer-Inspired Stacked Photo Collage + Direct Call Banner -->
-        <div class="rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/50 overflow-hidden shadow-gold-glow">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-mizzou-black">
+        <!-- Photo Collage + Direct Call Banner -->
+        <div class="rounded-3xl bg-mizzou-slate900 border border-mizzou-gold/35 overflow-hidden p-3 sm:p-4 space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <!-- Top/Left Photo: Pool Table, Mizzou Neon & Exposed Brick Game Room -->
-            <div class="relative aspect-[16/11] overflow-hidden group">
+            <div class="relative aspect-[16/11] rounded-2xl overflow-hidden group">
               <img
                 src="/gallery/patio-interior/mizzou-game-room-and-billiards.jpg"
                 alt="Ray's SportsHouse billiards table, Mizzou neon sign, and private event game room"
@@ -104,14 +98,14 @@ const { id = 'private-events' } = Astro.props;
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3.5">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold bg-black/80 border border-mizzou-gold/40 px-2.5 py-1 rounded-md">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold bg-black/80 border border-mizzou-gold/30 px-2.5 py-1 rounded-md">
                   🎱 Billiards, Photo Booth &amp; Lounge Space
                 </span>
               </div>
             </div>
 
             <!-- Bottom/Right Photo: Classic Soulard Bar & 54+ HD Screens -->
-            <div class="relative aspect-[16/11] overflow-hidden group">
+            <div class="relative aspect-[16/11] rounded-2xl overflow-hidden group">
               <img
                 src="/gallery/crowds/game-day-bar-crowd-and-hd-screens.jpg"
                 alt="Ray's SportsHouse full Soulard bar and surround HD screens for private events"
@@ -121,7 +115,7 @@ const { id = 'private-events' } = Astro.props;
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3.5">
-                <span class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold bg-black/80 border border-mizzou-gold/40 px-2.5 py-1 rounded-md">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold bg-black/80 border border-mizzou-gold/30 px-2.5 py-1 rounded-md">
                   🍺 Full Brass-Rail Bar &amp; 54+ HD TVs
                 </span>
               </div>
@@ -129,12 +123,12 @@ const { id = 'private-events' } = Astro.props;
           </div>
 
           <!-- Direct Call Banner ("Call 314-312-1360") -->
-          <div class="p-5 sm:p-6 bg-gradient-to-r from-mizzou-black via-mizzou-slate900 to-mizzou-black border-t border-mizzou-gold/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="p-5 sm:p-6 rounded-2xl bg-mizzou-black/90 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-center sm:text-left">
               <p class="text-xs font-extrabold uppercase tracking-widest text-[#FF8C42]">
                 Prefer To Book Over The Phone?
               </p>
-              <p class="font-display text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide mt-0.5">
+              <p class="font-display text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide mt-1">
                 Call <a href="tel:+13143121360" class="text-mizzou-gold hover:underline">314-312-1360</a>
               </p>
             </div>
@@ -149,25 +143,25 @@ const { id = 'private-events' } = Astro.props;
         </div>
 
         <!-- Scratch Catering Highlights -->
-        <div class="rounded-2xl bg-mizzou-slate900/90 border border-white/10 p-4 sm:p-5">
-          <p class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2.5 flex items-center gap-1.5">
+        <div class="rounded-2xl bg-mizzou-slate900/90 border border-white/10 p-5 sm:p-6">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-3 flex items-center gap-1.5">
             <Utensils class="w-4 h-4" />
             <span>Popular Catering &amp; Party Platter Favorites:</span>
           </p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-200">
-            <div class="flex items-center gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-gray-200">
+            <div class="flex items-center gap-2.5">
               <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
               <span>Ray's Almost Famous Jumbo Wings</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2.5">
               <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
               <span>Smash Burger &amp; Pastrami Sliders</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2.5">
               <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
               <span>STL Toasted Beef Ravioli &amp; Pretzels</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2.5">
               <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
               <span>Custom Drink Tabs &amp; Bucket Packages</span>
             </div>
@@ -177,15 +171,15 @@ const { id = 'private-events' } = Astro.props;
 
       <!-- RIGHT COLUMN: FORMSPREE PRIVATE EVENT & CATERING RESERVATION FORM -->
       <div class="lg:col-span-6">
-        <div class="rounded-3xl bg-gradient-to-b from-mizzou-slate900 to-mizzou-black border-2 border-mizzou-gold p-6 sm:p-8 shadow-gold-glow">
-          <div class="pb-5 mb-6 border-b border-mizzou-gold/30">
+        <div class="rounded-3xl bg-gradient-to-b from-mizzou-slate900 to-mizzou-black border border-mizzou-gold/50 p-6 sm:p-10 shadow-gold-glow">
+          <div class="pb-6 mb-7 border-b border-white/10">
             <span class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
               Zero Rental Fees • Fast Confirmation
             </span>
-            <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white mt-1">
+            <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white mt-1.5">
               Reserve Your <span class="text-mizzou-gold">Event or Catering</span>
             </h3>
-            <p class="text-xs sm:text-sm text-gray-300 mt-1">
+            <p class="text-xs sm:text-sm text-gray-300 mt-2 leading-relaxed">
               Fill out the details below and our management team will get right back to you to lock in your date, screens, sound, and menu!
             </p>
           </div>
@@ -193,7 +187,7 @@ const { id = 'private-events' } = Astro.props;
           <form
             action="https://formspree.io/f/xrpewebz"
             method="POST"
-            class="private-events-form space-y-4"
+            class="private-events-form space-y-5"
           >
             <input type="hidden" name="_subject" value="New Private Event / Catering Inquiry — Ray's SportsHouse" />
 
@@ -226,10 +220,10 @@ const { id = 'private-events' } = Astro.props;
               </div>
             </div>
 
-            <!-- Email & Booking Type -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Email & Group Size -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               <div>
-                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
                   Email Address *
                 </label>
                 <input
@@ -237,63 +231,18 @@ const { id = 'private-events' } = Astro.props;
                   name="email"
                   required
                   placeholder="you@example.com"
-                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white placeholder-gray-500 transition-colors"
                 />
               </div>
 
               <div>
-                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
-                  What Are You Booking? *
-                </label>
-                <select
-                  name="booking_type"
-                  required
-                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white cursor-pointer transition-colors"
-                >
-                  <option value="Private Event + Catering">Private Event + Catering</option>
-                  <option value="Private Party / Space Reservation">Private Party / Space Reservation (No Rental Fee)</option>
-                  <option value="Off-Site or Pickup Catering Order">Catering Order / Party Platters Only</option>
-                  <option value="Mizzou / Game Day Watch Party Group">Mizzou / Game Day Watch Party Group</option>
-                  <option value="Corporate Happy Hour / Team Outing">Corporate Happy Hour / Team Outing</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Event Date, Preferred Time & Estimated Group Size -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
-                  Event Date *
-                </label>
-                <input
-                  type="date"
-                  name="event_date"
-                  required
-                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-3.5 py-3 text-sm text-white transition-colors"
-                />
-              </div>
-
-              <div>
-                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
-                  Start Time *
-                </label>
-                <input
-                  type="text"
-                  name="event_time"
-                  required
-                  placeholder="e.g. 6:00 PM"
-                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-3.5 py-3 text-sm text-white placeholder-gray-500 transition-colors"
-                />
-              </div>
-
-              <div>
-                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
-                  Group Size *
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
+                  Estimated Group Size *
                 </label>
                 <select
                   name="group_size"
                   required
-                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-3.5 py-3 text-sm text-white cursor-pointer transition-colors"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white cursor-pointer transition-colors"
                 >
                   <option value="10–20 Guests">10–20 Guests</option>
                   <option value="20–40 Guests">20–40 Guests</option>
@@ -305,12 +254,58 @@ const { id = 'private-events' } = Astro.props;
               </div>
             </div>
 
-            <!-- Equipment & Catering Checkboxes -->
-            <fieldset class="rounded-2xl bg-mizzou-black/70 border border-white/15 p-4">
-              <legend class="px-2 text-xs font-extrabold uppercase tracking-wider text-mizzou-gold">
+            <!-- Booking Type -->
+            <div>
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
+                What Are You Booking? *
+              </label>
+              <select
+                name="booking_type"
+                required
+                class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white cursor-pointer transition-colors"
+              >
+                <option value="Private Event + Catering">Private Event + Catering</option>
+                <option value="Private Party / Space Reservation">Private Party / Space Reservation (No Rental Fee)</option>
+                <option value="Off-Site or Pickup Catering Order">Catering Order / Party Platters Only</option>
+                <option value="Mizzou / Game Day Watch Party Group">Mizzou / Game Day Watch Party Group</option>
+                <option value="Corporate Happy Hour / Team Outing">Corporate Happy Hour / Team Outing</option>
+              </select>
+            </div>
+
+            <!-- Event Date & Start Time (Spacious 2-Column Grid) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
+                  Event Date *
+                </label>
+                <input
+                  type="date"
+                  name="event_date"
+                  required
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white transition-colors"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
+                  Start Time *
+                </label>
+                <input
+                  type="text"
+                  name="event_time"
+                  required
+                  placeholder="e.g. 6:00 PM"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white placeholder-gray-500 transition-colors"
+                />
+              </div>
+            </div>
+
+            <!-- Equipment & Catering Checkboxes (Clean Card without Fieldset Legend Border Cut) -->
+            <div class="rounded-2xl bg-mizzou-black/70 border border-white/15 p-5">
+              <p class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-3.5">
                 Included Perks &amp; Options Needed
-              </legend>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-gray-200 mt-1">
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-gray-200">
                 <label class="flex items-center gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
@@ -350,7 +345,7 @@ const { id = 'private-events' } = Astro.props;
                   <span>Drink Packages / Custom Bar Tab</span>
                 </label>
               </div>
-            </fieldset>
+            </div>
 
             <!-- Event Notes / Catering Details -->
             <div>
