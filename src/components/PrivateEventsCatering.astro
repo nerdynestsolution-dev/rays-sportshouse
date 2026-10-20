@@ -1,0 +1,444 @@
+---
+import {
+  Phone,
+  Tv,
+  Users,
+  Sparkles,
+  Utensils,
+  CheckCircle2,
+  Send,
+} from '@lucide/astro';
+
+export interface Props {
+  id?: string;
+}
+
+const { id = 'private-events' } = Astro.props;
+---
+
+<section
+  id={id}
+  class="relative py-16 sm:py-24 bg-mizzou-black border-t-2 border-b-2 border-mizzou-gold/40 overflow-hidden"
+>
+  <!-- Ambient Tiger-Stripe & Stadium Gold Glow -->
+  <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
+  <div
+    class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[400px] bg-mizzou-gold/10 blur-[140px] rounded-full pointer-events-none"
+  ></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+      <!-- LEFT COLUMN: FLYER-INSPIRED SHOWCASE & VALUE PROPS -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="inline-flex items-center gap-2 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full shadow-gold-glow">
+          <Sparkles class="w-3.5 h-3.5 stroke-[2.5]" />
+          <span>Book Your Party At Ray's SportsHouse</span>
+        </div>
+
+        <!-- Flyer-Inspired Underlined Gold Headline -->
+        <div class="space-y-2">
+          <h2 class="font-display text-4xl sm:text-6xl font-bold uppercase tracking-tight leading-[1.05] text-mizzou-gold">
+            <span class="underline decoration-mizzou-gold decoration-4 underline-offset-8">
+              Private Events
+            </span>
+            <br />
+            <span class="underline decoration-mizzou-gold decoration-4 underline-offset-8">
+              &amp; Catering
+            </span>
+          </h2>
+          <p class="pt-3 text-gray-200 text-base sm:text-lg leading-relaxed max-w-xl">
+            Host your next watch party, alumni meetup, birthday bash, fantasy draft, corporate happy hour, or catered event inside historic Soulard's ultimate sports headquarters.
+          </p>
+        </div>
+
+        <!-- 3 Highlighted Flyer Perks -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
+          <div class="rounded-2xl bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-4 shadow-gold-glow">
+            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold mb-2.5">
+              <Sparkles class="w-5 h-5" />
+            </div>
+            <p class="font-display text-xl font-bold uppercase text-[#FF8C42] tracking-wide">
+              No Rental Fees!
+            </p>
+            <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+              Zero room or table booking fees — reserve your space for free.
+            </p>
+          </div>
+
+          <div class="rounded-2xl bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-4 shadow-gold-glow">
+            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold mb-2.5">
+              <Tv class="w-5 h-5" />
+            </div>
+            <p class="font-display text-xl font-bold uppercase text-[#FF8C42] tracking-wide">
+              Speakers &amp; TVs to Use!
+            </p>
+            <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+              54+ HD screens &amp; house sound system ready for your game or media.
+            </p>
+          </div>
+
+          <div class="rounded-2xl bg-gradient-to-b from-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-4 shadow-gold-glow">
+            <div class="w-10 h-10 rounded-xl bg-mizzou-gold/15 border border-mizzou-gold/40 flex items-center justify-center text-mizzou-gold mb-2.5">
+              <Users class="w-5 h-5" />
+            </div>
+            <p class="font-display text-xl font-bold uppercase text-[#FF8C42] tracking-wide">
+              Any Size Group!
+            </p>
+            <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+              From 10-person tables to full-bar buyouts &amp; custom catering trays.
+            </p>
+          </div>
+        </div>
+
+        <!-- Flyer-Inspired Stacked Photo Collage + Direct Call Banner -->
+        <div class="rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/50 overflow-hidden shadow-gold-glow">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-mizzou-black">
+            <!-- Top/Left Photo: Pool Table, Mizzou Neon & Exposed Brick Game Room -->
+            <div class="relative aspect-[16/11] overflow-hidden group">
+              <img
+                src="/gallery/patio-interior/mizzou-game-room-and-billiards.jpg"
+                alt="Ray's SportsHouse billiards table, Mizzou neon sign, and private event game room"
+                width="600"
+                height="412"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3.5">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold bg-black/80 border border-mizzou-gold/40 px-2.5 py-1 rounded-md">
+                  🎱 Billiards, Photo Booth &amp; Lounge Space
+                </span>
+              </div>
+            </div>
+
+            <!-- Bottom/Right Photo: Classic Soulard Bar & 54+ HD Screens -->
+            <div class="relative aspect-[16/11] overflow-hidden group">
+              <img
+                src="/gallery/crowds/game-day-bar-crowd-and-hd-screens.jpg"
+                alt="Ray's SportsHouse full Soulard bar and surround HD screens for private events"
+                width="600"
+                height="412"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3.5">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold bg-black/80 border border-mizzou-gold/40 px-2.5 py-1 rounded-md">
+                  🍺 Full Brass-Rail Bar &amp; 54+ HD TVs
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Direct Call Banner ("Call 314-312-1360") -->
+          <div class="p-5 sm:p-6 bg-gradient-to-r from-mizzou-black via-mizzou-slate900 to-mizzou-black border-t border-mizzou-gold/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-center sm:text-left">
+              <p class="text-xs font-extrabold uppercase tracking-widest text-[#FF8C42]">
+                Prefer To Book Over The Phone?
+              </p>
+              <p class="font-display text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide mt-0.5">
+                Call <a href="tel:+13143121360" class="text-mizzou-gold hover:underline">314-312-1360</a>
+              </p>
+            </div>
+            <a
+              href="tel:+13143121360"
+              class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-sm sm:text-base px-5 py-3 rounded-xl shadow-gold-glow transition-all shrink-0"
+            >
+              <Phone class="w-4 h-4 stroke-[2.5]" />
+              <span>Call 314-312-1360</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Scratch Catering Highlights -->
+        <div class="rounded-2xl bg-mizzou-slate900/90 border border-white/10 p-4 sm:p-5">
+          <p class="text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2.5 flex items-center gap-1.5">
+            <Utensils class="w-4 h-4" />
+            <span>Popular Catering &amp; Party Platter Favorites:</span>
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-200">
+            <div class="flex items-center gap-2">
+              <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
+              <span>Ray's Almost Famous Jumbo Wings</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
+              <span>Smash Burger &amp; Pastrami Sliders</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
+              <span>STL Toasted Beef Ravioli &amp; Pretzels</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
+              <span>Custom Drink Tabs &amp; Bucket Packages</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: FORMSPREE PRIVATE EVENT & CATERING RESERVATION FORM -->
+      <div class="lg:col-span-6">
+        <div class="rounded-3xl bg-gradient-to-b from-mizzou-slate900 to-mizzou-black border-2 border-mizzou-gold p-6 sm:p-8 shadow-gold-glow">
+          <div class="pb-5 mb-6 border-b border-mizzou-gold/30">
+            <span class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
+              Zero Rental Fees • Fast Confirmation
+            </span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white mt-1">
+              Reserve Your <span class="text-mizzou-gold">Event or Catering</span>
+            </h3>
+            <p class="text-xs sm:text-sm text-gray-300 mt-1">
+              Fill out the details below and our management team will get right back to you to lock in your date, screens, sound, and menu!
+            </p>
+          </div>
+
+          <form
+            action="https://formspree.io/f/xrpewebz"
+            method="POST"
+            class="private-events-form space-y-4"
+          >
+            <input type="hidden" name="_subject" value="New Private Event / Catering Inquiry — Ray's SportsHouse" />
+
+            <!-- Name & Phone -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Your Name"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  placeholder="(314) 555-0199"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors"
+                />
+              </div>
+            </div>
+
+            <!-- Email & Booking Type -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="you@example.com"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  What Are You Booking? *
+                </label>
+                <select
+                  name="booking_type"
+                  required
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white cursor-pointer transition-colors"
+                >
+                  <option value="Private Event + Catering">Private Event + Catering</option>
+                  <option value="Private Party / Space Reservation">Private Party / Space Reservation (No Rental Fee)</option>
+                  <option value="Off-Site or Pickup Catering Order">Catering Order / Party Platters Only</option>
+                  <option value="Mizzou / Game Day Watch Party Group">Mizzou / Game Day Watch Party Group</option>
+                  <option value="Corporate Happy Hour / Team Outing">Corporate Happy Hour / Team Outing</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Event Date, Preferred Time & Estimated Group Size -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  Event Date *
+                </label>
+                <input
+                  type="date"
+                  name="event_date"
+                  required
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-3.5 py-3 text-sm text-white transition-colors"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  Start Time *
+                </label>
+                <input
+                  type="text"
+                  name="event_time"
+                  required
+                  placeholder="e.g. 6:00 PM"
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-3.5 py-3 text-sm text-white placeholder-gray-500 transition-colors"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                  Group Size *
+                </label>
+                <select
+                  name="group_size"
+                  required
+                  class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-3.5 py-3 text-sm text-white cursor-pointer transition-colors"
+                >
+                  <option value="10–20 Guests">10–20 Guests</option>
+                  <option value="20–40 Guests">20–40 Guests</option>
+                  <option value="40–75 Guests">40–75 Guests</option>
+                  <option value="75–120 Guests">75–120 Guests</option>
+                  <option value="120+ Guests / Full Buyout">120+ / Full Buyout</option>
+                  <option value="Custom Size">Other / Any Size Group</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Equipment & Catering Checkboxes -->
+            <fieldset class="rounded-2xl bg-mizzou-black/70 border border-white/15 p-4">
+              <legend class="px-2 text-xs font-extrabold uppercase tracking-wider text-mizzou-gold">
+                Included Perks &amp; Options Needed
+              </legend>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-gray-200 mt-1">
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="perks_requested"
+                    value="Dedicated TVs / Custom Screens"
+                    checked
+                    class="w-4 h-4 accent-[#F1B82D] rounded cursor-pointer"
+                  />
+                  <span>Dedicated TVs / Screens to Use</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="perks_requested"
+                    value="Speakers / Audio Hookup"
+                    checked
+                    class="w-4 h-4 accent-[#F1B82D] rounded cursor-pointer"
+                  />
+                  <span>Speakers &amp; Sound Hookup</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="perks_requested"
+                    value="Food Catering Platters"
+                    class="w-4 h-4 accent-[#F1B82D] rounded cursor-pointer"
+                  />
+                  <span>Scratch Kitchen Catering Platters</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="perks_requested"
+                    value="Drink Packages / Bar Tab"
+                    class="w-4 h-4 accent-[#F1B82D] rounded cursor-pointer"
+                  />
+                  <span>Drink Packages / Custom Bar Tab</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Event Notes / Catering Details -->
+            <div>
+              <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-1.5">
+                Event Details, Food Platters or Special Requests
+              </label>
+              <textarea
+                name="message"
+                rows="3"
+                placeholder="Tell us about your occasion, favorite foods (wings, smash burgers, toasted ravioli, birria fries), or any specific games/audio you'd like on the TVs..."
+                class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="private-events-submit-btn w-full inline-flex items-center justify-center gap-2.5 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-lg px-7 py-4 rounded-xl shadow-gold-glow hover:shadow-gold-glow-lg hover:-translate-y-0.5 transition-all cursor-pointer"
+            >
+              <Send class="w-5 h-5 stroke-[2.5]" />
+              <span>Request Private Event / Catering</span>
+            </button>
+
+            <!-- Status Message Box -->
+            <div
+              class="private-events-form-status hidden rounded-xl p-4 text-sm font-medium text-center"
+              role="status"
+              aria-live="polite"
+            ></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>('.private-events-form');
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector<HTMLButtonElement>('.private-events-submit-btn');
+      const statusBox = form.querySelector<HTMLElement>('.private-events-form-status');
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending Your Request...';
+      }
+      if (statusBox) {
+        statusBox.classList.add('hidden');
+      }
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          form.reset();
+          if (statusBox) {
+            statusBox.className =
+              'private-events-form-status rounded-xl p-4 text-sm font-semibold text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+            statusBox.textContent =
+              "🎉 Thank you! Your Private Event & Catering request has been sent to Ray's SportsHouse. We'll reach out shortly — or call us anytime at 314-312-1360!";
+          }
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (err) {
+        if (statusBox) {
+          statusBox.className =
+            'private-events-form-status rounded-xl p-4 text-sm font-semibold text-center bg-red-500/20 text-red-300 border border-red-500/40';
+          statusBox.textContent =
+            'Unable to submit online right now. Please call us directly at 314-312-1360 to reserve your event!';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
+        }
+      }
+    });
+  });
+</script>
