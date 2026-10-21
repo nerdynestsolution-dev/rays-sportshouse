@@ -122,14 +122,14 @@ const { id = 'private-events' } = Astro.props;
             </div>
           </div>
 
-          <!-- Direct Call Banner ("Call 314-312-1360") -->
+          <!-- Direct Call Banner ("Call (314) 312-1360") -->
           <div class="p-5 sm:p-6 rounded-2xl bg-mizzou-black/90 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-center sm:text-left">
               <p class="text-xs font-extrabold uppercase tracking-widest text-[#FF8C42]">
                 Prefer To Book Over The Phone?
               </p>
               <p class="font-display text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide mt-1">
-                Call <a href="tel:+13143121360" class="text-mizzou-gold hover:underline">314-312-1360</a>
+                Call <a href="tel:+13143121360" class="text-mizzou-gold hover:underline">(314) 312-1360</a>
               </p>
             </div>
             <a
@@ -137,7 +137,7 @@ const { id = 'private-events' } = Astro.props;
               class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-sm sm:text-base px-5 py-3 rounded-xl shadow-gold-glow transition-all shrink-0"
             >
               <Phone class="w-4 h-4 stroke-[2.5]" />
-              <span>Call 314-312-1360</span>
+              <span>(314) 312-1360</span>
             </a>
           </div>
         </div>
@@ -190,6 +190,24 @@ const { id = 'private-events' } = Astro.props;
             class="private-events-form space-y-5"
           >
             <input type="hidden" name="_subject" value="New Private Event / Catering Inquiry — Ray's SportsHouse" />
+
+            <!-- Honeypot Bot-Catcher Trap (Hidden from human users) -->
+            <input
+              type="text"
+              name="_gotcha"
+              tabindex="-1"
+              autocomplete="off"
+              style="display:none;"
+              aria-hidden="true"
+            />
+            <input
+              type="text"
+              name="_bot_catcher"
+              tabindex="-1"
+              autocomplete="off"
+              style="display:none;"
+              aria-hidden="true"
+            />
 
             <!-- Name & Phone -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -355,9 +373,15 @@ const { id = 'private-events' } = Astro.props;
               <textarea
                 name="message"
                 rows="3"
+                maxlength="1500"
                 placeholder="Tell us about your occasion, favorite foods (wings, smash burgers, toasted ravioli, birria fries), or any specific games/audio you'd like on the TVs..."
                 class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors"
               ></textarea>
+            </div>
+
+            <!-- Cloudflare Turnstile Anti-Spam Widget -->
+            <div class="pt-1 flex justify-center sm:justify-start">
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAAFfO6Ali732lHZzW" data-theme="dark"></div>
             </div>
 
             <!-- Submit Button -->
@@ -366,7 +390,7 @@ const { id = 'private-events' } = Astro.props;
               class="private-events-submit-btn w-full inline-flex items-center justify-center gap-2.5 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-lg px-7 py-4 rounded-xl shadow-gold-glow hover:shadow-gold-glow-lg hover:-translate-y-0.5 transition-all cursor-pointer"
             >
               <Send class="w-5 h-5 stroke-[2.5]" />
-              <span>Request Private Event / Catering</span>
+              <span class="private-events-submit-label">Request Private Event / Catering</span>
             </button>
 
             <!-- Status Message Box -->
@@ -383,18 +407,58 @@ const { id = 'private-events' } = Astro.props;
 </section>
 
 <script>
+  const RATE_LIMIT_KEY = 'rays_private_event_last_submit_ts';
+  const COOLDOWN_MS = 60 * 1000;
+  let lastSubmitMemoryTs = 0;
+
   const forms = document.querySelectorAll<HTMLFormElement>('.private-events-form');
 
   forms.forEach((form) => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // 1. Honeypot Bot Trap Check: silently abort if filled
+      const gotchaInput = form.querySelector<HTMLInputElement>('input[name="_gotcha"]');
+      const botCatcherInput = form.querySelector<HTMLInputElement>('input[name="_bot_catcher"]');
+      if ((gotchaInput && gotchaInput.value.trim() !== '') || (botCatcherInput && botCatcherInput.value.trim() !== '')) {
+        form.reset();
+        return;
+      }
+
       const submitBtn = form.querySelector<HTMLButtonElement>('.private-events-submit-btn');
+      const submitLabel = form.querySelector<HTMLElement>('.private-events-submit-label');
       const statusBox = form.querySelector<HTMLElement>('.private-events-form-status');
-      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+
+      // 2. Client-side 60-Second Rate Limiting Check
+      const now = Date.now();
+      let storedTs = lastSubmitMemoryTs;
+      try {
+        const raw = sessionStorage.getItem(RATE_LIMIT_KEY);
+        if (raw) {
+          const parsed = parseInt(raw, 10);
+          if (!Number.isNaN(parsed) && parsed > storedTs) {
+            storedTs = parsed;
+          }
+        }
+      } catch {
+        // Ignore sessionStorage access errors in restricted modes
+      }
+
+      if (storedTs && now - storedTs < COOLDOWN_MS) {
+        const remainingSec = Math.ceil((COOLDOWN_MS - (now - storedTs)) / 1000);
+        if (statusBox) {
+          statusBox.className =
+            'private-events-form-status rounded-xl p-4 text-sm font-semibold text-center bg-amber-500/20 text-amber-300 border border-amber-500/40';
+          statusBox.textContent = `Please wait ${remainingSec} seconds before submitting another inquiry, or call us at (314) 312-1360.`;
+        }
+        return;
+      }
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending Your Request...';
+      }
+      if (submitLabel) {
+        submitLabel.textContent = 'Sending Your Request...';
       }
       if (statusBox) {
         statusBox.classList.add('hidden');
@@ -402,6 +466,19 @@ const { id = 'private-events' } = Astro.props;
 
       try {
         const formData = new FormData(form);
+
+        // 3. Ensure Cloudflare Turnstile token is included in the payload
+        const turnstileInput = form.querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]');
+        const turnstileToken =
+          (turnstileInput && turnstileInput.value) ||
+          ((window as any).turnstile && typeof (window as any).turnstile.getResponse === 'function'
+            ? (window as any).turnstile.getResponse()
+            : '') ||
+          '';
+        if (!formData.has('cf-turnstile-response')) {
+          formData.append('cf-turnstile-response', turnstileToken);
+        }
+
         const response = await fetch(form.action, {
           method: 'POST',
           body: formData,
@@ -411,12 +488,27 @@ const { id = 'private-events' } = Astro.props;
         });
 
         if (response.ok) {
+          lastSubmitMemoryTs = Date.now();
+          try {
+            sessionStorage.setItem(RATE_LIMIT_KEY, String(lastSubmitMemoryTs));
+          } catch {
+            // Ignore storage errors
+          }
+
           form.reset();
+          if ((window as any).turnstile && typeof (window as any).turnstile.reset === 'function') {
+            try {
+              (window as any).turnstile.reset();
+            } catch {
+              // Ignore turnstile reset errors
+            }
+          }
+
           if (statusBox) {
             statusBox.className =
               'private-events-form-status rounded-xl p-4 text-sm font-semibold text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
             statusBox.textContent =
-              "🎉 Thank you! Your Private Event & Catering request has been sent to Ray's SportsHouse. We'll reach out shortly — or call us anytime at 314-312-1360!";
+              "🎉 Thank you! Your Private Event & Catering request has been sent to Ray's SportsHouse. We'll reach out shortly — or call us anytime at (314) 312-1360!";
           }
         } else {
           throw new Error('Submission failed');
@@ -426,12 +518,14 @@ const { id = 'private-events' } = Astro.props;
           statusBox.className =
             'private-events-form-status rounded-xl p-4 text-sm font-semibold text-center bg-red-500/20 text-red-300 border border-red-500/40';
           statusBox.textContent =
-            'Unable to submit online right now. Please call us directly at 314-312-1360 to reserve your event!';
+            'Unable to submit online right now. Please call us directly at (314) 312-1360 to reserve your event!';
         }
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnHtml;
+        }
+        if (submitLabel) {
+          submitLabel.textContent = 'Request Private Event / Catering';
         }
       }
     });

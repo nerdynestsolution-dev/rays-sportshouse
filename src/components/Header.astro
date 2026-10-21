@@ -35,6 +35,10 @@ const isActive = (href: string) => {
         <MapPin class="w-3.5 h-3.5" /> 1732 S 9th St, Soulard STL
       </a>
       <span>•</span>
+      <a href="tel:+13143121360" class="hover:underline flex items-center gap-1 whitespace-nowrap">
+        <Phone class="w-3.5 h-3.5" /> (314) 312-1360
+      </a>
+      <span>•</span>
       <a href="/specials" class="hover:underline flex items-center gap-1 whitespace-nowrap">
         <Flame class="w-3.5 h-3.5" /> M–F Happy Hour 3–6 PM
       </a>
@@ -188,6 +192,12 @@ const isActive = (href: string) => {
       <div class="bg-mizzou-black/70 rounded-xl p-4 border border-white/10 text-xs text-gray-300 space-y-2">
         <p class="font-bold text-mizzou-gold uppercase tracking-wider">📍 Historic Soulard</p>
         <p>{specialsData.location.fullAddress}</p>
+        <p>
+          <a href="tel:+13143121360" class="inline-flex items-center gap-1.5 text-mizzou-gold font-bold hover:underline">
+            <Phone class="w-3.5 h-3.5" />
+            <span>(314) 312-1360</span>
+          </a>
+        </p>
         <p class="text-gray-400">54+ HD Screens • Full Game Audio • All Major Cards Accepted</p>
       </div>
     </div>
@@ -207,7 +217,7 @@ const isActive = (href: string) => {
       <span>Order</span>
     </a>
     <a
-      href={specialsData.location.phoneHref}
+      href="tel:+13143121360"
       class="flex items-center justify-center gap-1.5 bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-xs py-3 px-2 rounded-lg"
     >
       <Phone class="w-3.5 h-3.5 text-mizzou-gold shrink-0" />

@@ -210,8 +210,40 @@
     let defaultSeasonType = '2';
     let activeYear = new Date().getFullYear();
 
+    const DEFAULT_NFL_LOGO = 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png';
+
+    function sanitizeText(val, maxLen) {
+      const limit = maxLen || 80;
+      return String(val || '')
+        .replace(/[\u0000-\u001F\u007F<>]/g, '')
+        .trim()
+        .slice(0, limit);
+    }
+
+    function sanitizeLogoUrl(rawUrl) {
+      try {
+        const parsed = new URL(String(rawUrl || ''));
+        if (parsed.protocol === 'https:' && parsed.hostname.endsWith('.espncdn.com')) {
+          return parsed.href;
+        }
+      } catch (e) {}
+      return DEFAULT_NFL_LOGO;
+    }
+
+    function sanitizeScore(rawScore) {
+      const n = parseInt(String(rawScore || '0'), 10);
+      return Number.isNaN(n) ? '0' : String(Math.max(0, Math.min(999, n)));
+    }
+
+    function createEl(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined && text !== null) el.textContent = String(text);
+      return el;
+    }
+
     function populateWeekOptions(seasonType, selectedWeek) {
-      weekSelect.innerHTML = '';
+      weekSelect.replaceChildren();
       if (String(seasonType) === '3') {
         POSTSEASON_WEEKS.forEach((w) => {
           const opt = document.createElement('option');
@@ -256,6 +288,7 @@
     function formatGameDate(isoDate) {
       try {
         const d = new Date(isoDate);
+        if (isNaN(d.getTime())) return 'Date TBD';
         return d.toLocaleDateString('en-US', {
           weekday: 'short',
           month: 'short',
@@ -264,20 +297,12 @@
           minute: '2-digit',
         });
       } catch (e) {
-        return isoDate;
+        return 'Date TBD';
       }
     }
 
-    function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
     function renderGames(data) {
-      const events = data.events || [];
+      const events = Array.isArray(data.events) ? data.events : [];
       const weekNum = data.week && data.week.number ? data.week.number : activeWeek || 1;
       const seasonYear = data.season && data.season.year ? data.season.year : activeYear;
       const seasonType = data.season && data.season.type ? String(data.season.type) : activeSeasonType;
@@ -307,10 +332,9 @@
       }
 
       if (seasonBadge) {
-        seasonBadge.innerHTML =
-          '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>' +
-          escapeHtml(seasonYear + ' ' + stageLabel) +
-          '</span>';
+        const dot = createEl('span', 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse');
+        const label = createEl('span', '', sanitizeText(seasonYear + ' ' + stageLabel, 40));
+        seasonBadge.replaceChildren(dot, label);
       }
 
       if (lastUpdated) {
@@ -320,11 +344,21 @@
       }
 
       if (events.length === 0) {
-        gamesGrid.innerHTML =
-          '<div class="col-span-full rounded-2xl bg-mizzou-slate800/60 border border-white/10 p-8 text-center">' +
-          '<p class="font-display text-xl uppercase text-white">No games scheduled for this week</p>' +
-          '<p class="text-xs text-gray-400 mt-1">Use the week selector above to browse other weeks of the NFL season.</p>' +
-          '</div>';
+        const emptyBox = createEl(
+          'div',
+          'col-span-full rounded-2xl bg-mizzou-slate800/60 border border-white/10 p-8 text-center'
+        );
+        emptyBox.appendChild(
+          createEl('p', 'font-display text-xl uppercase text-white', 'No games scheduled for this week')
+        );
+        emptyBox.appendChild(
+          createEl(
+            'p',
+            'text-xs text-gray-400 mt-1',
+            'Use the week selector above to browse other weeks of the NFL season.'
+          )
+        );
+        gamesGrid.replaceChildren(emptyBox);
         return;
       }
 
@@ -333,149 +367,194 @@
         return new Date(a.date).getTime() - new Date(b.date).getTime();
       });
 
-      const cardsHtml = sortedEvents
-        .map(function (event) {
-          const competition = (event.competitions && event.competitions[0]) || {};
-          const competitors = competition.competitors || [];
-          const away =
-            competitors.find(function (c) {
-              return c.homeAway === 'away';
-            }) || competitors[0] || {};
-          const home =
-            competitors.find(function (c) {
-              return c.homeAway === 'home';
-            }) || competitors[1] || {};
+      const fragment = document.createDocumentFragment();
 
-          const statusObj = (event.status && event.status.type) || {};
-          const state = statusObj.state || 'pre'; // 'pre' | 'in' | 'post'
-          const shortDetail = statusObj.shortDetail || formatGameDate(event.date);
+      sortedEvents.forEach(function (event) {
+        const competition = (event.competitions && event.competitions[0]) || {};
+        const competitors = Array.isArray(competition.competitors) ? competition.competitors : [];
+        const away =
+          competitors.find(function (c) {
+            return c.homeAway === 'away';
+          }) || competitors[0] || {};
+        const home =
+          competitors.find(function (c) {
+            return c.homeAway === 'home';
+          }) || competitors[1] || {};
 
-          const isLive = state === 'in';
-          const isFinal = state === 'post';
-          const showScore = isLive || isFinal;
+        const statusObj = (event.status && event.status.type) || {};
+        const state = sanitizeText(statusObj.state || 'pre', 10);
+        const shortDetail = sanitizeText(statusObj.shortDetail || formatGameDate(event.date), 48);
 
-          const awayScore = parseInt(away.score || '0', 10);
-          const homeScore = parseInt(home.score || '0', 10);
-          const awayWinning = showScore && awayScore > homeScore;
-          const homeWinning = showScore && homeScore > awayScore;
+        const isLive = state === 'in';
+        const isFinal = state === 'post';
+        const showScore = isLive || isFinal;
 
-          const broadcast =
-            (competition.broadcasts &&
-              competition.broadcasts[0] &&
-              competition.broadcasts[0].names &&
-              competition.broadcasts[0].names.join('/')) ||
-            event.broadcast ||
-            'NFL Sunday Ticket';
+        const awayScoreNum = parseInt(away.score || '0', 10);
+        const homeScoreNum = parseInt(home.score || '0', 10);
+        const awayWinning = showScore && awayScoreNum > homeScoreNum;
+        const homeWinning = showScore && homeScoreNum > awayScoreNum;
 
-          const venueName =
-            (competition.venue && competition.venue.fullName) || '';
-          const oddsDetail =
-            state === 'pre' &&
-            competition.odds &&
-            competition.odds[0] &&
-            competition.odds[0].details
-              ? competition.odds[0].details
-              : '';
+        const rawBroadcast =
+          (competition.broadcasts &&
+            competition.broadcasts[0] &&
+            Array.isArray(competition.broadcasts[0].names) &&
+            competition.broadcasts[0].names.join('/')) ||
+          event.broadcast ||
+          'NFL Sunday Ticket';
+        const broadcast = sanitizeText(rawBroadcast, 40) || 'NFL Sunday Ticket';
 
-          let statusBadgeHtml = '';
-          if (isLive) {
-            statusBadgeHtml =
-              '<span class="inline-flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md">' +
-              '<span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>' +
-              escapeHtml(shortDetail) +
-              '</span>';
-          } else if (isFinal) {
-            statusBadgeHtml =
-              '<span class="inline-flex items-center bg-mizzou-black text-gray-300 border border-white/15 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md">' +
-              escapeHtml(shortDetail) +
-              '</span>';
-          } else {
-            statusBadgeHtml =
-              '<span class="inline-flex items-center bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md">' +
-              escapeHtml(formatGameDate(event.date)) +
-              '</span>';
+        const venueName = sanitizeText((competition.venue && competition.venue.fullName) || '', 64);
+        const oddsDetail =
+          state === 'pre' &&
+          competition.odds &&
+          competition.odds[0] &&
+          competition.odds[0].details
+            ? sanitizeText(competition.odds[0].details, 32)
+            : '';
+
+        const article = createEl(
+          'article',
+          'group rounded-2xl bg-mizzou-slate800/80 hover:bg-mizzou-slate800 border border-white/15 hover:border-mizzou-gold/60 p-4 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 shadow-md'
+        );
+
+        const topWrap = createEl('div');
+        const headerRow = createEl('div', 'flex items-center justify-between gap-2 mb-3');
+
+        let statusBadgeEl;
+        if (isLive) {
+          statusBadgeEl = createEl(
+            'span',
+            'inline-flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md'
+          );
+          statusBadgeEl.appendChild(createEl('span', 'w-1.5 h-1.5 rounded-full bg-white animate-ping'));
+          statusBadgeEl.appendChild(createEl('span', '', shortDetail));
+        } else if (isFinal) {
+          statusBadgeEl = createEl(
+            'span',
+            'inline-flex items-center bg-mizzou-black text-gray-300 border border-white/15 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md',
+            shortDetail
+          );
+        } else {
+          statusBadgeEl = createEl(
+            'span',
+            'inline-flex items-center bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md',
+            formatGameDate(event.date)
+          );
+        }
+
+        const broadcastEl = createEl(
+          'span',
+          'text-[11px] font-extrabold uppercase tracking-wider bg-mizzou-black/80 text-gray-200 border border-white/10 px-2 py-0.5 rounded',
+          '📺 ' + broadcast
+        );
+
+        headerRow.appendChild(statusBadgeEl);
+        headerRow.appendChild(broadcastEl);
+        topWrap.appendChild(headerRow);
+
+        function buildTeamRow(comp, isLeader) {
+          const team = comp.team || {};
+          const logo = sanitizeLogoUrl(team.logo);
+          const name = sanitizeText(team.shortDisplayName || team.displayName || 'TBD', 48);
+          const abbr = sanitizeText(team.abbreviation || '', 8);
+          const record = sanitizeText(
+            (comp.records && comp.records[0] && comp.records[0].summary) || '',
+            24
+          );
+
+          const row = createEl(
+            'div',
+            'flex items-center justify-between gap-2 py-2 px-2.5 rounded-xl ' +
+              (isLeader
+                ? 'bg-mizzou-gold/10 border border-mizzou-gold/30'
+                : 'bg-mizzou-black/50 border border-white/5')
+          );
+
+          const left = createEl('div', 'flex items-center gap-2.5 min-w-0');
+          const img = document.createElement('img');
+          img.src = logo;
+          img.alt = name + ' logo';
+          img.width = 36;
+          img.height = 36;
+          img.loading = 'lazy';
+          img.className = 'w-9 h-9 object-contain shrink-0';
+          left.appendChild(img);
+
+          const info = createEl('div', 'min-w-0');
+          const nameLine = createEl('div', 'flex items-center gap-1.5');
+          nameLine.appendChild(
+            createEl(
+              'span',
+              'font-display text-base sm:text-lg font-bold uppercase tracking-wide truncate ' +
+                (isLeader ? 'text-mizzou-gold' : 'text-white'),
+              name
+            )
+          );
+          if (abbr) {
+            nameLine.appendChild(
+              createEl(
+                'span',
+                'text-[10px] font-bold uppercase text-gray-400 bg-white/5 px-1.5 py-0.5 rounded',
+                abbr
+              )
+            );
           }
+          info.appendChild(nameLine);
+          if (record) {
+            info.appendChild(createEl('p', 'text-[11px] text-gray-400 font-medium', record));
+          }
+          left.appendChild(info);
 
-          function renderTeamRow(comp, isLeader) {
-            const team = comp.team || {};
-            const logo = team.logo || 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png';
-            const name = team.shortDisplayName || team.displayName || 'TBD';
-            const abbr = team.abbreviation || '';
-            const record =
-              (comp.records && comp.records[0] && comp.records[0].summary) || '';
-
-            return (
-              '<div class="flex items-center justify-between gap-2 py-2 px-2.5 rounded-xl ' +
-              (isLeader ? 'bg-mizzou-gold/10 border border-mizzou-gold/30' : 'bg-mizzou-black/50 border border-white/5') +
-              '">' +
-              '<div class="flex items-center gap-2.5 min-w-0">' +
-              '<img src="' +
-              escapeHtml(logo) +
-              '" alt="' +
-              escapeHtml(name) +
-              ' logo" width="36" height="36" loading="lazy" class="w-9 h-9 object-contain shrink-0" />' +
-              '<div class="min-w-0">' +
-              '<div class="flex items-center gap-1.5">' +
-              '<span class="font-display text-base sm:text-lg font-bold uppercase tracking-wide truncate ' +
-              (isLeader ? 'text-mizzou-gold' : 'text-white') +
-              '">' +
-              escapeHtml(name) +
-              '</span>' +
-              (abbr
-                ? '<span class="text-[10px] font-bold uppercase text-gray-400 bg-white/5 px-1.5 py-0.5 rounded">' +
-                  escapeHtml(abbr) +
-                  '</span>'
-                : '') +
-              '</div>' +
-              (record
-                ? '<p class="text-[11px] text-gray-400 font-medium">' + escapeHtml(record) + '</p>'
-                : '') +
-              '</div>' +
-              '</div>' +
-              '<div class="shrink-0 text-right">' +
-              (showScore
-                ? '<span class="font-display text-2xl font-bold ' +
-                  (isLeader ? 'text-mizzou-gold' : 'text-gray-300') +
-                  '">' +
-                  escapeHtml(comp.score || '0') +
-                  '</span>'
-                : '<span class="text-xs font-semibold uppercase text-gray-400">' +
-                  (comp.homeAway === 'home' ? 'HOME' : 'AWAY') +
-                  '</span>') +
-              '</div>' +
-              '</div>'
+          const right = createEl('div', 'shrink-0 text-right');
+          if (showScore) {
+            right.appendChild(
+              createEl(
+                'span',
+                'font-display text-2xl font-bold ' + (isLeader ? 'text-mizzou-gold' : 'text-gray-300'),
+                sanitizeScore(comp.score)
+              )
+            );
+          } else {
+            right.appendChild(
+              createEl(
+                'span',
+                'text-xs font-semibold uppercase text-gray-400',
+                comp.homeAway === 'home' ? 'HOME' : 'AWAY'
+              )
             );
           }
 
-          return (
-            '<article class="group rounded-2xl bg-mizzou-slate800/80 hover:bg-mizzou-slate800 border border-white/15 hover:border-mizzou-gold/60 p-4 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5 shadow-md">' +
-            '<div>' +
-            '<div class="flex items-center justify-between gap-2 mb-3">' +
-            statusBadgeHtml +
-            '<span class="text-[11px] font-extrabold uppercase tracking-wider bg-mizzou-black/80 text-gray-200 border border-white/10 px-2 py-0.5 rounded">' +
-            '📺 ' +
-            escapeHtml(broadcast) +
-            '</span>' +
-            '</div>' +
-            '<div class="space-y-2">' +
-            renderTeamRow(away, awayWinning) +
-            renderTeamRow(home, homeWinning) +
-            '</div>' +
-            '</div>' +
-            '<div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-gray-400">' +
-            '<span class="truncate">' +
-            escapeHtml(venueName || "Showing Live at Ray's SportsHouse") +
-            '</span>' +
-            (oddsDetail
-              ? '<span class="text-mizzou-gold font-bold shrink-0">' + escapeHtml(oddsDetail) + '</span>'
-              : '<span class="text-mizzou-gold font-bold shrink-0">54+ HD TVs</span>') +
-            '</div>' +
-            '</article>'
-          );
-        })
-        .join('');
+          row.appendChild(left);
+          row.appendChild(right);
+          return row;
+        }
 
-      gamesGrid.innerHTML = cardsHtml;
+        const teamsBox = createEl('div', 'space-y-2');
+        teamsBox.appendChild(buildTeamRow(away, awayWinning));
+        teamsBox.appendChild(buildTeamRow(home, homeWinning));
+        topWrap.appendChild(teamsBox);
+
+        const footerRow = createEl(
+          'div',
+          'mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-gray-400'
+        );
+        footerRow.appendChild(
+          createEl('span', 'truncate', venueName || "Showing Live at Ray's SportsHouse")
+        );
+        footerRow.appendChild(
+          createEl(
+            'span',
+            'text-mizzou-gold font-bold shrink-0',
+            oddsDetail || '54+ HD TVs'
+          )
+        );
+
+        article.appendChild(topWrap);
+        article.appendChild(footerRow);
+        fragment.appendChild(article);
+      });
+
+      gamesGrid.replaceChildren(fragment);
     }
 
     async function fetchSchedule(week, seasonType) {

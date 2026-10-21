@@ -166,36 +166,59 @@
     let currentFilter = 'all';
     let selectedSeason = '';
 
-    function escapeHtml(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    const DEFAULT_MIZZOU_LOGO = 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png';
+
+    function sanitizeText(val, maxLen) {
+      const limit = maxLen || 80;
+      return String(val || '')
+        .replace(/[\u0000-\u001F\u007F<>]/g, '')
+        .trim()
+        .slice(0, limit);
+    }
+
+    function sanitizeLogoUrl(rawUrl) {
+      try {
+        const parsed = new URL(String(rawUrl || ''));
+        if (parsed.protocol === 'https:' && parsed.hostname.endsWith('.espncdn.com')) {
+          return parsed.href;
+        }
+      } catch (e) {}
+      return DEFAULT_MIZZOU_LOGO;
     }
 
     function extractScore(scoreField) {
-      if (scoreField === null || scoreField === undefined) return '';
+      let raw = '';
+      if (scoreField === null || scoreField === undefined) return '0';
       if (typeof scoreField === 'object') {
-        if (scoreField.displayValue !== undefined) return String(scoreField.displayValue);
-        if (scoreField.value !== undefined) return String(scoreField.value);
-        return '';
+        if (scoreField.displayValue !== undefined) raw = String(scoreField.displayValue);
+        else if (scoreField.value !== undefined) raw = String(scoreField.value);
+      } else {
+        raw = String(scoreField);
       }
-      return String(scoreField);
+      const n = parseInt(raw, 10);
+      return Number.isNaN(n) ? '0' : String(Math.max(0, Math.min(999, n)));
     }
 
     function extractLogo(teamObj) {
-      if (!teamObj) return 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png';
+      if (!teamObj) return DEFAULT_MIZZOU_LOGO;
       if (teamObj.logos && teamObj.logos[0] && teamObj.logos[0].href) {
-        return teamObj.logos[0].href;
+        return sanitizeLogoUrl(teamObj.logos[0].href);
       }
-      if (teamObj.logo) return teamObj.logo;
-      return 'https://a.espncdn.com/i/teamlogos/ncaa/500/142.png';
+      if (teamObj.logo) return sanitizeLogoUrl(teamObj.logo);
+      return DEFAULT_MIZZOU_LOGO;
+    }
+
+    function createEl(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined && text !== null) el.textContent = String(text);
+      return el;
     }
 
     function formatDateAndTime(isoDate, timeValid) {
       try {
         const d = new Date(isoDate);
+        if (isNaN(d.getTime())) return 'Date TBD';
         const datePart = d.toLocaleDateString('en-US', {
           weekday: 'short',
           month: 'short',
@@ -210,7 +233,7 @@
         });
         return datePart + ' • ' + timePart;
       } catch (e) {
-        return isoDate;
+        return 'Date TBD';
       }
     }
 
@@ -225,11 +248,21 @@
       });
 
       if (filtered.length === 0) {
-        gamesGrid.innerHTML =
-          '<div class="col-span-full rounded-2xl bg-[#111827] border border-[#F1B82D]/30 p-8 text-center">' +
-          '<p class="font-display text-xl uppercase text-white">No Mizzou games match this filter</p>' +
-          '<p class="text-xs text-gray-400 mt-1">Switch to "All Games" above to view the full Missouri Tigers season slate.</p>' +
-          '</div>';
+        const emptyBox = createEl(
+          'div',
+          'col-span-full rounded-2xl bg-[#111827] border border-[#F1B82D]/30 p-8 text-center'
+        );
+        emptyBox.appendChild(
+          createEl('p', 'font-display text-xl uppercase text-white', 'No Mizzou games match this filter')
+        );
+        emptyBox.appendChild(
+          createEl(
+            'p',
+            'text-xs text-gray-400 mt-1',
+            'Switch to "All Games" above to view the full Missouri Tigers season slate.'
+          )
+        );
+        gamesGrid.replaceChildren(emptyBox);
         return;
       }
 
@@ -244,157 +277,218 @@
         }
       }
 
-      gamesGrid.innerHTML = filtered
-        .map(function (event) {
-          const comp = (event.competitions && event.competitions[0]) || {};
-          const competitors = comp.competitors || [];
+      const fragment = document.createDocumentFragment();
 
-          const mizzou =
-            competitors.find(function (c) {
-              return c.team && String(c.team.id) === MIZZOU_TEAM_ID;
-            }) || competitors[0] || {};
+      filtered.forEach(function (event) {
+        const comp = (event.competitions && event.competitions[0]) || {};
+        const competitors = Array.isArray(comp.competitors) ? comp.competitors : [];
 
-          const opponent =
-            competitors.find(function (c) {
-              return c.team && String(c.team.id) !== MIZZOU_TEAM_ID;
-            }) || competitors[1] || {};
+        const mizzou =
+          competitors.find(function (c) {
+            return c.team && String(c.team.id) === MIZZOU_TEAM_ID;
+          }) || competitors[0] || {};
 
-          const oppTeam = opponent.team || {};
-          const oppName = oppTeam.displayName || oppTeam.shortDisplayName || 'TBD';
-          const oppLogo = extractLogo(oppTeam);
-          const oppRank =
-            opponent.curatedRank && opponent.curatedRank.current && opponent.curatedRank.current <= 25
-              ? '#' + opponent.curatedRank.current + ' '
-              : '';
+        const opponent =
+          competitors.find(function (c) {
+            return c.team && String(c.team.id) !== MIZZOU_TEAM_ID;
+          }) || competitors[1] || {};
 
-          const isNeutral = Boolean(comp.neutralSite);
-          const isHome = mizzou.homeAway === 'home';
-          const locationBadgeText = isNeutral ? 'NEUTRAL SITE' : isHome ? 'HOME • FAUROT FIELD' : 'AWAY • ROAD GAME';
-          const vsPrefix = isNeutral ? 'vs.' : isHome ? 'vs.' : '@';
+        const oppTeam = opponent.team || {};
+        const oppName = sanitizeText(oppTeam.displayName || oppTeam.shortDisplayName || 'TBD', 64);
+        const oppShortName = sanitizeText(oppTeam.shortDisplayName || oppName, 48);
+        const oppLogo = extractLogo(oppTeam);
+        const rankNum =
+          opponent.curatedRank && Number(opponent.curatedRank.current) >= 1 && Number(opponent.curatedRank.current) <= 25
+            ? Number(opponent.curatedRank.current)
+            : 0;
+        const oppRank = rankNum ? '#' + rankNum + ' ' : '';
 
-          const statusObj = (comp.status && comp.status.type) || (event.status && event.status.type) || {};
-          const state = statusObj.state || 'pre'; // 'pre' | 'in' | 'post'
-          const shortDetail = statusObj.shortDetail || formatDateAndTime(event.date, event.timeValid);
+        const isNeutral = Boolean(comp.neutralSite);
+        const isHome = mizzou.homeAway === 'home';
+        const locationBadgeText = isNeutral ? 'NEUTRAL SITE' : isHome ? 'HOME • FAUROT FIELD' : 'AWAY • ROAD GAME';
+        const vsPrefix = isNeutral ? 'vs.' : isHome ? 'vs.' : '@';
 
-          const isLive = state === 'in';
-          const isFinal = state === 'post';
-          const isNextUp = event.id === nextUpEventId;
+        const statusObj = (comp.status && comp.status.type) || (event.status && event.status.type) || {};
+        const state = sanitizeText(statusObj.state || 'pre', 10);
+        const shortDetail = sanitizeText(
+          statusObj.shortDetail || formatDateAndTime(event.date, event.timeValid),
+          48
+        );
 
-          const mizzouScore = extractScore(mizzou.score);
-          const oppScore = extractScore(opponent.score);
-          const mizzouWon = Boolean(mizzou.winner) || (isFinal && parseInt(mizzouScore, 10) > parseInt(oppScore, 10));
+        const isLive = state === 'in';
+        const isFinal = state === 'post';
+        const isNextUp = event.id === nextUpEventId;
 
-          const broadcast =
-            (comp.broadcasts &&
-              comp.broadcasts[0] &&
-              ((comp.broadcasts[0].media && comp.broadcasts[0].media.shortName) ||
-                (comp.broadcasts[0].names && comp.broadcasts[0].names.join('/')))) ||
-            'SEC / ESPN';
+        const mizzouScore = extractScore(mizzou.score);
+        const oppScore = extractScore(opponent.score);
+        const mizzouWon =
+          Boolean(mizzou.winner) || (isFinal && parseInt(mizzouScore, 10) > parseInt(oppScore, 10));
 
-          const venueName = (comp.venue && comp.venue.fullName) || '';
+        const rawBroadcast =
+          (comp.broadcasts &&
+            comp.broadcasts[0] &&
+            ((comp.broadcasts[0].media && comp.broadcasts[0].media.shortName) ||
+              (Array.isArray(comp.broadcasts[0].names) && comp.broadcasts[0].names.join('/')))) ||
+          'SEC / ESPN';
+        const broadcast = sanitizeText(rawBroadcast, 40) || 'SEC / ESPN';
+        const venueName = sanitizeText((comp.venue && comp.venue.fullName) || '', 64);
 
-          let statusPillHtml = '';
-          if (isLive) {
-            statusPillHtml =
-              '<span class="inline-flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow">' +
-              '<span class="w-2 h-2 rounded-full bg-white animate-ping"></span>' +
-              'LIVE • ' +
-              escapeHtml(shortDetail) +
-              '</span>';
-          } else if (isFinal) {
-            statusPillHtml =
-              '<span class="inline-flex items-center gap-1.5 ' +
-              (mizzouWon
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                : 'bg-white/10 text-gray-300 border border-white/15') +
-              ' text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md">' +
-              (mizzouWon ? 'W • FINAL' : 'L • FINAL') +
-              '</span>';
-          } else {
-            statusPillHtml =
-              '<span class="inline-flex items-center gap-1.5 ' +
-              (isNextUp
-                ? 'bg-[#F1B82D] text-black font-black'
-                : 'bg-[#F1B82D]/15 text-[#F1B82D] border border-[#F1B82D]/40 font-extrabold') +
-              ' text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-md">' +
-              (isNextUp ? '🔥 NEXT UP • UPCOMING' : 'UPCOMING') +
-              '</span>';
-          }
-
-          return (
-            '<article class="group rounded-2xl ' +
+        const article = createEl(
+          'article',
+          'group rounded-2xl ' +
             (isLive || isNextUp
               ? 'bg-gradient-to-b from-[#1F2937] to-[#111827] border-2 border-[#F1B82D] shadow-gold-glow'
               : 'bg-[#111827]/95 hover:bg-[#1F2937] border border-[#F1B82D]/30 hover:border-[#F1B82D]') +
-            ' p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5">' +
-            '<div>' +
-            '<!-- Top Status & Home/Away Pill Row -->' +
-            '<div class="flex flex-wrap items-center justify-between gap-2 mb-3.5">' +
-            statusPillHtml +
-            '<span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded bg-black text-[#F1B82D] border border-[#F1B82D]/30">' +
-            escapeHtml(locationBadgeText) +
-            '</span>' +
-            '</div>' +
-            '<!-- Opponent Matchup Row -->' +
-            '<div class="flex items-center gap-3.5 py-2">' +
-            '<div class="w-12 h-12 rounded-xl bg-black border border-white/15 p-1.5 flex items-center justify-center shrink-0">' +
-            '<img src="' +
-            escapeHtml(oppLogo) +
-            '" alt="' +
-            escapeHtml(oppName) +
-            ' logo" width="40" height="40" loading="lazy" class="w-full h-full object-contain" />' +
-            '</div>' +
-            '<div class="min-w-0 flex-1">' +
-            '<p class="text-[11px] font-bold uppercase tracking-wider text-[#F1B82D]">' +
-            escapeHtml(vsPrefix) +
-            ' Opponent</p>' +
-            '<h3 class="font-display text-lg sm:text-xl font-bold uppercase text-white group-hover:text-[#F1B82D] transition-colors truncate">' +
-            escapeHtml(oppRank + oppName) +
-            '</h3>' +
-            '<p class="text-xs text-gray-300 font-medium mt-0.5">' +
-            escapeHtml(formatDateAndTime(event.date, event.timeValid)) +
-            '</p>' +
-            '</div>' +
-            '</div>' +
-            '<!-- Scoreboard Box (Live/Final) or Kickoff Watch Party Box (Upcoming) -->' +
-            (isLive || isFinal
-              ? '<div class="mt-3 rounded-xl bg-black/80 border border-[#F1B82D]/30 p-3 space-y-1.5">' +
-                '<div class="flex items-center justify-between text-sm">' +
-                '<span class="font-display font-bold uppercase tracking-wider text-[#F1B82D] flex items-center gap-1.5">' +
-                '🐅 Mizzou Tigers' +
-                '</span>' +
-                '<strong class="font-display text-xl font-extrabold text-[#F1B82D]">' +
-                escapeHtml(mizzouScore || '0') +
-                '</strong>' +
-                '</div>' +
-                '<div class="flex items-center justify-between text-sm border-t border-white/10 pt-1.5">' +
-                '<span class="font-medium text-gray-300 truncate pr-2">' +
-                escapeHtml(oppRank + (oppTeam.shortDisplayName || oppName)) +
-                '</span>' +
-                '<span class="font-display text-lg font-semibold text-gray-300">' +
-                escapeHtml(oppScore || '0') +
-                '</span>' +
-                '</div>' +
-                '</div>'
-              : '<div class="mt-3 rounded-xl bg-black/70 border border-white/10 p-3 flex items-center justify-between gap-2">' +
-                '<span class="text-xs text-gray-300 font-medium">🔊 Full Game Sound at Ray\'s</span>' +
-                '<span class="text-xs font-extrabold uppercase tracking-wider text-[#F1B82D]">M-I-Z!</span>' +
-                '</div>') +
-            '</div>' +
-            '<!-- Footer: TV Network & Stadium -->' +
-            '<div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-gray-400">' +
-            '<span class="inline-flex items-center gap-1 font-bold text-gray-200 bg-black px-2 py-0.5 rounded border border-white/10">' +
-            '📺 ' +
-            escapeHtml(broadcast) +
-            '</span>' +
-            '<span class="truncate text-right">' +
-            escapeHtml(venueName || 'Watch Party on 54+ HD TVs') +
-            '</span>' +
-            '</div>' +
-            '</article>'
+            ' p-4 sm:p-5 flex flex-col justify-between transition-all duration-200 hover:-translate-y-0.5'
+        );
+
+        const topWrap = createEl('div');
+
+        // Top Status & Home/Away Pill Row
+        const pillRow = createEl('div', 'flex flex-wrap items-center justify-between gap-2 mb-3.5');
+        let statusPill;
+        if (isLive) {
+          statusPill = createEl(
+            'span',
+            'inline-flex items-center gap-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow'
           );
-        })
-        .join('');
+          statusPill.appendChild(createEl('span', 'w-2 h-2 rounded-full bg-white animate-ping'));
+          statusPill.appendChild(createEl('span', '', 'LIVE • ' + shortDetail));
+        } else if (isFinal) {
+          statusPill = createEl(
+            'span',
+            'inline-flex items-center gap-1.5 ' +
+              (mizzouWon
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                : 'bg-white/10 text-gray-300 border border-white/15') +
+              ' text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md',
+            mizzouWon ? 'W • FINAL' : 'L • FINAL'
+          );
+        } else {
+          statusPill = createEl(
+            'span',
+            'inline-flex items-center gap-1.5 ' +
+              (isNextUp
+                ? 'bg-[#F1B82D] text-black font-black'
+                : 'bg-[#F1B82D]/15 text-[#F1B82D] border border-[#F1B82D]/40 font-extrabold') +
+              ' text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-md',
+            isNextUp ? '🔥 NEXT UP • UPCOMING' : 'UPCOMING'
+          );
+        }
+
+        const locBadge = createEl(
+          'span',
+          'text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded bg-black text-[#F1B82D] border border-[#F1B82D]/30',
+          locationBadgeText
+        );
+        pillRow.appendChild(statusPill);
+        pillRow.appendChild(locBadge);
+        topWrap.appendChild(pillRow);
+
+        // Opponent Matchup Row
+        const matchupRow = createEl('div', 'flex items-center gap-3.5 py-2');
+        const logoBox = createEl(
+          'div',
+          'w-12 h-12 rounded-xl bg-black border border-white/15 p-1.5 flex items-center justify-center shrink-0'
+        );
+        const oppImg = document.createElement('img');
+        oppImg.src = oppLogo;
+        oppImg.alt = oppName + ' logo';
+        oppImg.width = 40;
+        oppImg.height = 40;
+        oppImg.loading = 'lazy';
+        oppImg.className = 'w-full h-full object-contain';
+        logoBox.appendChild(oppImg);
+
+        const oppInfo = createEl('div', 'min-w-0 flex-1');
+        oppInfo.appendChild(
+          createEl('p', 'text-[11px] font-bold uppercase tracking-wider text-[#F1B82D]', vsPrefix + ' Opponent')
+        );
+        oppInfo.appendChild(
+          createEl(
+            'h3',
+            'font-display text-lg sm:text-xl font-bold uppercase text-white group-hover:text-[#F1B82D] transition-colors truncate',
+            oppRank + oppName
+          )
+        );
+        oppInfo.appendChild(
+          createEl(
+            'p',
+            'text-xs text-gray-300 font-medium mt-0.5',
+            formatDateAndTime(event.date, event.timeValid)
+          )
+        );
+
+        matchupRow.appendChild(logoBox);
+        matchupRow.appendChild(oppInfo);
+        topWrap.appendChild(matchupRow);
+
+        // Scoreboard Box (Live/Final) or Kickoff Watch Party Box (Upcoming)
+        if (isLive || isFinal) {
+          const scoreBox = createEl(
+            'div',
+            'mt-3 rounded-xl bg-black/80 border border-[#F1B82D]/30 p-3 space-y-1.5'
+          );
+          const mizRow = createEl('div', 'flex items-center justify-between text-sm');
+          mizRow.appendChild(
+            createEl(
+              'span',
+              'font-display font-bold uppercase tracking-wider text-[#F1B82D] flex items-center gap-1.5',
+              '🐅 Mizzou Tigers'
+            )
+          );
+          mizRow.appendChild(
+            createEl('strong', 'font-display text-xl font-extrabold text-[#F1B82D]', mizzouScore)
+          );
+
+          const oppRow = createEl(
+            'div',
+            'flex items-center justify-between text-sm border-t border-white/10 pt-1.5'
+          );
+          oppRow.appendChild(
+            createEl('span', 'font-medium text-gray-300 truncate pr-2', oppRank + oppShortName)
+          );
+          oppRow.appendChild(createEl('span', 'font-display text-lg font-semibold text-gray-300', oppScore));
+
+          scoreBox.appendChild(mizRow);
+          scoreBox.appendChild(oppRow);
+          topWrap.appendChild(scoreBox);
+        } else {
+          const upcomingBox = createEl(
+            'div',
+            'mt-3 rounded-xl bg-black/70 border border-white/10 p-3 flex items-center justify-between gap-2'
+          );
+          upcomingBox.appendChild(
+            createEl('span', 'text-xs text-gray-300 font-medium', "🔊 Full Game Sound at Ray's")
+          );
+          upcomingBox.appendChild(
+            createEl('span', 'text-xs font-extrabold uppercase tracking-wider text-[#F1B82D]', 'M-I-Z!')
+          );
+          topWrap.appendChild(upcomingBox);
+        }
+
+        // Footer: TV Network & Stadium
+        const cardFooter = createEl(
+          'div',
+          'mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] text-gray-400'
+        );
+        cardFooter.appendChild(
+          createEl(
+            'span',
+            'inline-flex items-center gap-1 font-bold text-gray-200 bg-black px-2 py-0.5 rounded border border-white/10',
+            '📺 ' + broadcast
+          )
+        );
+        cardFooter.appendChild(
+          createEl('span', 'truncate text-right', venueName || 'Watch Party on 54+ HD TVs')
+        );
+
+        article.appendChild(topWrap);
+        article.appendChild(cardFooter);
+        fragment.appendChild(article);
+      });
+
+      gamesGrid.replaceChildren(fragment);
     }
 
     async function fetchMizzouSchedule(seasonYear) {

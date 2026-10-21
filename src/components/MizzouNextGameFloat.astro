@@ -498,36 +498,57 @@
       setMinimized(false);
     });
 
-    function esc(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    function sanitizeText(val, maxLen) {
+      const limit = maxLen || 80;
+      return String(val || '')
+        .replace(/[\u0000-\u001F\u007F<>]/g, '')
+        .trim()
+        .slice(0, limit);
+    }
+
+    function sanitizeLogoUrl(rawUrl) {
+      try {
+        const parsed = new URL(String(rawUrl || ''));
+        if (parsed.protocol === 'https:' && parsed.hostname.endsWith('.espncdn.com')) {
+          return parsed.href;
+        }
+      } catch (e) {}
+      return MIZZOU_LOGO;
     }
 
     function extractLogo(team) {
       if (!team) return MIZZOU_LOGO;
-      if (team.logos && team.logos[0] && team.logos[0].href) return team.logos[0].href;
-      if (team.logo) return team.logo;
+      if (team.logos && team.logos[0] && team.logos[0].href) {
+        return sanitizeLogoUrl(team.logos[0].href);
+      }
+      if (team.logo) return sanitizeLogoUrl(team.logo);
       return MIZZOU_LOGO;
     }
 
     function extractScore(scoreField) {
-      if (scoreField === null || scoreField === undefined) return '';
+      let raw = '';
+      if (scoreField === null || scoreField === undefined) return '0';
       if (typeof scoreField === 'object') {
-        if (scoreField.displayValue !== undefined) return String(scoreField.displayValue);
-        if (scoreField.value !== undefined) return String(scoreField.value);
-        return '';
+        if (scoreField.displayValue !== undefined) raw = String(scoreField.displayValue);
+        else if (scoreField.value !== undefined) raw = String(scoreField.value);
+      } else {
+        raw = String(scoreField);
       }
-      return String(scoreField);
+      const n = parseInt(raw, 10);
+      return Number.isNaN(n) ? '0' : String(Math.max(0, Math.min(999, n)));
+    }
+
+    function createEl(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined && text !== null) el.textContent = String(text);
+      return el;
     }
 
     function isolateNextGame(events) {
       if (!Array.isArray(events) || events.length === 0) return null;
       const now = Date.now();
 
-      // 1. Prioritize any game currently LIVE ('in') or upcoming ('pre')
       for (let i = 0; i < events.length; i++) {
         const ev = events[i];
         const comp = (ev.competitions && ev.competitions[0]) || {};
@@ -535,15 +556,39 @@
         if (st.state === 'in' || st.state === 'pre') {
           return ev;
         }
-        // Also check timestamp in case state hasn't flipped yet
         const evTime = Date.parse(ev.date || '');
         if (!isNaN(evTime) && evTime >= now && st.state !== 'post') {
           return ev;
         }
       }
 
-      // Fallback to the final game of the list if all games in the current response are completed
       return null;
+    }
+
+    function renderFallbackState() {
+      const wrap = createEl('div');
+      wrap.style.textAlign = 'center';
+      wrap.style.padding = '6px 0';
+
+      const title = createEl('p', '', '🐅 Mizzou Tigers Football');
+      title.style.fontFamily = 'Oswald, sans-serif';
+      title.style.fontSize = '15px';
+      title.style.textTransform = 'uppercase';
+      title.style.color = '#F1B82D';
+      title.style.margin = '0 0 4px';
+
+      const desc = createEl(
+        'p',
+        '',
+        'Watch every Mizzou game live on 54+ HD screens with full stadium sound!'
+      );
+      desc.style.fontSize = '11px';
+      desc.style.color = '#d1d5db';
+      desc.style.margin = '0';
+
+      wrap.appendChild(title);
+      wrap.appendChild(desc);
+      contentEl.replaceChildren(wrap);
     }
 
     async function fetchNextMizzouGame() {
@@ -551,22 +596,20 @@
         const res = await fetch(SCHEDULE_ENDPOINT);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        let events = data.events || [];
+        const events = Array.isArray(data.events) ? data.events : [];
         let nextEvent = isolateNextGame(events);
 
-        // If the current season has finished all games, check next calendar year's schedule
         if (!nextEvent) {
           const nextYear = new Date().getFullYear() + 1;
           try {
             const nextRes = await fetch(SCHEDULE_ENDPOINT + '?season=' + nextYear);
             if (nextRes.ok) {
               const nextData = await nextRes.json();
-              nextEvent = isolateNextGame(nextData.events || []);
+              nextEvent = isolateNextGame(Array.isArray(nextData.events) ? nextData.events : []);
             }
           } catch (e) {}
         }
 
-        // If still no future event, fall back to the most recent game
         if (!nextEvent && events.length > 0) {
           nextEvent = events[events.length - 1];
         }
@@ -577,18 +620,13 @@
 
         renderNextGame(nextEvent, data.team && data.team.recordSummary);
       } catch (err) {
-        console.error('Mizzou Next Game Widget error:', err);
-        contentEl.innerHTML =
-          '<div style="text-align:center; padding: 6px 0;">' +
-          '<p style="font-family: Oswald, sans-serif; font-size: 15px; text-transform: uppercase; color: #F1B82D; margin: 0 0 4px;">🐅 Mizzou Tigers Football</p>' +
-          '<p style="font-size: 11px; color: #d1d5db; margin: 0;">Watch every Mizzou game live on 54+ HD screens with full stadium sound!</p>' +
-          '</div>';
+        renderFallbackState();
       }
     }
 
     function renderNextGame(ev, recordSummary) {
       const comp = (ev.competitions && ev.competitions[0]) || {};
-      const competitors = comp.competitors || [];
+      const competitors = Array.isArray(comp.competitors) ? comp.competitors : [];
 
       const mizzou =
         competitors.find(function (c) {
@@ -605,12 +643,13 @@
 
       const mizLogo = extractLogo(mizTeam);
       const oppLogo = extractLogo(oppTeam);
-      const oppName = oppTeam.shortDisplayName || oppTeam.displayName || 'Opponent';
-      const oppFullName = oppTeam.displayName || oppName;
-      const oppRank =
-        opponent.curatedRank && opponent.curatedRank.current && opponent.curatedRank.current <= 25
-          ? '#' + opponent.curatedRank.current + ' '
-          : '';
+      const oppName = sanitizeText(oppTeam.shortDisplayName || oppTeam.displayName || 'Opponent', 48);
+      const oppFullName = sanitizeText(oppTeam.displayName || oppName, 64);
+      const rankNum =
+        opponent.curatedRank && Number(opponent.curatedRank.current) >= 1 && Number(opponent.curatedRank.current) <= 25
+          ? Number(opponent.curatedRank.current)
+          : 0;
+      const oppRank = rankNum ? '#' + rankNum + ' ' : '';
 
       const isNeutral = Boolean(comp.neutralSite);
       const isHome = mizzou.homeAway === 'home';
@@ -618,101 +657,127 @@
       const venueTag = isNeutral ? 'Neutral Site' : isHome ? 'Home • Faurot Field' : 'Away Game';
 
       const stObj = (comp.status && comp.status.type) || (ev.status && ev.status.type) || {};
-      const state = stObj.state || 'pre';
+      const state = sanitizeText(stObj.state || 'pre', 10);
       const isLive = state === 'in';
 
       if (badgeEl) {
-        if (isLive) {
-          badgeEl.className = 'miz-float-badge is-live';
-          badgeEl.innerHTML =
-            '<span class="miz-live-pulse"></span><span>LIVE NOW • ' +
-            esc(stObj.shortDetail || 'In Progress') +
-            '</span>';
-        } else {
-          badgeEl.className = 'miz-float-badge';
-          badgeEl.innerHTML =
-            '<span class="miz-live-pulse"></span><span>🐅 Next Mizzou Game</span>';
-        }
+        badgeEl.className = isLive ? 'miz-float-badge is-live' : 'miz-float-badge';
+        const dot = createEl('span', 'miz-live-pulse');
+        const label = createEl(
+          'span',
+          '',
+          isLive ? 'LIVE NOW • ' + sanitizeText(stObj.shortDetail || 'In Progress', 36) : '🐅 Next Mizzou Game'
+        );
+        badgeEl.replaceChildren(dot, label);
       }
 
-      // Format Date & Kickoff Time
       let formattedDate = 'TBD';
       let formattedTime = 'TBD';
       if (ev.date) {
         const d = new Date(ev.date);
-        formattedDate = d.toLocaleDateString('en-US', {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        });
-        if (ev.timeValid === false) {
-          formattedTime = 'Kickoff TBD';
-        } else {
-          formattedTime = d.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
+        if (!isNaN(d.getTime())) {
+          formattedDate = d.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
           });
+          if (ev.timeValid === false) {
+            formattedTime = 'Kickoff TBD';
+          } else {
+            formattedTime = d.toLocaleTimeString('en-US', {
+              hour: 'numeric',
+              minute: '2-digit',
+            });
+          }
         }
       }
 
-      // Extract Broadcast TV Network
-      const broadcast =
+      const rawBroadcast =
         (comp.broadcasts &&
           comp.broadcasts[0] &&
           ((comp.broadcasts[0].media && comp.broadcasts[0].media.shortName) ||
-            (comp.broadcasts[0].names && comp.broadcasts[0].names.join(' / ')))) ||
+            (Array.isArray(comp.broadcasts[0].names) && comp.broadcasts[0].names.join(' / ')))) ||
         'SEC Network / ESPN';
+      const broadcast = sanitizeText(rawBroadcast, 40) || 'SEC Network / ESPN';
 
-      // Update Minimized Pill Label
       if (launcherLabel) {
         launcherLabel.textContent = 'Mizzou ' + (isHome || isNeutral ? 'vs.' : '@') + ' ' + oppName;
       }
 
       const mizScore = extractScore(mizzou.score);
       const oppScore = extractScore(opponent.score);
+      const safeRecord = sanitizeText(recordSummary || 'Tigers', 32) || 'Tigers';
 
-      contentEl.innerHTML =
-        '<div class="miz-teams-row">' +
-        '  <div class="miz-team-col">' +
-        '    <div class="miz-team-logo-wrap">' +
-        '      <img src="' + esc(mizLogo) + '" alt="Missouri Tigers logo" width="40" height="40" />' +
-        '    </div>' +
-        '    <span class="miz-team-name is-mizzou">Mizzou</span>' +
-        '    <span class="miz-team-sub">' + esc(recordSummary || 'Tigers') + '</span>' +
-        '  </div>' +
-        '  <div class="miz-vs-center">' +
-        '    <span class="miz-vs-pill">' + esc(vsText) + '</span>' +
-        (isLive
-          ? '<span class="miz-live-score">' + esc(mizScore || '0') + ' - ' + esc(oppScore || '0') + '</span>'
-          : '') +
-        '  </div>' +
-        '  <div class="miz-team-col">' +
-        '    <div class="miz-team-logo-wrap">' +
-        '      <img src="' + esc(oppLogo) + '" alt="' + esc(oppFullName) + ' logo" width="40" height="40" />' +
-        '    </div>' +
-        '    <span class="miz-team-name" title="' + esc(oppRank + oppFullName) + '">' + esc(oppRank + oppName) + '</span>' +
-        '    <span class="miz-team-sub">' + esc(venueTag) + '</span>' +
-        '  </div>' +
-        '</div>' +
-        '<div class="miz-details-box">' +
-        '  <div class="miz-detail-item">' +
-        '    <span class="miz-detail-label">📅 Game Date</span>' +
-        '    <span class="miz-detail-value">' + esc(formattedDate) + '</span>' +
-        '  </div>' +
-        '  <div class="miz-detail-item">' +
-        '    <span class="miz-detail-label">⏰ Kickoff Time</span>' +
-        '    <span class="miz-detail-value">' + esc(formattedTime) + '</span>' +
-        '  </div>' +
-        '  <div class="miz-detail-item full-span">' +
-        '    <span class="miz-detail-label">📺 Broadcast TV</span>' +
-        '    <span class="miz-tv-pill">' + esc(broadcast) + '</span>' +
-        '  </div>' +
-        '</div>' +
-        '<div class="miz-float-footer">' +
-        '  <span class="miz-sound-note">🔊 54+ TVs &amp; Full Sound</span>' +
-        '  <a href="/events" class="miz-watch-link">Watch Party Info →</a>' +
-        '</div>';
+      // Build DOM nodes safely without innerHTML
+      const teamsRow = createEl('div', 'miz-teams-row');
+
+      // Mizzou column
+      const mizCol = createEl('div', 'miz-team-col');
+      const mizLogoWrap = createEl('div', 'miz-team-logo-wrap');
+      const mizImg = document.createElement('img');
+      mizImg.src = mizLogo;
+      mizImg.alt = 'Missouri Tigers logo';
+      mizImg.width = 40;
+      mizImg.height = 40;
+      mizLogoWrap.appendChild(mizImg);
+      mizCol.appendChild(mizLogoWrap);
+      mizCol.appendChild(createEl('span', 'miz-team-name is-mizzou', 'Mizzou'));
+      mizCol.appendChild(createEl('span', 'miz-team-sub', safeRecord));
+
+      // Center VS / Score column
+      const vsCenter = createEl('div', 'miz-vs-center');
+      vsCenter.appendChild(createEl('span', 'miz-vs-pill', vsText));
+      if (isLive) {
+        vsCenter.appendChild(createEl('span', 'miz-live-score', mizScore + ' - ' + oppScore));
+      }
+
+      // Opponent column
+      const oppCol = createEl('div', 'miz-team-col');
+      const oppLogoWrap = createEl('div', 'miz-team-logo-wrap');
+      const oppImg = document.createElement('img');
+      oppImg.src = oppLogo;
+      oppImg.alt = oppFullName + ' logo';
+      oppImg.width = 40;
+      oppImg.height = 40;
+      oppLogoWrap.appendChild(oppImg);
+      oppCol.appendChild(oppLogoWrap);
+      const oppNameEl = createEl('span', 'miz-team-name', oppRank + oppName);
+      oppNameEl.title = oppRank + oppFullName;
+      oppCol.appendChild(oppNameEl);
+      oppCol.appendChild(createEl('span', 'miz-team-sub', venueTag));
+
+      teamsRow.appendChild(mizCol);
+      teamsRow.appendChild(vsCenter);
+      teamsRow.appendChild(oppCol);
+
+      // Details Box
+      const detailsBox = createEl('div', 'miz-details-box');
+
+      const dateItem = createEl('div', 'miz-detail-item');
+      dateItem.appendChild(createEl('span', 'miz-detail-label', '📅 Game Date'));
+      dateItem.appendChild(createEl('span', 'miz-detail-value', formattedDate));
+
+      const timeItem = createEl('div', 'miz-detail-item');
+      timeItem.appendChild(createEl('span', 'miz-detail-label', '⏰ Kickoff Time'));
+      timeItem.appendChild(createEl('span', 'miz-detail-value', formattedTime));
+
+      const tvItem = createEl('div', 'miz-detail-item full-span');
+      tvItem.appendChild(createEl('span', 'miz-detail-label', '📺 Broadcast TV'));
+      tvItem.appendChild(createEl('span', 'miz-tv-pill', broadcast));
+
+      detailsBox.appendChild(dateItem);
+      detailsBox.appendChild(timeItem);
+      detailsBox.appendChild(tvItem);
+
+      // Footer
+      const footer = createEl('div', 'miz-float-footer');
+      footer.appendChild(createEl('span', 'miz-sound-note', '🔊 54+ TVs & Full Sound'));
+      const watchLink = createEl('a', 'miz-watch-link', 'Watch Party Info →');
+      watchLink.setAttribute('href', '/events');
+      footer.appendChild(watchLink);
+
+      contentEl.replaceChildren(teamsRow, detailsBox, footer);
     }
 
     fetchNextMizzouGame();
