@@ -46,58 +46,17 @@
   "gameDaySpecials": [
     {
       "id": "nfl-game-day",
-      "day": "Every NFL Game",
+      "day": "NFL Sundays & Game Days",
       "badge": "🏈 NFL Sunday Ticket + RedZone",
-      "title": "Your House For Every NFL Game",
+      "title": "NFL Game Day Specials",
       "timing": "All NFL Games • Sunday Ticket & RedZone Live",
-      "description": "Every single NFL game live across 54+ HD TVs with NFL Sunday Ticket and NFL RedZone, paired with unbeatable game day burger and draft deals.",
+      "description": "Every single NFL game live across 54+ HD TVs with NFL Sunday Ticket and NFL RedZone, paired with unbeatable gameday beer bucket, ice-cold pitcher, draft, and smash burger specials.",
       "highlights": [
+        "Gameday Domestic & Seltzer Beer Buckets",
+        "Ice-Cold Draft Pitchers & Table Towers",
+        "Draft Specials Starting at $3.99 (including ice-cold 34°F Busch Light)",
         "$9.99 1/4 LB Smash Burger & Fries",
-        "Draft Specials Starting at $3.99 (including ice-cold Busch Light)",
-        "Every Out-of-Market Game on NFL Sunday Ticket + Dedicated RedZone Screens",
-        "Full Stadium Audio & 54+ HD Screens"
-      ]
-    },
-    {
-      "id": "wednesday-girl-dinner",
-      "day": "Every Wednesday",
-      "badge": "🍸 Girl Dinner Wednesdays",
-      "title": "Girl Dinner & 1/2 Price Specialty Cocktails",
-      "timing": "Every Wednesday | 6:00 PM – Close",
-      "description": "Your ultimate mid-week night out in Soulard! Grab our signature Girl Dinner tray and enjoy half-priced specialty cocktails, mocktails, and martinis all evening.",
-      "highlights": [
-        "$13.99 Girl Dinner (Crispy Chicken Tenders, Seasoned Fries, Side Caesar Salad & Dipping Sauce)",
-        "1/2 PRICE Specialty Cocktails (6PM – Close)",
-        "1/2 PRICE Craft Mocktails (Island Timeout & Z-O-U Sparkler)",
-        "1/2 PRICE Martinis (M-I-Z Bloom Martini & Ray's Espresso Martini)"
-      ]
-    },
-    {
-      "id": "lunch-special",
-      "day": "Tuesday – Friday",
-      "badge": "🍽️ Fast 25-Min Lunch",
-      "title": "$9.99 Weekday Lunch Special",
-      "timing": "Every Tuesday – Friday | 11:00 AM – 2:00 PM",
-      "description": "Built to level up your lunch break — be in and out in under 25 minutes! Lunch plans = handled.",
-      "highlights": [
-        "Select Lunch Items for Just $9.99",
-        "$2.99 Domestic Beers",
-        "$3.99 Rail Liquor & Select Shots like Fireball!",
-        "Available Tuesday – Friday from 11:00 AM to 2:00 PM"
-      ]
-    },
-    {
-      "id": "mizzou-saturday",
-      "day": "Mizzou Saturdays",
-      "badge": "🐅 M-I-Z — Z-O-U",
-      "title": "Home of Mizzou in St. Louis",
-      "timing": "All Day Saturdays During Mizzou Games",
-      "description": "Owned and operated by third-generation Mizzou alumni! Experience the #2 Best Spot in Missouri to watch Mizzou Football with wall-to-wall Black & Gold energy.",
-      "highlights": [
-        "Jayhawk Tears: $4.99 Bomb • $11.99 16oz Pint • $17.99 32oz Bucket",
-        "Boulevard MIZZOU Brew & Ray's APA by Schlafly on Draft",
-        "$13.99 Black & Gold Reserve Bourbon Old Fashioned",
-        "$4.99 #STLMade Phorm Energy Bombs"
+        "Every Out-of-Market Game on NFL Sunday Ticket + Dedicated RedZone Screens"
       ]
     }
   ],

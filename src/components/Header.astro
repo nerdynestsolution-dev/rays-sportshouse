@@ -6,14 +6,17 @@ const currentPath = Astro.url.pathname;
 
 const navLinks = [
   { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
   { href: '/menu', label: 'Menu & Drinks' },
-  { href: '/specials', label: 'Specials' },
-  { href: '/events', label: 'Events' },
+  { href: '/calendar', label: 'Calendar' },
+  { href: '/private-events', label: 'Private Events' },
   { href: '/gallery', label: 'Photo Gallery' },
   { href: '/hours-location', label: 'Hours & Location' },
+  { href: 'https://staffedup.com/rays-sportshouse-soulard/', label: 'Jobs', external: true },
 ];
 
 const isActive = (href: string) => {
+  if (href.startsWith('http')) return false;
   if (href === '/') return currentPath === '/';
   return currentPath.startsWith(href);
 };
@@ -39,7 +42,7 @@ const isActive = (href: string) => {
         <Phone class="w-3.5 h-3.5" /> (314) 312-1360
       </a>
       <span>•</span>
-      <a href="/specials" class="hover:underline flex items-center gap-1 whitespace-nowrap">
+      <a href="/menu#happy-hour-specials" class="hover:underline flex items-center gap-1 whitespace-nowrap">
         <Flame class="w-3.5 h-3.5" /> M–F Happy Hour 3–6 PM
       </a>
     </div>
@@ -80,14 +83,16 @@ const isActive = (href: string) => {
     </a>
 
     <!-- Desktop Navigation Links -->
-    <nav class="hidden lg:flex items-center gap-1 xl:gap-1.5" aria-label="Main Navigation">
+    <nav class="hidden xl:flex items-center gap-0.5 2xl:gap-1" aria-label="Main Navigation">
       {navLinks.map((link) => {
         const active = isActive(link.href);
         return (
           <a
             href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
             class:list={[
-              'px-2.5 xl:px-3.5 py-2 rounded-lg text-xs xl:text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-150',
+              'px-2 2xl:px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wide whitespace-nowrap transition-all duration-150',
               active
                 ? 'bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40'
                 : 'text-gray-200 hover:text-mizzou-gold hover:bg-white/5',
@@ -116,7 +121,7 @@ const isActive = (href: string) => {
       <button
         id="mobile-menu-open"
         type="button"
-        class="lg:hidden inline-flex items-center justify-center p-2.5 rounded-lg bg-mizzou-slate800 text-mizzou-gold border border-mizzou-gold/30 hover:bg-mizzou-slate700 focus:outline-none focus:ring-2 focus:ring-mizzou-gold"
+        class="xl:hidden inline-flex items-center justify-center p-2.5 rounded-lg bg-mizzou-slate800 text-mizzou-gold border border-mizzou-gold/30 hover:bg-mizzou-slate700 focus:outline-none focus:ring-2 focus:ring-mizzou-gold"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="mobile-drawer"
@@ -130,7 +135,7 @@ const isActive = (href: string) => {
 <!-- Mobile Slide-Out Drawer -->
 <div
   id="mobile-drawer"
-  class="fixed inset-0 z-50 hidden lg:hidden"
+  class="fixed inset-0 z-50 hidden xl:hidden"
   role="dialog"
   aria-modal="true"
   aria-label="Mobile Navigation Drawer"
@@ -162,6 +167,8 @@ const isActive = (href: string) => {
           return (
             <a
               href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
               class:list={[
                 'flex items-center justify-between px-4 py-3.5 rounded-xl font-display text-lg uppercase tracking-wider transition-colors',
                 active
@@ -170,7 +177,7 @@ const isActive = (href: string) => {
               ]}
             >
               <span>{link.label}</span>
-              <span class="text-xs opacity-75">→</span>
+              <span class="text-xs opacity-75">{link.external ? '↗' : '→'}</span>
             </a>
           );
         })}

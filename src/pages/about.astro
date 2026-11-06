@@ -1,0 +1,351 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  Utensils,
+  Flame,
+  Tv,
+  Trophy,
+  Beer,
+  Sparkles,
+  ShoppingBag,
+  MapPin,
+  Heart,
+  CheckCircle2,
+  Camera,
+} from '@lucide/astro';
+
+const culinaryPillars = [
+  {
+    badge: 'House Signature',
+    title: 'House-Smoked & Crispy Jumbo Wings',
+    description:
+      'Brined, slow-prepped, and finished to order with a crisp golden skin and juicy center — tossed in your choice of house-crafted sauces and dry rubs from Sweet & Spicy STL to Lemon Pepper and Garlic Parmesan.',
+  },
+  {
+    badge: 'St. Louis Tradition',
+    title: 'Authentic STL Toasted Beef Ravioli',
+    description:
+      'A tribute to our St. Louis neighborhood roots. Hand-breaded, golden-fried beef ravioli dusted with aged Parmesan and herbs, served piping hot with our rich house-simmered marinara.',
+  },
+  {
+    badge: '24K Gold-Dusted Craft',
+    title: 'Homemade "Billionaire" Candied Bacon',
+    description:
+      'Thick-cut smokehouse bacon glazed in brown sugar, cracked black pepper, and cayenne, baked until caramelized and finished with edible gold dust — crowning our signature Smash Burgers or served by the flight.',
+  },
+  {
+    badge: 'Slow-Braised Comfort',
+    title: 'Scratch Birria & Double Smash Burgers',
+    description:
+      'From slow-simmered beef birria piled high over crispy seasoned fries to double-seared smash patties on toasted brioche buns, every plate is built from scratch to elevate your game-day table.',
+  },
+];
+
+const visualSlots = [
+  {
+    slotLabel: 'Kitchen & Culinary Slot 01',
+    title: 'Scratch Kitchen & Line Prep',
+    caption:
+      ' customizable photo slot — replace with action shots of the chef team searing smash burgers or prepping scratch sauces.',
+    image: '/gallery/food-drinks/smash-burger-and-fries.jpg',
+    tag: 'The Scratch Kitchen',
+  },
+  {
+    slotLabel: 'Kitchen & Culinary Slot 02',
+    title: 'House Wings & Signature Shareables',
+    caption:
+      'Customizable photo slot — showcase freshly tossed jumbo wings, STL Toasted Beef Ravioli, and Billionaire Bacon flights.',
+    image: '/gallery/food-drinks/wings-and-shareables-spread.jpg',
+    tag: 'Elevated Bar Cuisine',
+  },
+  {
+    slotLabel: 'Atmosphere & Tap Wall Slot 03',
+    title: '24 Ice-Cold 34°F Drafts & 54+ Screens',
+    caption:
+      'Customizable photo slot — highlight the historic Soulard brass-rail bar, 24 draft taps, and wall-to-wall game day energy.',
+    image: '/gallery/crowds/game-day-bar-crowd-and-hd-screens.jpg',
+    tag: 'Soulard Hospitality',
+  },
+];
+---
+
+<BaseLayout
+  title="About Ray's SportsHouse | Scratch Kitchen & Soulard Sports Headquarters | St. Louis"
+  description="Discover the story behind Ray's SportsHouse at 1732 S 9th St in historic Soulard, St. Louis. Third-generation Mizzou alumni owned, combining a scratch-made culinary kitchen with 54+ HD screens and 24 ice-cold 34°F draft taps."
+>
+  <!-- 1. HERO / INTRO: RAY'S ORIGINS IN HISTORIC SOULARD -->
+  <section class="relative overflow-hidden bg-mizzou-black border-b border-mizzou-gold/30 py-14 sm:py-20">
+    <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
+    <div
+      class="absolute -top-24 left-1/2 -translate-x-1/2 w-[750px] h-[380px] bg-mizzou-gold/10 blur-[130px] rounded-full pointer-events-none"
+    ></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-7 space-y-5">
+          <span class="inline-flex items-center gap-1.5 bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-xs font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full">
+            <Utensils class="w-3.5 h-3.5" /> Est. in Historic Soulard • 3rd-Generation Mizzou Alumni Owned
+          </span>
+
+          <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-bold uppercase tracking-tight leading-[0.98] text-white">
+            Where Scratch Culinary Craft Meets <span class="text-mizzou-gold">54+ HD Screens</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-gray-200 leading-relaxed">
+            Born at <strong class="text-white">1732 S 9th Street</strong> in the heart of historic Soulard, <strong class="text-mizzou-gold">Ray's SportsHouse</strong> was founded on a simple belief: a world-class sports bar shouldn't treat food like an afterthought.
+          </p>
+
+          <p class="text-sm sm:text-base text-gray-300 leading-relaxed">
+            We set out to combine St. Louis's most electric stadium-style viewing experience — 54+ crystal-clear HD TVs, full broadcast audio, and 24 draft lines poured at a crisp 34°F — with a true <strong class="text-white">scratch-kitchen culinary program</strong> built from the ground up.
+          </p>
+
+          <div class="pt-2 flex flex-wrap items-center gap-4">
+            <a
+              href="/menu"
+              class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-base px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+            >
+              <Utensils class="w-4 h-4 stroke-[2.5]" />
+              <span>Explore Our Scratch Menu</span>
+            </a>
+            <a
+              href="/private-events"
+              class="inline-flex items-center gap-2 bg-mizzou-slate900 hover:bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-base px-6 py-3.5 rounded-xl transition-all"
+            >
+              <Sparkles class="w-4 h-4 text-mizzou-gold" />
+              <span>Host a Private Event</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Right Showcase Card -->
+        <div class="lg:col-span-5">
+          <div class="rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/50 p-4 sm:p-5 shadow-gold-glow space-y-4">
+            <div class="relative aspect-[16/11] rounded-2xl overflow-hidden bg-mizzou-black">
+              <img
+                src="/gallery/patio-interior/historic-soulard-brick-interior.jpg"
+                alt="Ray's SportsHouse historic Soulard brick interior and scratch bar kitchen"
+                width="800"
+                height="550"
+                loading="eager"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
+                <span class="self-start bg-mizzou-gold text-mizzou-black text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded mb-1.5">
+                  1732 S 9th St • Soulard, STL
+                </span>
+                <p class="font-display text-2xl font-bold uppercase text-white">
+                  Built For Food Lovers &amp; Die-Hard Fans
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5 text-center">
+              <div class="bg-mizzou-black/85 border border-white/10 rounded-xl p-3">
+                <p class="font-display text-2xl font-bold text-mizzou-gold">100%</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-300 font-semibold">Scratch Kitchen</p>
+              </div>
+              <div class="bg-mizzou-black/85 border border-white/10 rounded-xl p-3">
+                <p class="font-display text-2xl font-bold text-mizzou-gold">54+</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-300 font-semibold">HD Screens</p>
+              </div>
+              <div class="bg-mizzou-black/85 border border-white/10 rounded-xl p-3">
+                <p class="font-display text-2xl font-bold text-mizzou-gold">34°F</p>
+                <p class="text-[11px] uppercase tracking-wider text-gray-300 font-semibold">24 Draft Taps</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. THE CULINARY STORY (PRIMARY FOCUS): SCRATCH KITCHEN PHILOSOPHY -->
+  <section class="py-16 sm:py-24 bg-mizzou-black border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="max-w-3xl space-y-3">
+        <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full">
+          <Flame class="w-3.5 h-3.5" /> The Culinary Story • Scratch-Made Daily
+        </span>
+        <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+          Elevated Bar Cuisine, <span class="text-mizzou-gold">Crafted From Scratch</span>
+        </h2>
+        <p class="text-gray-300 text-base sm:text-lg leading-relaxed">
+          Inside Ray's kitchen, we skip the shortcuts. Every sauce, rub, glaze, and smash patty is prepped in-house so that what lands on your table during kickoff rivals your favorite St. Louis neighborhood gastropub.
+        </p>
+      </div>
+
+      <!-- 4 Culinary Pillars Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {culinaryPillars.map((pillar) => (
+          <div class="rounded-2xl bg-mizzou-slate900 border border-mizzou-gold/40 p-6 sm:p-8 flex flex-col justify-between space-y-4 hover:border-mizzou-gold transition-all">
+            <div class="space-y-2.5">
+              <span class="inline-block bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/30 text-[11px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+                {pillar.badge}
+              </span>
+              <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white">
+                {pillar.title}
+              </h3>
+              <p class="text-sm sm:text-base text-gray-300 leading-relaxed">
+                {pillar.description}
+              </p>
+            </div>
+            <div class="pt-3 border-t border-white/10 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-mizzou-gold">
+              <CheckCircle2 class="w-4 h-4" />
+              <span>Prepared Fresh To Order in Our Soulard Kitchen</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Pairing Food With 54+ Screens Callout Banner -->
+      <div class="rounded-3xl bg-gradient-to-r from-mizzou-slate900 via-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/50 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-3">
+          <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
+            <Tv class="w-4 h-4" />
+            <span>The Perfect Game-Day Pairing</span>
+          </div>
+          <h3 class="font-display text-2xl sm:text-4xl font-bold uppercase text-white">
+            Scratch Plates Paired With <span class="text-mizzou-gold">24 Ice-Cold Drafts &amp; 54+ HD TVs</span>
+          </h3>
+          <p class="text-sm sm:text-base text-gray-300 leading-relaxed">
+            Whether you're sharing a platter of Creole Chicken Tenders and Cajun Bacon Mac &amp; Cheese Bites during weekday Happy Hour, or digging into a Billionaire Bacon Smash Burger with a 32oz Jayhawk Tears bucket or Ray's APA by Schlafly, every booth and barstool has a clear sightline to the action.
+          </p>
+        </div>
+        <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3">
+          <a
+            href="https://rayssportshouse.square.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-base px-6 py-4 rounded-xl shadow-gold-glow transition-all"
+          >
+            <ShoppingBag class="w-5 h-5" />
+            <span>Order Takeout Online</span>
+          </a>
+          <a
+            href="/menu#happy-hour-specials"
+            class="inline-flex items-center justify-center gap-2 bg-mizzou-black hover:bg-mizzou-slate900 text-white border border-white/20 font-display font-bold uppercase tracking-wider text-base px-6 py-4 rounded-xl transition-all"
+          >
+            <Beer class="w-5 h-5 text-mizzou-gold" />
+            <span>Happy Hour &amp; NFL Deals</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. VISUAL ELEMENTS: PLACEHOLDER IMAGE CARDS / SLOTS FOR CHEF, KITCHEN & FOOD PREP -->
+  <section class="py-16 sm:py-20 bg-mizzou-slate900/60 border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full mb-3">
+            <Camera class="w-3.5 h-3.5" /> Behind The Line &amp; Inside The Bar
+          </span>
+          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+            Inside <span class="text-mizzou-gold">Ray's Kitchen &amp; House</span>
+          </h2>
+        </div>
+        <a
+          href="/gallery"
+          class="text-sm font-display font-bold uppercase tracking-wider text-mizzou-gold hover:underline"
+        >
+          View Full Photo Gallery →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {visualSlots.map((slot) => (
+          <figure class="group rounded-2xl overflow-hidden bg-mizzou-slate900 border border-white/15 hover:border-mizzou-gold transition-all flex flex-col justify-between">
+            <div class="relative aspect-[16/11] bg-mizzou-black overflow-hidden">
+              <img
+                src={slot.image}
+                alt={slot.title}
+                width="600"
+                height="412"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div class="absolute top-3 left-3 flex items-center gap-2">
+                <span class="bg-mizzou-gold text-mizzou-black text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                  {slot.tag}
+                </span>
+                <span class="bg-black/80 text-gray-200 border border-white/15 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                  {slot.slotLabel}
+                </span>
+              </div>
+            </div>
+            <figcaption class="p-5 space-y-1.5">
+              <h3 class="font-display text-xl font-bold uppercase text-white group-hover:text-mizzou-gold transition-colors">
+                {slot.title}
+              </h3>
+              <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                {slot.caption}
+              </p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ATMOSPHERE & COMMUNITY: SOULARD ROOTS & MIZZOU TIGERS PRIDE -->
+  <section class="py-16 sm:py-24 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-6 space-y-5">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-3 py-1 rounded-full">
+            <Heart class="w-3.5 h-3.5" /> Soulard Community &amp; Mizzou Pride
+          </span>
+          <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+            Proudly Rooted in <span class="text-mizzou-gold">Historic Soulard</span>
+          </h2>
+          <p class="text-gray-300 text-base leading-relaxed">
+            Owned and operated by <strong class="text-white">third-generation University of Missouri alumni</strong>, Ray's SportsHouse brings authentic Black &amp; Gold Columbia spirit straight to South 9th Street — earning recognition as the <strong class="text-mizzou-gold">#2 Best Spot in Missouri to Watch Mizzou Football</strong>.
+          </p>
+          <p class="text-gray-300 text-base leading-relaxed">
+            Beyond Saturdays in the SEC, we're a seven-day-a-week neighborhood gathering place for Soulard locals, St. Louis Cardinals, Blues, and CITY SC supporters, NFL Sunday Ticket crews, and friends meeting up on our classic brick patio.
+          </p>
+        </div>
+
+        <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="rounded-2xl bg-mizzou-slate900 border border-mizzou-gold/40 p-6 space-y-2">
+            <Trophy class="w-7 h-7 text-mizzou-gold" />
+            <h3 class="font-display text-xl font-bold uppercase text-white">
+              3rd-Gen Mizzou Alumni
+            </h3>
+            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+              Every Tiger touchdown comes with the Mizzou fight song blaring over our house sound system and Black &amp; Gold specials flowing.
+            </p>
+          </div>
+
+          <div class="rounded-2xl bg-mizzou-slate900 border border-mizzou-gold/40 p-6 space-y-2">
+            <MapPin class="w-7 h-7 text-mizzou-gold" />
+            <h3 class="font-display text-xl font-bold uppercase text-white">
+              Historic 9th Street Patio
+            </h3>
+            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+              Minutes from Busch Stadium, Enterprise Center, and Energizer Park with classic Soulard brick charm inside and out.
+            </p>
+          </div>
+
+          <div class="sm:col-span-2 rounded-2xl bg-gradient-to-r from-mizzou-gold via-mizzou-athletic to-mizzou-gold text-mizzou-black p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <p class="font-display text-2xl font-bold uppercase">
+                Come Taste The Difference At 1732 S 9th St
+              </p>
+              <p class="text-xs sm:text-sm font-semibold text-black/80">
+                Open 7 days a week in Historic Soulard • Kitchen open late every night.
+              </p>
+            </div>
+            <a
+              href="/hours-location"
+              class="inline-flex items-center gap-2 bg-mizzou-black text-mizzou-gold font-display font-bold uppercase tracking-wider text-sm px-5 py-3 rounded-xl shrink-0"
+            >
+              <span>Hours &amp; Directions</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

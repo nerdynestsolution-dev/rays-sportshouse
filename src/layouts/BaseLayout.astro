@@ -8,6 +8,7 @@ export interface Props {
   description?: string;
   keywords?: string;
   ogImage?: string;
+  redirectUrl?: string;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
   description = "Ray's SportsHouse at 1732 S 9th St in historic Soulard, St. Louis. #2 Best Spot in Missouri to watch Mizzou Football, NFL Sunday Ticket & RedZone, UFC PPVs, F1, and STL sports across 54+ HD screens with full game sound.",
   keywords = "Soulard sports bar, best bar to watch Mizzou football St Louis, NFL Sunday Ticket Soulard, UFC watch party St Louis, 54 TVs sports bar STL, Ray's SportsHouse, St Louis CITY SC watch party, Soulard happy hour",
   ogImage = "/gallery/crowds/game-day-bar-crowd-and-hd-screens.jpg",
+  redirectUrl,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://rayssportshouse.com');
@@ -93,6 +95,7 @@ const jsonLdSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {redirectUrl && <meta http-equiv="refresh" content={`0;url=${redirectUrl}`} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
 

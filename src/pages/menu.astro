@@ -2,9 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MenuItem from '../components/MenuItem.astro';
 import menuData from '../data/menu.json';
-import { ShoppingBag, Utensils, Beer, Flame, Sparkles, Wine, Zap } from '@lucide/astro';
+import specialsData from '../data/specials.json';
+import { ShoppingBag, Utensils, Beer, Flame, Sparkles, Wine, Zap, Clock, Trophy, CheckCircle2 } from '@lucide/astro';
 
 const { categories, squareOrderUrl, introBanner, foodDisclaimer } = menuData;
+const { happyHour, gameDaySpecials } = specialsData;
+const nflSpecial = gameDaySpecials[0];
 ---
 
 <BaseLayout
@@ -66,6 +69,13 @@ const { categories, squareOrderUrl, introBanner, foodDisclaimer } = menuData;
         >
           All Menu &amp; Drinks
         </button>
+        <button
+          type="button"
+          data-menu-tab="happy-hour-specials"
+          class="menu-tab-btn shrink-0 px-4 py-2 rounded-xl font-display font-bold uppercase tracking-wider text-sm bg-mizzou-black/80 text-mizzou-gold border border-mizzou-gold/50 hover:border-mizzou-gold transition-all"
+        >
+          🍺 Happy Hour &amp; Game Day Specials
+        </button>
         {categories.map((cat) => (
           <button
             type="button"
@@ -82,6 +92,150 @@ const { categories, squareOrderUrl, introBanner, foodDisclaimer } = menuData;
   <!-- MENU SECTIONS -->
   <section class="py-12 sm:py-16 bg-mizzou-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      <!-- PROMINENT HAPPY HOUR & NFL GAME DAY SPECIALS SECTION -->
+      <div
+        id="happy-hour-specials"
+        data-menu-section="happy-hour-specials"
+        class="menu-category-section scroll-mt-36 space-y-8"
+      >
+        <div class="border-b-2 border-mizzou-gold/40 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-3">
+          <div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-mizzou-gold bg-mizzou-gold/10 border border-mizzou-gold/30 px-2.5 py-0.5 rounded">
+              <Flame class="w-3.5 h-3.5" /> Official Bar &amp; Kitchen Deals
+            </span>
+            <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white mt-2">
+              Happy Hour &amp; <span class="text-mizzou-gold">Game Day Specials</span>
+            </h2>
+            <p class="text-sm sm:text-base text-gray-300 mt-1">
+              Soulard's weekday clock-out ritual (Mon–Fri 3:00 PM – 6:00 PM) and NFL Sunday Ticket bucket, pitcher &amp; game day features.
+            </p>
+          </div>
+          <a
+            href="/calendar"
+            class="self-start md:self-auto inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-mizzou-gold hover:underline"
+          >
+            <Trophy class="w-3.5 h-3.5" />
+            <span>View Sports Calendar ↗</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <!-- 1. HAPPY HOUR SPECIALS (MON - FRI, 3:00 PM - 6:00 PM) -->
+          <div class="lg:col-span-7 rounded-3xl bg-gradient-to-br from-mizzou-slate900 via-mizzou-slate800 to-mizzou-slate900 border-2 border-mizzou-gold/60 p-6 sm:p-8 shadow-gold-glow flex flex-col justify-between space-y-6">
+            <div class="space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full">
+                  <Clock class="w-3.5 h-3.5" /> {happyHour.schedule}
+                </span>
+                <span class="text-xs font-bold uppercase tracking-wider text-mizzou-gold bg-mizzou-black/80 border border-mizzou-gold/30 px-2.5 py-1 rounded-md">
+                  Dine-In Bar &amp; Patio
+                </span>
+              </div>
+
+              <div>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white">
+                  Weekday <span class="text-mizzou-gold">Happy Hour</span> Specials
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-300 mt-1 leading-relaxed">
+                  {happyHour.subtitle}
+                </p>
+              </div>
+
+              <!-- Drink Specials Grid -->
+              <div>
+                <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold mb-2.5 flex items-center gap-1.5">
+                  <Beer class="w-4 h-4" /> Happy Hour Drink Specials (Mon–Fri • 3PM–6PM):
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {happyHour.drinkDeals.map((deal) => (
+                    <div class="rounded-xl bg-mizzou-black/85 border border-white/15 p-3.5">
+                      <p class="font-display text-base font-bold uppercase text-mizzou-gold">
+                        {deal.item}
+                      </p>
+                      <p class="text-xs text-gray-300 mt-0.5 leading-snug">
+                        {deal.detail}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Discounted Bar Bites Menu ($7.99) -->
+              <div>
+                <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold mb-2.5 flex items-center gap-1.5">
+                  <Utensils class="w-4 h-4" /> $7.99 Discounted Happy Hour Bar Bites (Mon–Fri • 3PM–6PM):
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {happyHour.foodDeals.map((food) => (
+                    <div class="rounded-xl bg-mizzou-black/90 border border-mizzou-gold/40 p-3.5 flex flex-col justify-between">
+                      <p class="font-display text-sm sm:text-base font-bold uppercase text-white leading-snug">
+                        {food.item}
+                      </p>
+                      <span class="mt-2 self-start inline-block bg-mizzou-gold text-mizzou-black font-display font-bold text-sm px-2.5 py-0.5 rounded">
+                        {food.price}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. NFL GAME DAY SPECIALS (BUCKETS, PITCHERS & GAME DAY BURGER) -->
+          {nflSpecial && (
+            <div class="lg:col-span-5 rounded-3xl bg-mizzou-slate900 border-2 border-mizzou-gold/50 p-6 sm:p-8 flex flex-col justify-between space-y-6">
+              <div class="space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <span class="inline-flex items-center gap-1.5 bg-mizzou-gold text-mizzou-black text-xs font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full">
+                    {nflSpecial.badge}
+                  </span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-gray-200 bg-mizzou-black border border-white/15 px-2.5 py-1 rounded-md">
+                    {nflSpecial.day}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white">
+                    NFL <span class="text-mizzou-gold">Game Day</span> Specials
+                  </h3>
+                  <p class="text-xs font-bold uppercase tracking-wider text-mizzou-gold mt-1">
+                    {nflSpecial.timing}
+                  </p>
+                  <p class="text-xs sm:text-sm text-gray-300 mt-2 leading-relaxed">
+                    {nflSpecial.description}
+                  </p>
+                </div>
+
+                <div class="rounded-2xl bg-mizzou-black/85 border border-mizzou-gold/30 p-4 space-y-2.5">
+                  <p class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
+                    🏈 Featured Game Day Buckets, Pitchers &amp; Eats:
+                  </p>
+                  <ul class="space-y-2 text-xs sm:text-sm text-gray-200 font-medium">
+                    {nflSpecial.highlights.map((item) => (
+                      <li class="flex items-start gap-2.5">
+                        <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
+                <span class="text-xs text-gray-400 font-semibold">
+                  🔊 54+ HD TVs • Every Out-of-Market Game
+                </span>
+                <a
+                  href="/calendar"
+                  class="text-xs font-display font-bold uppercase tracking-wider text-mizzou-gold hover:underline"
+                >
+                  NFL Schedule →
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
       {categories.map((category) => (
         <div
           id={category.id}

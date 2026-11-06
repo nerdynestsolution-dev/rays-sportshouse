@@ -255,10 +255,10 @@ const { id = 'private-events' } = Astro.props;
 
               <div>
                 <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
-                  Estimated Group Size *
+                  Estimated Guest Count *
                 </label>
                 <select
-                  name="group_size"
+                  name="guest_count"
                   required
                   class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white cursor-pointer transition-colors"
                 >
@@ -272,21 +272,21 @@ const { id = 'private-events' } = Astro.props;
               </div>
             </div>
 
-            <!-- Booking Type -->
+            <!-- Event Type -->
             <div>
               <label class="block text-xs font-extrabold uppercase tracking-wider text-mizzou-gold mb-2">
-                What Are You Booking? *
+                Event Type *
               </label>
               <select
-                name="booking_type"
+                name="event_type"
                 required
                 class="w-full rounded-xl bg-mizzou-black border border-white/20 focus:border-mizzou-gold focus:outline-none px-4 py-3.5 text-sm text-white cursor-pointer transition-colors"
               >
-                <option value="Private Event + Catering">Private Event + Catering</option>
-                <option value="Private Party / Space Reservation">Private Party / Space Reservation (No Rental Fee)</option>
-                <option value="Off-Site or Pickup Catering Order">Catering Order / Party Platters Only</option>
-                <option value="Mizzou / Game Day Watch Party Group">Mizzou / Game Day Watch Party Group</option>
-                <option value="Corporate Happy Hour / Team Outing">Corporate Happy Hour / Team Outing</option>
+                <option value="Watch Party">Watch Party (Mizzou / NFL / UFC / STL Sports)</option>
+                <option value="Birthday">Birthday Bash / Celebration</option>
+                <option value="Corporate">Corporate Happy Hour / Team Outing</option>
+                <option value="Catering / Party Platters">Scratch Kitchen Catering / Party Platters</option>
+                <option value="Other">Other Private Event / Full Buyout</option>
               </select>
             </div>
 

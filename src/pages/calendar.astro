@@ -5,7 +5,7 @@ import MizzouScheduleWidget from '../components/MizzouScheduleWidget.astro';
 import NflScheduleWidget from '../components/NflScheduleWidget.astro';
 import PrivateEventsCatering from '../components/PrivateEventsCatering.astro';
 import eventsData from '../data/events.json';
-import { Trophy, Tv, Volume2, Calendar, ShoppingBag } from '@lucide/astro';
+import { Trophy, Volume2, Calendar, ShoppingBag } from '@lucide/astro';
 
 const { events } = eventsData;
 const mizzouEvent = events.find((e) => e.id === 'mizzou-saturdays');
@@ -18,8 +18,8 @@ const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 
 ---
 
 <BaseLayout
-  title="Events & Watch Parties | Mizzou Football, NFL Sunday Ticket, UFC & F1 | Ray's SportsHouse"
-  description="Join Soulard's most electric watch parties at Ray's SportsHouse: #2 Best Spot in Missouri for Mizzou Football Saturdays, NFL Sunday Ticket & RedZone, UFC PPVs, F1 Grand Prix races, STL CITY SC matches, and Wednesday Girl Dinner."
+  title="Sports & Event Calendar | Mizzou Football, NFL Sunday Ticket, UFC & F1 | Ray's SportsHouse"
+  description="Explore the official Sports & Event Calendar at Ray's SportsHouse in Soulard: #2 Best Spot in Missouri for Mizzou Football Saturdays, NFL Sunday Ticket & RedZone, UFC PPVs, F1 Grand Prix races, STL CITY SC matches, and live schedules."
 >
   <!-- PAGE HEADER -->
   <section class="relative bg-mizzou-black border-b border-mizzou-gold/30 py-12 sm:py-16">
@@ -31,7 +31,7 @@ const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 
             <Trophy class="w-3.5 h-3.5" /> 54+ HD Screens • Stadium Broadcast Sound
           </span>
           <h1 class="font-display text-4xl sm:text-6xl font-bold uppercase text-white">
-            Events &amp; <span class="text-mizzou-gold">Watch Parties</span>
+            Sports &amp; Event <span class="text-mizzou-gold">Calendar</span>
           </h1>
           <p class="text-gray-300 text-base sm:text-lg mt-3 leading-relaxed">
             Whether you're cheering on the Missouri Tigers, tracking every NFL Sunday Ticket drive, catching a UFC championship PPV, or pregaming for STL CITY SC, Blues, and Cardinals — every seat at Ray's is front row.
@@ -89,7 +89,7 @@ const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 
         </div>
       )}
 
-      <!-- 3. OTHER WATCH PARTIES & WEEKLY EVENTS GRID (UFC, STL CITY SC, CARDS/BLUES, F1, WEDNESDAY GIRL DINNER) -->
+      <!-- 3. OTHER WATCH PARTIES & WEEKLY EVENTS GRID -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {otherEvents.map((event) => (
           <div class="event-card-wrapper" data-category={event.category}>
@@ -108,25 +108,25 @@ const categories = ['All Events', 'Mizzou Football', 'NFL', 'UFC', 'STL Local', 
             Mizzou Alumni Groups, Fantasy Drafts &amp; Fight Night Crews Welcome
           </h2>
           <p class="text-sm sm:text-base text-gray-300 max-w-2xl">
-            For major Mizzou SEC kickoffs, NFL Sundays, and UFC PPV cards, booths fill up fast. Arrive early or order wing platters ahead online!
+            For major Mizzou SEC kickoffs, NFL Sundays, and UFC PPV cards, booths fill up fast. Reserve a private watch party section or order wing platters ahead online!
           </p>
         </div>
         <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
           <a
+            href="/private-events"
+            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+          >
+            <Calendar class="w-5 h-5" />
+            <span>Book a Watch Party</span>
+          </a>
+          <a
             href="https://rayssportshouse.square.site/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
-          >
-            <ShoppingBag class="w-5 h-5" />
-            <span>Pre-Order Wing Platters</span>
-          </a>
-          <a
-            href="/hours-location"
             class="inline-flex items-center gap-2 bg-mizzou-black hover:bg-mizzou-slate800 text-white border border-white/20 font-display font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all"
           >
-            <Calendar class="w-5 h-5 text-mizzou-gold" />
-            <span>Hours &amp; Directions</span>
+            <ShoppingBag class="w-5 h-5 text-mizzou-gold" />
+            <span>Pre-Order Wing Platters</span>
           </a>
         </div>
       </div>

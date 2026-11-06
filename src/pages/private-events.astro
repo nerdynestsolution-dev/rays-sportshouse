@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PrivateEventsCatering from '../components/PrivateEventsCatering.astro';
+import {
+  Sparkles,
+  Tv,
+  Users,
+  Utensils,
+  Phone,
+  Trophy,
+  Briefcase,
+  PartyPopper,
+  CheckCircle2,
+} from '@lucide/astro';
+
+const eventPackages = [
+  {
+    badge: 'Game Day Groups',
+    title: 'VIP Watch Parties & Fantasy Drafts',
+    description:
+      'Reserve a dedicated section for Mizzou SEC Saturdays, NFL Sunday Ticket matchups, UFC PPV fight nights, or your league fantasy draft — complete with custom TV channel assignments and house sound.',
+    perks: ['Zero room or table rental fees', 'Dedicated HD screens tuned to your game', 'Bucket, pitcher & group bar tab options'],
+  },
+  {
+    badge: 'Team & Client Outings',
+    title: 'Corporate Happy Hours & Mixers',
+    description:
+      'Treat your team or clients to historic Soulard hospitality just minutes from Downtown St. Louis. Easy A/V hookups, billiards lounge space, and customizable food & drink packages.',
+    perks: ['Flexible open bar or drink ticket tabs', 'Scratch kitchen appetizer buffets', 'Audio/visual & presentation screen support'],
+  },
+  {
+    badge: 'Milestone Celebrations',
+    title: 'Birthday Bashes, Alumni & Grad Parties',
+    description:
+      'From 15-person birthday tables to 120+ guest full-venue buyouts, our historic brick interior, pool room, photo booth, and patio are built for unforgettable nights.',
+    perks: ['Billiards, photo booth & lounge space', 'Custom playlists or stadium sound', 'Late-night kitchen service available'],
+  },
+  {
+    badge: 'On-Site or Pickup',
+    title: 'Scratch Kitchen Catering & Party Platters',
+    description:
+      'Feed your crew with hot trays of Ray’s Almost Famous Jumbo Wings, STL Toasted Beef Ravioli, Smash Burger & Pastrami Sliders, Creole Chicken Tenders, and Birria Fries.',
+    perks: ['Prepared fresh to order in our Soulard kitchen', 'Available for in-house events or tailgate pickup', 'Customizable platter sizes for any headcount'],
+  },
+];
+---
+
+<BaseLayout
+  title="Private Events & Catering | Zero Rental Fees • Watch Parties & Buyouts | Ray's SportsHouse"
+  description="Book your next private event, watch party, birthday bash, corporate happy hour, or catering order at Ray's SportsHouse in Soulard, St. Louis. Zero rental fees, 54+ HD TVs, speakers to use, and any size group!"
+>
+  <!-- PAGE HERO -->
+  <section class="relative bg-mizzou-black border-b border-mizzou-gold/30 py-12 sm:py-16 overflow-hidden">
+    <div class="absolute inset-0 bg-tiger-stripe opacity-60 pointer-events-none"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="max-w-3xl space-y-3">
+          <span class="inline-flex items-center gap-1.5 bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/40 text-xs font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full">
+            <Sparkles class="w-3.5 h-3.5" /> No Rental Fees • 54+ HD TVs &amp; Speakers • Any Size Group
+          </span>
+          <h1 class="font-display text-4xl sm:text-6xl font-bold uppercase text-white">
+            Private Events <span class="text-mizzou-gold">&amp; Catering</span>
+          </h1>
+          <p class="text-gray-300 text-base sm:text-lg leading-relaxed">
+            Whether you're hosting a 15-person Mizzou alumni watch party, a birthday celebration, a corporate happy hour, or ordering scratch wing and slider platters for your crew — Ray's SportsHouse makes booking effortless with <strong class="text-white">zero room rental fees</strong>.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+          <a
+            href="#book-private-event"
+            class="inline-flex items-center gap-2 bg-mizzou-gold hover:bg-mizzou-athletic text-mizzou-black font-display font-bold uppercase tracking-wider text-base px-6 py-3.5 rounded-xl shadow-gold-glow transition-all"
+          >
+            <Sparkles class="w-5 h-5" />
+            <span>Reserve Online Below</span>
+          </a>
+          <a
+            href="tel:+13143121360"
+            class="inline-flex items-center gap-2 bg-mizzou-slate900 hover:bg-mizzou-slate800 text-white border border-mizzou-gold/50 font-display font-bold uppercase tracking-wider text-base px-6 py-3.5 rounded-xl transition-all"
+          >
+            <Phone class="w-5 h-5 text-mizzou-gold" />
+            <span>Call (314) 312-1360</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMSPREE INQUIRY & SHOWCASE SECTION -->
+  <PrivateEventsCatering id="book-private-event" />
+
+  <!-- EVENT PACKAGES & USE CASES GRID -->
+  <section class="py-16 sm:py-20 bg-mizzou-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div class="max-w-3xl space-y-2">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-mizzou-gold">
+          Tailored To Your Group
+        </span>
+        <h2 class="font-display text-3xl sm:text-5xl font-bold uppercase text-white">
+          Built For Every <span class="text-mizzou-gold">Occasion &amp; Headcount</span>
+        </h2>
+        <p class="text-sm sm:text-base text-gray-300">
+          Tell us what you're celebrating in the form above — we'll customize the TVs, sound, tables, and scratch catering menu around your group.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {eventPackages.map((pkg) => (
+          <div class="rounded-2xl bg-mizzou-slate900 border border-white/15 hover:border-mizzou-gold/60 p-6 sm:p-8 flex flex-col justify-between space-y-5 transition-all">
+            <div class="space-y-3">
+              <span class="inline-block bg-mizzou-gold/15 text-mizzou-gold border border-mizzou-gold/30 text-[11px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+                {pkg.badge}
+              </span>
+              <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase text-white">
+                {pkg.title}
+              </h3>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                {pkg.description}
+              </p>
+            </div>
+
+            <ul class="pt-4 border-t border-white/10 space-y-2 text-xs sm:text-sm text-gray-200 font-medium">
+              {pkg.perks.map((perk) => (
+                <li class="flex items-center gap-2.5">
+                  <CheckCircle2 class="w-4 h-4 text-mizzou-gold shrink-0" />
+                  <span>{perk}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
